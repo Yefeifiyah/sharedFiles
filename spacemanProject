@@ -99,7 +99,7 @@ namespace ProjectSpaceman {
             "ball", "balm", "palm", "erosion", "oration", "fixation", "rotation", "negation",
             "clash", "brash", "sports", "shorts", "monument", "document", "regiment",
             "sentient", "west", "loin", "steep", "deep", "sweep", "reef", "beef", "cow", "bow",
-            "low", "sow", "how", "bow", "row", "now", "elation", "mansion", "pension", "passion" };
+            "low", "sow", "how", "tow", "row", "now", "elation", "mansion", "pension", "passion" };
         private readonly string symbolsNumbersAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
                                                        + "0123456789"
                                                        + " ";
