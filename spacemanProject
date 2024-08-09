@@ -1,0 +1,406 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ProjectSpaceman {
+    internal class Program {
+        /*Invaders from outer space have arrived and are abducting 
+         * humans using tractor beams. Players must crack the codeword 
+         * to stop the abduction!*/
+        static void Main(string[] _) {
+            Console.SetWindowSize(44, 19);
+            bool StayOn;
+            Game.Intro();
+            do {
+                Game g = new Game();
+                while (!g.DidWin() && !g.DidLose()) { 
+                    g.Display(); 
+                    g.Start(); 
+                }
+                g.Display();
+        exit:
+                Console.Write("PLAY AGAIN? (y/n): ");
+                string answer = Console.ReadLine();
+                if (!String.IsNullOrEmpty(answer)) {
+                    if (answer == answer.ToUpper()) answer = answer.ToLower();
+                    if (answer == "n") StayOn = false;
+                    else if (answer == "y") StayOn = true;
+                    else {
+                        g.Display();
+                        Console.Write("need Y or N -- ");
+                        goto exit;
+                    }
+                }
+                else {
+                    g.Display();
+                    Console.Write("NEED y OR n -- ");
+                    goto exit;
+                }
+            } while (StayOn);
+        }
+    }
+
+    internal class Game {
+        public UFO alienCraft = new UFO();
+        private readonly string[] codewordOptions = { 
+            "apocalypse", "scream", "tiger", "reptilian", "espionage", "extravagant",
+            "apathy", "generous", "rose", "fascination", "revolution", "artificial",
+            "strife", "discrepancy", "ordinary", "rage", "devotion", "imagination",
+            "delirious", "excruciating", "grateful", "capacity", "marathon", "volcano",
+            "trend", "domination", "dramatic", "peaceful", "organic", "page", "hope",
+            "duck", "pope", "rope", "graceful", "divine", "elementary", "basic", "genius",
+            "iconic", "reservation", "planetary", "momentary", "sacrament", "viral",
+            "lame", "game", "digress", "duress", "instinct", "devolution", "panic", "pain",
+            "gain", "strain", "domain", "remain", "cage", "rock", "luck", "train", "drain",
+            "trash", "stash", "smash", "dose", "pose", "lose", "hose", "most", "dock",
+            "amphibian", "stream", "resilient", "egregious", "fragrance", "romance",
+            "observe", "deserve", "obscure", "extreme", "rain", "grape", "cape", "tape",
+            "dart", "cart", "fair", "rude", "nice", "cruel", "love", "fade", "fast", "cast",
+            "past", "last", "pass", "mass", "fake", "rake", "lake", "rows", "toes", "foes",
+            "fog", "dog", "log", "hog", "lazy", "hazy", "ironic", "moronic", "magic",
+            "logic", "logos", "foggy", "fun", "pun", "fur", "gun", "run", "rug", "tug",
+            "life", "stress", "mess", "mind", "find", "freak", "leak", "race", "lace",
+            "face", "fact", "pact", "gaze", "maze", "lean", "cream", "dream", "steam",
+            "mean", "fry", "cry", "shy", "try", "why", "toys", "boy", "goat", "way",
+            "spider", "emotion", "intense", "defense", "offense", "stranger", "danger",
+            "ranger", "static", "stain", "sky", "stormy", "polite", "police", "glare",
+            "stage", "bubonic", "crate", "cake", "case", "pace", "late", "fate", "mash",
+            "date", "night", "gate", "mate", "cat", "rat", "fat", "mat", "map", "rest",
+            "pest", "nest", "best", "test", "pear", "tear", "gear", "fear", "near", "rear",
+            "dear", "beer", "bean", "bash", "star", "stay", "day", "ray", "cringe", "fringe",
+            "prince", "quince", "robot", "cobra", "snake", "stake", "stand", "grand",
+            "brand", "land", "band", "bear", "rare", "dare", "war", "wild", "waste", "taste",
+            "paste", "grave", "wax", "fax", "boat", "water", "rated", "year", "cash", "crash",
+            "fox", "box", "mop", "man", "tan", "fan", "gin", "girl", "live", "dive", "sting",
+            "smear", "steer", "trade", "made", "glide", "hide", "ride", "fountain",
+            "mountain", "money", "honey", "mad", "fad", "glad", "sad", "bad", "lad", "bid",
+            "bin", "bat", "hat", "win", "wit", "bit", "sit", "lit", "hit", "chance", "stance",
+            "glance", "lord", "word", "loan", "wand", "sand", "wait", "slope", "hate", "fly",
+            "roar", "beat", "feet", "legit", "heat", "neat", "seat", "hollow", "follow",
+            "fellow", "mellow", "beet", "deer", "need", "seed", "bent", "rent", "tent",
+            "went", "feed", "weep", "when", "treat", "cheat", "seal", "device", "mice",
+            "rice", "dice", "regress", "impress", "repress", "brain", "grain", "splash",
+            "main", "rap", "gut", "hut", "nap", "instigate", "distorted", "mug", "hug",
+            "bug", "sage", "mage", "wizard", "lizard", "mouse", "house", "ram", "jam",
+            "say", "may", "hay", "lay", "fantastic", "bombastic", "drape", "propagation",
+            "information", "delegation", "desecration", "superstition", "emancipation",
+            "fame", "dame", "lam", "ham", "join", "coin", "meme", "vain", "vase", "baby",
+            "wary", "many", "dent", "send", "farm", "harm", "warm", "cold", "fold", "bold",
+            "sold", "mold", "moan", "foam", "drone", "long", "gong", "bong", "bone", "lone",
+            "wall", "pearl", "base", "leap", "leaf", "blow", "flow", "glow", "slow", "slot",
+            "hot", "bot", "got", "not", "lot", "prank", "frank", "crank", "lice", "mic",
+            "pic", "trick", "fungus", "lungs", "humus", "rip", "dip", "nip", "sip", "lip",
+            "reformation", "restitution", "infiltrate", "illustrate", "obfuscate", "denigrate",
+            "nut", "rot", "sun", "sin", "son", "moon", "soon", "loon", "foot", "loop", "goon",
+            "lock", "mock", "suck", "buck", "fuck", "funk", "sunk", "rank", "bank", "trans",
+            "swirl", "swift", "stiff", "sniff", "phone", "stone", "tall", "hall", "gall",
+            "ball", "balm", "palm", "erosion", "oration", "fixation", "rotation", "negation",
+            "clash", "brash", "sports", "shorts", "monument", "document", "regiment",
+            "sentient", "west", "loin", "steep", "deep", "sweep", "reef", "beef", "cow", "bow",
+            "low", "sow", "how", "bow", "row", "now", "elation", "mansion", "pension", "passion" };
+        private readonly string symbolsNumbersAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
+                                                       + "0123456789"
+                                                       + " ";
+        private readonly string alphasNumbersAndSpace = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnO"
+                                                      + "oPpQqRrSsTtUuVvWwXxYyZz"
+                                                      + "0123456789"
+                                                      + " ";
+        private readonly string symbolsAndNumbers = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
+                                                  + "0123456789";
+        private readonly string symbolsAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
+                                                + " ";
+        private readonly string symbols = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|";
+        private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+        private readonly string numbers = "0123456789";
+        private readonly int x;
+        private readonly Random rand = new Random();
+        public Game() {
+            x = rand.Next(481);
+            this.MaxNumberOfGuesses = 5;
+            this.CurrentWrongGuesses = 0;
+            this.CurrentRightGuesses = 0;
+            int y = (this.Codeword.Length * 2) - 1;
+            char[] emptyWordWithSpaces = new char[y];
+            for (int z = 0; z < y; z++)
+                if (z % 2 == 0) emptyWordWithSpaces[z] = '_';
+                else emptyWordWithSpaces[z] = ' ';
+            this.CurrentWord = new string(emptyWordWithSpaces);
+            this.CodewordAsArray = new char[this.CurrentWord.Length];
+            int index = 0;
+            for (int i = 0; i < this.CurrentWord.Length; i++)
+                if (i % 2 == 0) {
+                    this.CodewordAsArray[i] = this.Codeword[index];
+                    ++index;
+                } 
+                else this.CodewordAsArray[i] = ' ';
+            this.CodewordWithSpaces = new string(this.CodewordAsArray);
+            this.LttrsAlreadyUsed = new List<char>();
+            this.InputAsChar = ' ';
+            this.WasWrong = false;
+            this.ThereWasAnError = false;
+            this.ItWasHitOrMiss = false;
+        }
+        public string Codeword { get { return codewordOptions[x]; } }
+        public char[] CodewordAsArray { get; }
+        public bool ThereWasAnError { get; set; }
+        public bool ItWasHitOrMiss { get; set; }
+        public string CodewordWithSpaces { get; }
+        public List<char> LttrsAlreadyUsed { get; set; }
+        public string CurrentWord { get; private set; }
+        public int MaxNumberOfGuesses { get; private set; }
+        public int CurrentWrongGuesses { get; private set; }
+        public int CurrentRightGuesses { get; private set; }
+        public char InputAsChar { get; set; }
+        public bool WasWrong { get; set; }
+        public string ErrorAsString { get; set; }
+        public static void Intro() {
+            Console.WriteLine("\n\n\n\n\n");
+            Console.WriteLine("     Can you break the secret codeword");
+            Console.WriteLine("       and stop the alien abduction?");
+            Console.WriteLine("\n\n\n");
+            Console.WriteLine("         hit <Enter> to find out...");          
+            Console.WriteLine("\n\n\n\n");
+            Console.ReadLine();
+        }
+        public void Inform() {
+            if (DidLose()) Console.WriteLine("\n       ~~*~*~  STUFF HAPPENS! ~*~*~~");
+            else if (DidWin()) Console.WriteLine("\n         ~~*~*~  RUN HOME!  ~*~*~~");
+            else if (WasWrong && CurrentWrongGuesses > 0)
+                Console.WriteLine("\n      ~~*~*~  SWING & A MISS!  ~*~*~~");
+            else if (!WasWrong && CurrentRightGuesses > 0) 
+                Console.WriteLine("\n         ~~*~*~  BASE HIT!  ~*~*~~");
+            else Console.WriteLine("\n         ~~*~*~  BATTER UP! ~*~*~~");
+        }
+        public void Display() {
+            Console.WriteLine("\n" + alienCraft.Showcase());
+            Inform();
+            if (!DidWin() && !DidLose()) {
+                int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
+                if (ThereWasAnError) { 
+                    Console.WriteLine(ErrorAsString);
+                    ThereWasAnError = false;
+                } 
+                else switch (guessesRemaining) {
+                    case 1:
+                        Console.WriteLine("        ~~*~ you can only hit! ~*~~"); 
+                        break;
+                    case 2:
+                        Console.WriteLine("     ~~*~ you can only miss once! ~*~~"); 
+                        break;
+                    case 5:
+                        if (CurrentRightGuesses == 0)
+                            Console.WriteLine("    ~~*~  you can miss 4 times max ~*~~");
+                        else Console.WriteLine("      ~~*~ you can miss 4 times  ~*~~");
+                        break;
+                    default:
+                        Console.WriteLine("    ~~*~ you can miss " 
+                                        + (guessesRemaining - 1) + " more times ~*~~");
+                        break;
+                }
+                Console.WriteLine("\n      codeword: " + CurrentWord);
+                Console.Write("      HIT|miss: ");
+                var ordered = LttrsAlreadyUsed.OrderBy(l => l);
+                foreach (char k in ordered)
+                    if (CurrentWord.Contains(k)) 
+                        Console.Write(Convert.ToString(k).ToUpper() + " ");
+                    else Console.Write(k + " ");
+                Console.WriteLine("\n");
+            }
+            else Console.WriteLine("\n\n\n\n");
+        }
+        public void AssignValues(out IEnumerable<char> c1, out IEnumerable<char> c2,
+            out IEnumerable<char> c3, out IEnumerable<char> c4, out IEnumerable<char> c5,
+            out IEnumerable<char> c6, out IEnumerable<char> c7, string  s) {
+            c1 = s.Where(a => symbolsNumbersAndSpace.Contains(a));
+            c2 = s.Where(b => symbolsAndNumbers.Contains(b));
+            c3 = s.Where(c => alphas.Contains(c));
+            c4 = s.Where(d => numbers.Contains(d));
+            c5 = s.Where(e => symbols.Contains(e));
+            c6 = s.Where(f => symbolsAndSpace.Contains(f));
+            c7 = s.Where(g => alphasNumbersAndSpace.Contains(g));
+        }
+        public void Start() {
+        beginning:
+            if (ItWasHitOrMiss) {
+                Console.Write("   try another: ");
+                ItWasHitOrMiss = false;
+            }
+            else Console.Write("  try a letter: ");
+            string input = Console.ReadLine();
+            IEnumerable<char> symNumSpa, symNum, alph, numb, symb, symSpa, alpNumSpa;
+            AssignValues(out symNumSpa, out symNum, out alph, out numb, out symb,
+                          out symSpa, out alpNumSpa, input);
+            if (!String.IsNullOrEmpty(input)) {
+                bool isANumber = int.TryParse(input, out _);
+                if (isANumber) {
+                    if (!symSpa.Any()) ErrorAsString = "        ~~*~ ERROR: no numbers ~*~~";
+                    else ErrorAsString = "   ~~*~ ERROR: no spaces & numbers  ~*~~";
+                    ThereWasAnError = true;
+                    Display();
+                    goto beginning;
+                }
+                else if (symNumSpa.Any()) {
+                    if (!symNum.Any() && !alph.Any())
+                        ErrorAsString = "        ~~*~ ERROR: no spaces  ~*~~";
+                    else if (!alpNumSpa.Any())
+                        ErrorAsString = "        ~~*~ ERROR: no symbols ~*~~";
+                    else if (!alph.Any() && !numb.Any())
+                        ErrorAsString = "   ~~*~ ERROR: no spaces & symbols  ~*~~";
+                    else if (alph.Any()) 
+                        if (!symb.Any() && !numb.Any())
+                            ErrorAsString = "     ~~*~ ERROR: no extra spaces  ~*~~";
+                        else if (numb.Any())
+                            ErrorAsString = "     ~~*~ ERROR: no extra numbers ~*~~";
+                        else ErrorAsString = "     ~~*~ ERROR: no extra symbols ~*~~";
+                    else ErrorAsString = "   ~~*~ ERROR: no numbers & symbols ~*~~";
+                    ThereWasAnError = true;
+                    Display();
+                    goto beginning;
+                }
+                else if (input.Length != 1) {
+                    ErrorAsString = "    ~~*~ ERROR: more than 1 letter ~*~~";
+                    ThereWasAnError = true;
+                    Display();
+                    goto beginning;
+                }
+                else { 
+                    if (input == input.ToUpper()) input = input.ToLower();
+                    if (WasARepeat(input)) goto beginning;
+                    else if (Codeword.Contains(input)) UpdateCurrentWord();
+                    else NextBadScene();
+                    ItWasHitOrMiss = true;
+                }
+            }
+            else {
+                ErrorAsString = "   ~~*~ ERROR: nothing was entered  ~*~~";
+                ThereWasAnError = true;
+                Display();
+                goto beginning;
+            }
+        }
+        public void UpdateCurrentWord() {
+            WasWrong = false;
+            CurrentRightGuesses++;
+            char[] newTry = CurrentWord.ToCharArray();
+            for (int idx = 0; idx < CurrentWord.Length; idx++)
+                if (CodewordAsArray[idx] == InputAsChar) newTry[idx] = InputAsChar;
+            LttrsAlreadyUsed.Add(InputAsChar);
+            CurrentWord = new string(newTry);
+            if (DidWin()) alienCraft.SetFinal();
+        }
+        public void NextBadScene() {
+            WasWrong = true;
+            CurrentWrongGuesses++;
+            LttrsAlreadyUsed.Add(InputAsChar);
+            alienCraft.AddPart();
+        }
+        public bool WasARepeat(string x) {
+            InputAsChar = Convert.ToChar(x);
+            if (LttrsAlreadyUsed.Contains(InputAsChar)) {
+                ErrorAsString = "      ~~*~ ERROR: already in use  ~*~";
+                ThereWasAnError = true;
+                Display();
+                return true;
+            }
+            else return false;
+        }
+        public bool DidLose() => (CurrentWrongGuesses == MaxNumberOfGuesses);
+        public bool DidWin() => (CurrentWord == CodewordWithSpaces);
+    }
+
+    internal class UFO {
+        private readonly string s0 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )
+     '-.,_________,.-'
+          /     \         ,~~~~~~~~~.
+         /   0   \       (" + " \u00A1Auxilio! )\n" +
+@"        /  --|--  \ _____/`~~~~~~~~~'
+       /     |     \
+      /     / \     \    ";
+        private readonly string s1 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )
+     '-.,_________,.-'    ,~~~~~~~~~.
+          /  0  \        (" + " \u00A1Socorro! )\n" +
+@"         / --|-- \ ______/`~~~~~~~~~'
+        /    |    \
+       /    / \    \
+      /             \                      ";
+        private readonly string s2 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )    ,~~~~~~~~.
+     '-.,_________,.-'    /" + " \u00A1R\u00E1pido  \\\n" +
+@"          /--|--\         \  boludo! /
+         /   |   \ _______/`~~~~~~~~'
+        /   / \   \
+       /           \
+      /             \                      ";
+        private readonly string s3 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )    ,~~~~~~~~~.
+     '-.,_________,.-'    /" + " \u00A1La est\u00E1s \\\n" +
+@"          /  |  \         \  cagando! /
+         /  / \  \ _______/`~~~~~~~~~'
+        /         \
+       /           \
+      /             \                      ";
+        private readonly string s4 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )
+     '-.,_________,.-'   ,~~~~~~~~~~~~.
+          / / \ \       (" + " \u00A1Gilipollas! )\n" +
+@"         /       \ _____/`~~~~~~~~~~~~'
+        /         \
+       /           \
+      /             \                      ";
+        private readonly string s5 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )
+     '-.,_________,.-' 
+                   \    ,~~~~~~~~~~~~~.
+                    \__(" + " \u00A1A la mierda! )\n" +
+@"                        `~~~~~~~~~~~~~'
+  
+                                           ";
+        private readonly string s6 =
+                        @"          .-""^""-.
+         /_....._\
+     .-""`         `""-.
+    (  ooo  ooo  ooo  )
+     '-.,_________,.-'
+     
+                                0
+                              --|--
+                                |
+                               / \         ";
+        private readonly string[] ufos;
+        private int stage;
+        public UFO() => ufos = new string[] { s0, s1, s2, s3, s4, s5, s6 };
+        public void AddPart() {
+            stage++;
+            if (stage >= ufos.Length) {
+                Console.WriteLine("staging error");
+                stage = ufos.Length - 1;
+                Console.ReadKey();
+            }
+        }
+        public void SetFinal() => stage = ufos.Length - 1;
+        public string Showcase() => ufos[stage];
+        public override string ToString() => "I'm a UFO object...";
+    }
+}
