@@ -21,7 +21,7 @@ namespace ProjectSpaceman {
                 }
                 g.Display();
         exit:
-                Console.Write("PLAY AGAIN? (y/n): ");
+                Console.Write(" PLAY AGAIN? (y/n): ");
                 string answer = Console.ReadLine();
                 if (!String.IsNullOrEmpty(answer)) {
                     if (answer == answer.ToUpper()) answer = answer.ToLower();
@@ -29,13 +29,13 @@ namespace ProjectSpaceman {
                     else if (answer == "y") StayOn = true;
                     else {
                         g.Display();
-                        Console.Write("need Y or N -- ");
+                        Console.Write(" need Y or N ~*~");
                         goto exit;
                     }
                 }
                 else {
                     g.Display();
-                    Console.Write("NEED y OR n -- ");
+                    Console.Write(" NEED y OR n ~*~");
                     goto exit;
                 }
             } while (StayOn);
@@ -74,7 +74,7 @@ namespace ProjectSpaceman {
             "brand", "land", "band", "bear", "rare", "dare", "war", "wild", "waste", "taste",
             "paste", "grave", "wax", "fax", "boat", "water", "rated", "year", "cash", "crash",
             "fox", "box", "mop", "man", "tan", "fan", "gin", "girl", "live", "dive", "sting",
-            "smear", "steer", "trade", "made", "glide", "hide", "ride", "fountain",
+            "smear", "steer", "trade", "maid", "glide", "hide", "ride", "fountain",
             "mountain", "money", "honey", "mad", "fad", "glad", "sad", "bad", "lad", "bid",
             "bin", "bat", "hat", "win", "wit", "bit", "sit", "lit", "hit", "chance", "stance",
             "glance", "lord", "word", "loan", "wand", "sand", "wait", "slope", "hate", "fly",
@@ -174,7 +174,7 @@ namespace ProjectSpaceman {
             else Console.WriteLine("\n         ~~*~*~  BATTER UP! ~*~*~~");
         }
         public void Display() {
-            Console.WriteLine("\n" + alienCraft.Showcase());
+            Console.WriteLine(alienCraft.Showcase());
             Inform();
             if (!DidWin() && !DidLose()) {
                 int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
@@ -311,83 +311,85 @@ namespace ProjectSpaceman {
     }
 
     internal class UFO {
-        private readonly string s0 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )
-     '-.,_________,.-'
-          /     \         ,~~~~~~~~~.
-         /   0   \       (" + " \u00A1Auxilio! )\n" +
-@"        /  --|--  \ _____/`~~~~~~~~~'
-       /     |     \
-      /     / \     \    ";
-        private readonly string s1 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )
-     '-.,_________,.-'    ,~~~~~~~~~.
-          /  0  \        (" + " \u00A1Socorro! )\n" +
-@"         / --|-- \ ______/`~~~~~~~~~'
-        /    |    \
-       /    / \    \
-      /             \                      ";
-        private readonly string s2 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )    ,~~~~~~~~.
-     '-.,_________,.-'    /" + " \u00A1R\u00E1pido  \\\n" +
-@"          /--|--\         \  boludo! /
-         /   |   \ _______/`~~~~~~~~'
-        /   / \   \
-       /           \
-      /             \                      ";
-        private readonly string s3 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )    ,~~~~~~~~~.
-     '-.,_________,.-'    /" + " \u00A1La est\u00E1s \\\n" +
-@"          /  |  \         \  cagando! /
-         /  / \  \ _______/`~~~~~~~~~'
-        /         \
-       /           \
-      /             \                      ";
-        private readonly string s4 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )
-     '-.,_________,.-'   ,~~~~~~~~~~~~.
-          / / \ \       (" + " \u00A1Gilipollas! )\n" +
-@"         /       \ _____/`~~~~~~~~~~~~'
-        /         \
-       /           \
-      /             \                      ";
+        private readonly string s0 = @"   
+            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'
+           |       |     ,---------.
+           |   0   |    (" + " \u00A1Auxilio! )\n" +
+@"           | --|-- |____/`---------'
+           |   |   |
+        ___|__/_\__|_______________";
+        private readonly string s1 = @"   
+            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'  
+           |   0   |     ,---------.
+           | --|-- |    (" + " \u00A1Socorro! )\n" +
+@"           |   |   |____/`---------'
+           |  / \  |  
+        ___________________________";
+        private readonly string s2 = @"   
+            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )    
+       '-.,_________,.-'  ,--------.
+           | --|-- | \___/" + " \u00A1R\u00E1pido  \\\n" +
+@"           |   |   |     \  boludo! /
+           |  / \  |      `--------'
+                      
+        ___________________________";
+        private readonly string s3 = @"   
+            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  ) 
+       '-.,_________,.-' ,---------.
+           |   |   | \__/" + " \u00A1La est\u00E1s \\\n" +
+@"           |  / \  |    \  cagando! /
+                         `---------'
+                  
+        ___________________________";
+        private readonly string s4 = @"   
+            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'    
+           |  / \  |  ,------------.
+                \____(" + " \u00A1Gilipollas! )\n" +
+@"                      `------------'
+                       
+        ___________________________";
         private readonly string s5 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )
-     '-.,_________,.-' 
-                   \    ,~~~~~~~~~~~~~.
-                    \__(" + " \u00A1A la mierda! )\n" +
-@"                        `~~~~~~~~~~~~~'
-  
-                                           ";
+@"            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'  
+                 \___,-------------.
+                    (" + " \u00A1A la mierda! )\n" +
+@"                     `-------------'
+                    
+                      
+        ___________________________";
         private readonly string s6 =
-                        @"          .-""^""-.
-         /_....._\
-     .-""`         `""-.
-    (  ooo  ooo  ooo  )
-     '-.,_________,.-'
+@"            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'
+
      
-                                0
-                              --|--
-                                |
-                               / \         ";
+                             0
+                           --|--
+                             |
+        ____________________/_\____";
         private readonly string[] ufos;
         private int stage;
         public UFO() => ufos = new string[] { s0, s1, s2, s3, s4, s5, s6 };
