@@ -10,7 +10,7 @@ namespace ProjectSpaceman {
          * humans using tractor beams. Players must crack the codeword 
          * to stop the abduction!*/
         static void Main(string[] _) {
-            Console.SetWindowSize(44, 19);
+            Console.SetWindowSize(44, 20);
             bool StayOn;
             Game.Intro();
             do {
@@ -44,7 +44,7 @@ namespace ProjectSpaceman {
 
     internal class Game {
         public UFO alienCraft = new UFO();
-        private readonly string[] codewordOptions = { 
+        private readonly string[] codewordOptions = {
             "apocalypse", "scream", "tiger", "reptilian", "espionage", "extravagant",
             "apathy", "generous", "rose", "fascination", "revolution", "artificial",
             "strife", "discrepancy", "ordinary", "rage", "devotion", "imagination",
@@ -99,7 +99,17 @@ namespace ProjectSpaceman {
             "ball", "balm", "palm", "erosion", "oration", "fixation", "rotation", "negation",
             "clash", "brash", "sports", "shorts", "monument", "document", "regiment",
             "sentient", "west", "loin", "steep", "deep", "sweep", "reef", "beef", "cow", "bow",
-            "low", "sow", "how", "tow", "row", "now", "elation", "mansion", "pension", "passion" };
+            "low", "sow", "how", "tow", "row", "now", "elation", "mansion", "pension", "passion",
+            "tone", "zone", "lime", "like", "line", "light", "fight", "might", "right", "sight",
+            "strength", "hold", "gold", "flat", "seek", "reek", "seen", "weed", "geek", "meek",
+            "leek", "work", "warp", "wane", "tension", "nose", "vow", "fit", "slang", "spank",
+            "rust", "dust", "must", "lust", "bust", "trunk", "trump", "trust", "truck", "thick",
+            "leverage", "beverage", "book", "hook", "rook", "took", "look", "nook", "gook",
+            "cook", "lend", "bend", "tend", "mend", "lens", "zen", "hen", "den", "dot", "yen",
+            "cost", "lost", "host", "deal", "feel", "reel", "stuck", "steel", "wheel", "whiff",
+            "knife", "white", "black", "crack", "stack", "smack", "shack", "slack", "flash",
+            "harsh", "marsh", "first", "burst", "nurse", "curse", "purse", "feral", "formal",
+            "normal", "nordic", "gnostic", "radiation", "humiliation", "slave" };
         private readonly string symbolsNumbersAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
                                                        + "0123456789"
                                                        + " ";
@@ -117,7 +127,7 @@ namespace ProjectSpaceman {
         private readonly int x;
         private readonly Random rand = new Random();
         public Game() {
-            x = rand.Next(481);
+            x = rand.Next(575);
             this.MaxNumberOfGuesses = 5;
             this.CurrentWrongGuesses = 0;
             this.CurrentRightGuesses = 0;
@@ -128,11 +138,11 @@ namespace ProjectSpaceman {
                 else emptyWordWithSpaces[z] = ' ';
             this.CurrentWord = new string(emptyWordWithSpaces);
             this.CodewordAsArray = new char[this.CurrentWord.Length];
-            int index = 0;
+            int superIndex = 0;
             for (int i = 0; i < this.CurrentWord.Length; i++)
                 if (i % 2 == 0) {
-                    this.CodewordAsArray[i] = this.Codeword[index];
-                    ++index;
+                    this.CodewordAsArray[i] = this.Codeword[superIndex];
+                    ++superIndex;
                 } 
                 else this.CodewordAsArray[i] = ' ';
             this.CodewordWithSpaces = new string(this.CodewordAsArray);
@@ -165,16 +175,16 @@ namespace ProjectSpaceman {
             Console.ReadLine();
         }
         public void Inform() {
-            if (DidLose()) Console.WriteLine("\n       ~~*~*~  STUFF HAPPENS! ~*~*~~");
-            else if (DidWin()) Console.WriteLine("\n         ~~*~*~  RUN HOME!  ~*~*~~");
+            if (DidLose()) Console.WriteLine("       ~~*~*~  STUFF HAPPENS! ~*~*~~");
+            else if (DidWin()) Console.WriteLine("         ~~*~*~  RUN HOME!  ~*~*~~");
             else if (WasWrong && CurrentWrongGuesses > 0)
-                Console.WriteLine("\n      ~~*~*~  SWING & A MISS!  ~*~*~~");
+                Console.WriteLine("      ~~*~*~  SWING & A MISS!  ~*~*~~");
             else if (!WasWrong && CurrentRightGuesses > 0) 
-                Console.WriteLine("\n         ~~*~*~  BASE HIT!  ~*~*~~");
-            else Console.WriteLine("\n         ~~*~*~  BATTER UP! ~*~*~~");
+                Console.WriteLine("         ~~*~*~  BASE HIT!  ~*~*~~");
+            else Console.WriteLine("         ~~*~*~  BATTER UP! ~*~*~~");
         }
         public void Display() {
-            Console.WriteLine(alienCraft.Showcase());
+            Console.WriteLine("\n\n\n" + alienCraft.Showcase());
             Inform();
             if (!DidWin() && !DidLose()) {
                 int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
@@ -241,7 +251,7 @@ namespace ProjectSpaceman {
                     Display();
                     goto beginning;
                 }
-                else if (symNumSpa.Any()) {
+                else if (symNumSpa.Any()) { 
                     if (!symNum.Any() && !alph.Any())
                         ErrorAsString = "        ~~*~ ERROR: no spaces  ~*~~";
                     else if (!alpNumSpa.Any())
@@ -311,7 +321,10 @@ namespace ProjectSpaceman {
     }
 
     internal class UFO {
-        private readonly string s0 = @"   
+        private readonly string s0 = @"
+
+
+
             .-""^""-.
            /_....._\
        .-""`         `""-.
@@ -322,7 +335,10 @@ namespace ProjectSpaceman {
 @"           | --|-- |____/`---------'
            |   |   |
         ___|__/_\__|_______________";
-        private readonly string s1 = @"   
+        private readonly string s1 = @"
+
+
+
             .-""^""-.
            /_....._\
        .-""`         `""-.
@@ -332,19 +348,23 @@ namespace ProjectSpaceman {
            | --|-- |    (" + " \u00A1Socorro! )\n" +
 @"           |   |   |____/`---------'
            |  / \  |  
-        ___________________________";
-        private readonly string s2 = @"   
+        ___|_______|_______________";
+        private readonly string s2 = @"
+
+
             .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )    
        '-.,_________,.-'  ,--------.
-           | --|-- | \___/" + " \u00A1R\u00E1pido  \\\n" +
+           | --|-- |_____/" + " \u00A1R\u00E1pido  \\\n" +
 @"           |   |   |     \  boludo! /
            |  / \  |      `--------'
-                      
+           |       |    
+                  
         ___________________________";
-        private readonly string s3 = @"   
+        private readonly string s3 = @"
+
             .-""^""-.
            /_....._\
        .-""`         `""-.
@@ -352,31 +372,39 @@ namespace ProjectSpaceman {
        '-.,_________,.-' ,---------.
            |   |   | \__/" + " \u00A1La est\u00E1s \\\n" +
 @"           |  / \  |    \  cagando! /
-                         `---------'
+           |       |     `---------'
                   
+                  
+
         ___________________________";
-        private readonly string s4 = @"   
+        private readonly string s4 = @"
             .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
        '-.,_________,.-'    
-           |  / \  |  ,------------.
-                \____(" + " \u00A1Gilipollas! )\n" +
+           |  / \  | \,------------.
+           |       | (" + " \u00A1Gilipollas! )\n" +
 @"                      `------------'
-                       
+                  
+                  
+
+
         ___________________________";
         private readonly string s5 =
 @"            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
-       '-.,_________,.-'  
-                 \___,-------------.
-                    (" + " \u00A1A la mierda! )\n" +
-@"                     `-------------'
-                    
-                      
+       '-.,_________,.-'
+           |       | \,-------------.
+                     (" + " \u00A1Con cojones! )\n" +
+@"                      `-------------'
+                  
+                  
+
+
+
         ___________________________";
         private readonly string s6 =
 @"            .-""^""-.
@@ -384,6 +412,9 @@ namespace ProjectSpaceman {
        .-""`         `""-.
       (  ooo  ooo  ooo  )
        '-.,_________,.-'
+                  
+                  
+
 
      
                              0
