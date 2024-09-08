@@ -4,46 +4,86 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectSpaceman {
-    internal class Program {
+namespace ProjectSpaceman
+{
+    internal class Program
+    {
         /*Invaders from outer space have arrived and are abducting 
          * humans using tractor beams. Players must crack the codeword 
          * to stop the abduction!*/
-        static void Main(string[] _) {
-            Console.SetWindowSize(44, 20);
+        static void Main(string[] _)
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Clear();
+
             bool StayOn;
+
             Game.Intro();
-            do {
+
+            do
+            {
                 Game g = new Game();
-                while (!g.DidWin() && !g.DidLose()) { 
-                    g.Display(); 
-                    g.Start(); 
+
+                while (!g.DidWin() && !g.DidLose())
+                {
+                    g.Display();
+                    g.Start();
                 }
+
                 g.Display();
-        exit:
+
+            exit:
+
+                if (Console.ForegroundColor != ConsoleColor.Magenta)
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+
                 Console.Write(" PLAY AGAIN? (y/n): ");
+
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+
                 string answer = Console.ReadLine();
-                if (!String.IsNullOrEmpty(answer)) {
-                    if (answer == answer.ToUpper()) answer = answer.ToLower();
-                    if (answer == "n") StayOn = false;
-                    else if (answer == "y") StayOn = true;
-                    else {
+
+                if (!String.IsNullOrEmpty(answer))
+                {
+                    if (answer == answer.ToUpper()) 
+                        answer = answer.ToLower();
+                    if (answer == "n")
+                        StayOn = false;
+                    else if (answer == "y")
+                        StayOn = true;
+                    else
+                    {
                         g.Display();
+                        Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.Write(" need Y or N ~*~");
                         goto exit;
                     }
                 }
-                else {
+                else
+                {
                     g.Display();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write(" NEED y OR n ~*~");
                     goto exit;
                 }
+
             } while (StayOn);
+
+            Console.ResetColor();
         }
     }
-
-    internal class Game {
+	
+    internal class Game
+    {
         public UFO alienCraft = new UFO();
+
+        private readonly string symbolsNumbersAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\| 0123456789";
+        private readonly string alphasNumbersAndSpace = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 0123456789";
+        private readonly string symbolsAndNumbers = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|0123456789";
+        private readonly string symbolsAndSpace = "`~!@#$%^&*()-_=+,.< >/?;:'\"[]{}\\|";
+        private readonly string symbols = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|";
+        private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+        private readonly string numbers = "0123456789";
         private readonly string[] codewordOptions = {
             "apocalypse", "scream", "tiger", "reptilian", "espionage", "extravagant",
             "apathy", "generous", "rose", "fascination", "revolution", "artificial",
@@ -109,28 +149,36 @@ namespace ProjectSpaceman {
             "cost", "lost", "host", "deal", "feel", "reel", "stuck", "steel", "wheel", "whiff",
             "knife", "white", "black", "crack", "stack", "smack", "shack", "slack", "flash",
             "harsh", "marsh", "first", "burst", "nurse", "curse", "purse", "feral", "formal",
-            "normal", "nordic", "gnostic", "radiation", "humiliation", "slave" };
-        private readonly string symbolsNumbersAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
-                                                       + "0123456789"
-                                                       + " ";
-        private readonly string alphasNumbersAndSpace = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnO"
-                                                      + "oPpQqRrSsTtUuVvWwXxYyZz"
-                                                      + "0123456789"
-                                                      + " ";
-        private readonly string symbolsAndNumbers = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
-                                                  + "0123456789";
-        private readonly string symbolsAndSpace = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|"
-                                                + " ";
-        private readonly string symbols = "`~!@#$%^&*()-_=+,.<>/?;:'\"[]{}\\|";
-        private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-        private readonly string numbers = "0123456789";
+            "normal", "nordic", "gnostic", "radiation", "humiliation", "slave", "crane",
+            "trace", "blaze", "flame", "crave", "grade", "grass", "brass", "brave", "mile",
+            "mine", "mike", "mist", "gist", "list", "food", "mood", "hood", "good", "doom",
+            "root", "loot", "loom", "zoom", "hoot", "boot", "boom", "bowl", "howl", "soul",
+            "amazon", "just", "avalon", "rate", "bait", "reed", "space", "teen", "kill", "will",
+            "fill", "bill", "mill", "hill", "nail", "rail", "wail", "sail", "bail", "dean",
+            "deaf", "quit", "spit", "slit", "slip", "slap", "keen", "peek", "peak", "sick",
+            "wick", "lick", "beak", "queen", "queer", "seem", "seam", "zest", "part", "mart",
+            "hard", "pot", "cot", "spear", "shear", "swear", "surge", "purge", "merge", "forge",
+            "farce", "large", "lair", "liar", "tail", "gait", "fire", "wire", "pire", "tire",
+            "tier", "least", "beast", "lease", "feast", "east", "next", "peel", "real", "heal",
+            "pill", "verge", "blame", "blast", "bloom", "groom", "shirt", "flirt", "smart",
+            "sneer", "clear", "sheer", "swim", "suit", "pool", "tool", "gust", "swing", "spring",
+            "blare", "blade", "clean", "slide", "pride", "tribe", "pipe", "pine", "pint", "tint",
+            "wine", "dine", "fine", "hint", "hind", "side", "wind", "dire", "high", "nigh", "sigh",
+            "drop", "crop", "stop", "flop", "crow", "grow", "spot", "shot", "prop", "coat",
+            "goal", "grip", "flip", "ship", "ruin", "skip", "drip", "neon", "lion", "crime",
+            "spine", "shine", "swine", "slime", "poor", "gone", "done", "lane", "bane", "cane", "mane", "pane", "door", "sane", "pick", "sock", "hock" };
+
         private readonly int x;
+
         private readonly Random rand = new Random();
-        public Game() {
-            x = rand.Next(575);
+        public Game()
+        {
+            x = rand.Next(752);
+
             this.MaxNumberOfGuesses = 5;
             this.CurrentWrongGuesses = 0;
             this.CurrentRightGuesses = 0;
+
             int y = (this.Codeword.Length * 2) - 1;
             char[] emptyWordWithSpaces = new char[y];
             for (int z = 0; z < y; z++)
@@ -138,14 +186,17 @@ namespace ProjectSpaceman {
                 else emptyWordWithSpaces[z] = ' ';
             this.CurrentWord = new string(emptyWordWithSpaces);
             this.CodewordAsArray = new char[this.CurrentWord.Length];
+
             int superIndex = 0;
             for (int i = 0; i < this.CurrentWord.Length; i++)
-                if (i % 2 == 0) {
+                if (i % 2 == 0)
+                {
                     this.CodewordAsArray[i] = this.Codeword[superIndex];
                     ++superIndex;
-                } 
+                }
                 else this.CodewordAsArray[i] = ' ';
             this.CodewordWithSpaces = new string(this.CodewordAsArray);
+
             this.LttrsAlreadyUsed = new List<char>();
             this.InputAsChar = ' ';
             this.WasWrong = false;
@@ -165,64 +216,86 @@ namespace ProjectSpaceman {
         public char InputAsChar { get; set; }
         public bool WasWrong { get; set; }
         public string ErrorAsString { get; set; }
-        public static void Intro() {
+        public static void Intro()
+        {
             Console.WriteLine("\n\n\n\n\n");
-            Console.WriteLine("     Can you break the secret codeword");
-            Console.WriteLine("       and stop the alien abduction?");
-            Console.WriteLine("\n\n\n");
-            Console.WriteLine("         hit <Enter> to find out...");          
-            Console.WriteLine("\n\n\n\n");
-            Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("     Guess the codeword to stop the abduction!\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("   Turn Ease of Access/Color filters on, select");
+            Console.WriteLine("    inverted, and maximize panel for best view.\n");
+            Console.Write("            Press any key to continue ...");
+            Console.ReadKey();
         }
-        public void Inform() {
+        public void Inform()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             if (DidLose()) Console.WriteLine("       ~~*~*~  STUFF HAPPENS! ~*~*~~");
             else if (DidWin()) Console.WriteLine("         ~~*~*~  RUN HOME!  ~*~*~~");
             else if (WasWrong && CurrentWrongGuesses > 0)
                 Console.WriteLine("      ~~*~*~  SWING & A MISS!  ~*~*~~");
-            else if (!WasWrong && CurrentRightGuesses > 0) 
+            else if (!WasWrong && CurrentRightGuesses > 0)
                 Console.WriteLine("         ~~*~*~  BASE HIT!  ~*~*~~");
-            else Console.WriteLine("         ~~*~*~  BATTER UP! ~*~*~~");
+            else Console.WriteLine("          ~~*~*~ BATTER UP! ~*~*~~");
         }
-        public void Display() {
+        public void Display()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\n\n" + alienCraft.Showcase());
             Inform();
-            if (!DidWin() && !DidLose()) {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            if (!DidWin() && !DidLose())
+            {
                 int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
-                if (ThereWasAnError) { 
+                if (ThereWasAnError)
+                {
                     Console.WriteLine(ErrorAsString);
                     ThereWasAnError = false;
-                } 
-                else switch (guessesRemaining) {
-                    case 1:
-                        Console.WriteLine("        ~~*~ you can only hit! ~*~~"); 
-                        break;
-                    case 2:
-                        Console.WriteLine("     ~~*~ you can only miss once! ~*~~"); 
-                        break;
-                    case 5:
-                        if (CurrentRightGuesses == 0)
-                            Console.WriteLine("    ~~*~  you can miss 4 times max ~*~~");
-                        else Console.WriteLine("      ~~*~ you can miss 4 times  ~*~~");
-                        break;
-                    default:
-                        Console.WriteLine("    ~~*~ you can miss " 
-                                        + (guessesRemaining - 1) + " more times ~*~~");
-                        break;
                 }
-                Console.WriteLine("\n      codeword: " + CurrentWord);
+                else switch (guessesRemaining)
+                    {
+                        case 1:
+                            Console.WriteLine("    ~~*~ you're allowed hits only! ~*~~");
+                            break;
+                        case 2:
+                            Console.WriteLine("     ~~*~ you can only miss once! ~*~~");
+                            break;
+                        case 5:
+                            if (CurrentRightGuesses == 0)
+                                Console.WriteLine("   ~~*~ you're allowed 4 misses max ~*~~");
+                            else Console.WriteLine("      ~~*~  you can miss 4 times ~*~~");
+                            break;
+                        default:
+                            Console.WriteLine("    ~~*~ you can miss "
+                                            + (guessesRemaining - 1) + " more times ~*~~");
+                            break;
+                    }
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("\n      codeword: ");
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine(CurrentWord);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("      HIT|miss: ");
                 var ordered = LttrsAlreadyUsed.OrderBy(l => l);
                 foreach (char k in ordered)
-                    if (CurrentWord.Contains(k)) 
+                    if (CurrentWord.Contains(k))
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.Write(Convert.ToString(k).ToUpper() + " ");
-                    else Console.Write(k + " ");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(k + " ");
+                    }
                 Console.WriteLine("\n");
             }
             else Console.WriteLine("\n\n\n\n");
         }
         public void AssignValues(out IEnumerable<char> c1, out IEnumerable<char> c2,
             out IEnumerable<char> c3, out IEnumerable<char> c4, out IEnumerable<char> c5,
-            out IEnumerable<char> c6, out IEnumerable<char> c7, string  s) {
+            out IEnumerable<char> c6, out IEnumerable<char> c7, string s)
+        {
             c1 = s.Where(a => symbolsNumbersAndSpace.Contains(a));
             c2 = s.Where(b => symbolsAndNumbers.Contains(b));
             c3 = s.Where(c => alphas.Contains(c));
@@ -231,34 +304,41 @@ namespace ProjectSpaceman {
             c6 = s.Where(f => symbolsAndSpace.Contains(f));
             c7 = s.Where(g => alphasNumbersAndSpace.Contains(g));
         }
-        public void Start() {
+        public void Start()
+        {
         beginning:
-            if (ItWasHitOrMiss) {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            if (ItWasHitOrMiss)
+            {
                 Console.Write("   try another: ");
                 ItWasHitOrMiss = false;
             }
             else Console.Write("  try a letter: ");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             string input = Console.ReadLine();
             IEnumerable<char> symNumSpa, symNum, alph, numb, symb, symSpa, alpNumSpa;
             AssignValues(out symNumSpa, out symNum, out alph, out numb, out symb,
                           out symSpa, out alpNumSpa, input);
-            if (!String.IsNullOrEmpty(input)) {
+            if (!String.IsNullOrEmpty(input))
+            {
                 bool isANumber = int.TryParse(input, out _);
-                if (isANumber) {
+                if (isANumber)
+                {
                     if (!symSpa.Any()) ErrorAsString = "        ~~*~ ERROR: no numbers ~*~~";
                     else ErrorAsString = "   ~~*~ ERROR: no spaces & numbers  ~*~~";
                     ThereWasAnError = true;
                     Display();
                     goto beginning;
                 }
-                else if (symNumSpa.Any()) { 
+                else if (symNumSpa.Any())
+                {
                     if (!symNum.Any() && !alph.Any())
                         ErrorAsString = "        ~~*~ ERROR: no spaces  ~*~~";
                     else if (!alpNumSpa.Any())
                         ErrorAsString = "        ~~*~ ERROR: no symbols ~*~~";
                     else if (!alph.Any() && !numb.Any())
                         ErrorAsString = "   ~~*~ ERROR: no spaces & symbols  ~*~~";
-                    else if (alph.Any()) 
+                    else if (alph.Any())
                         if (!symb.Any() && !numb.Any())
                             ErrorAsString = "     ~~*~ ERROR: no extra spaces  ~*~~";
                         else if (numb.Any())
@@ -269,28 +349,33 @@ namespace ProjectSpaceman {
                     Display();
                     goto beginning;
                 }
-                else if (input.Length != 1) {
+                else if (input.Length != 1)
+                {
                     ErrorAsString = "    ~~*~ ERROR: more than 1 letter ~*~~";
                     ThereWasAnError = true;
                     Display();
                     goto beginning;
                 }
-                else { 
-                    if (input == input.ToUpper()) input = input.ToLower();
+                else
+                {
+                    if (input == input.ToUpper()) 
+                        input = input.ToLower();
                     if (WasARepeat(input)) goto beginning;
                     else if (Codeword.Contains(input)) UpdateCurrentWord();
                     else NextBadScene();
                     ItWasHitOrMiss = true;
                 }
             }
-            else {
+            else
+            {
                 ErrorAsString = "   ~~*~ ERROR: nothing was entered  ~*~~";
                 ThereWasAnError = true;
                 Display();
                 goto beginning;
             }
         }
-        public void UpdateCurrentWord() {
+        public void UpdateCurrentWord()
+        {
             WasWrong = false;
             CurrentRightGuesses++;
             char[] newTry = CurrentWord.ToCharArray();
@@ -300,15 +385,18 @@ namespace ProjectSpaceman {
             CurrentWord = new string(newTry);
             if (DidWin()) alienCraft.SetFinal();
         }
-        public void NextBadScene() {
+        public void NextBadScene()
+        {
             WasWrong = true;
             CurrentWrongGuesses++;
             LttrsAlreadyUsed.Add(InputAsChar);
             alienCraft.AddPart();
         }
-        public bool WasARepeat(string x) {
+        public bool WasARepeat(string x)
+        {
             InputAsChar = Convert.ToChar(x);
-            if (LttrsAlreadyUsed.Contains(InputAsChar)) {
+            if (LttrsAlreadyUsed.Contains(InputAsChar))
+            {
                 ErrorAsString = "      ~~*~ ERROR: already in use  ~*~";
                 ThereWasAnError = true;
                 Display();
@@ -320,8 +408,13 @@ namespace ProjectSpaceman {
         public bool DidWin() => (CurrentWord == CodewordWithSpaces);
     }
 
-    internal class UFO {
+    internal class UFO
+    {
         private readonly string s0 = @"
+
+
+
+
 
 
 
@@ -330,12 +423,16 @@ namespace ProjectSpaceman {
        .-""`         `""-.
       (  ooo  ooo  ooo  )
        '-.,_________,.-'
-           |       |     ,---------.
-           |   0   |    (" + " \u00A1Auxilio! )\n" +
-@"           | --|-- |____/`---------'
-           |   |   |
-        ___|__/_\__|_______________";
+           |       |
+           |   0   |     ,---------.
+           | --|-- |____(" + " \u00A1Auxilio! )\n" +
+@"           |   |   |     `---------'
+          _|__/_\__|_                ";
         private readonly string s1 = @"
+
+
+
+
 
 
 
@@ -345,69 +442,87 @@ namespace ProjectSpaceman {
       (  ooo  ooo  ooo  )
        '-.,_________,.-'  
            |   0   |     ,---------.
-           | --|-- |    (" + " \u00A1Socorro! )\n" +
-@"           |   |   |____/`---------'
+           | --|-- |____(" + " \u00A1Socorro! )\n" +
+@"           |   |   |     `---------'
            |  / \  |  
-        ___|_______|_______________";
+          _|_______|_                ";
         private readonly string s2 = @"
+
+
+
+
 
 
             .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )    
-       '-.,_________,.-'  ,--------.
-           | --|-- |_____/" + " \u00A1R\u00E1pido  \\\n" +
-@"           |   |   |     \  boludo! /
-           |  / \  |      `--------'
-           |       |    
-                  
-        ___________________________";
+       '-.,_________,.-'
+           | --|-- |      ,--------.
+           |   |   |_____/" + " \u00A1R\u00E1pido  \\\n" +
+@"           |  / \  |     \  boludo! /
+           |       |      `--------'          
+
+                                     ";
         private readonly string s3 = @"
+
+
+
+
 
             .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  ) 
        '-.,_________,.-' ,---------.
-           |   |   | \__/" + " \u00A1La est\u00E1s \\\n" +
+           |   |   |____/" + " \u00A1La est\u00E1s \\\n" +
 @"           |  / \  |    \  cagando! /
            |       |     `---------'
                   
-                  
+                
 
-        ___________________________";
+                                     ";
         private readonly string s4 = @"
+
+
+
+
             .-""^""-.
            /_....._\
        .-""`         `""-.
-      (  ooo  ooo  ooo  )
-       '-.,_________,.-'    
-           |  / \  | \,------------.
-           |       | (" + " \u00A1Gilipollas! )\n" +
+      (  ooo  ooo  ooo  ) 
+       '-.,_________,.-'      
+           |  / \  |        
+           |    \  |  ,------------. 
+                 \___(" + " \u00A1Gilipollas! )\n" +
 @"                      `------------'
-                  
-                  
+                                    
 
 
-        ___________________________";
-        private readonly string s5 =
-@"            .-""^""-.
-           /_....._\
-       .-""`         `""-.
-      (  ooo  ooo  ooo  )
-       '-.,_________,.-'
-           |       | \,-------------.
-                     (" + " \u00A1Con cojones! )\n" +
-@"                      `-------------'
-                  
-                  
+                                     ";
+        private readonly string s5 = @"
 
 
 
-        ___________________________";
-        private readonly string s6 =
-@"            .-""^""-.
+            .-""^""-.
+           /_..0.._\ -------+
+       .-""`         `""-.    | 
+      (  ooo  ooo  ooo  )   |
+       '-.,_________,.-'    |
+           |       |     ,--+------.                     
+                        /" + " \u00A1No se ve \\\n" +
+@"                        \   curva!  /
+                         `---------'
+
+
+
+
+                                     ";
+        private readonly string s6 = @"
+
+
+
+            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
@@ -420,13 +535,15 @@ namespace ProjectSpaceman {
                              0
                            --|--
                              |
-        ____________________/_\____";
+                          __/_\__  ";
         private readonly string[] ufos;
         private int stage;
         public UFO() => ufos = new string[] { s0, s1, s2, s3, s4, s5, s6 };
-        public void AddPart() {
+        public void AddPart()
+        {
             stage++;
-            if (stage >= ufos.Length) {
+            if (stage >= ufos.Length)
+            {
                 Console.WriteLine("staging error");
                 stage = ufos.Length - 1;
                 Console.ReadKey();
