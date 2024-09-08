@@ -166,7 +166,8 @@ namespace ProjectSpaceman
             "wine", "dine", "fine", "hint", "hind", "side", "wind", "dire", "high", "nigh", "sigh",
             "drop", "crop", "stop", "flop", "crow", "grow", "spot", "shot", "prop", "coat",
             "goal", "grip", "flip", "ship", "ruin", "skip", "drip", "neon", "lion", "crime",
-            "spine", "shine", "swine", "slime", "poor", "gone", "done", "lane", "bane", "cane", "mane", "pane", "door", "sane", "pick", "sock", "hock" };
+            "spine", "shine", "swine", "slime", "poor", "gone", "done", "lane", "bane", "cane",
+            "mane", "pane", "door", "sane", "pick", "sock", "hock" };
 
         private readonly int x;
 
@@ -182,19 +183,28 @@ namespace ProjectSpaceman
             int y = (this.Codeword.Length * 2) - 1;
             char[] emptyWordWithSpaces = new char[y];
             for (int z = 0; z < y; z++)
-                if (z % 2 == 0) emptyWordWithSpaces[z] = '_';
-                else emptyWordWithSpaces[z] = ' ';
+            {
+                if (z % 2 == 0)
+                    emptyWordWithSpaces[z] = '_';
+                else
+                    emptyWordWithSpaces[z] = ' ';
+            }
             this.CurrentWord = new string(emptyWordWithSpaces);
             this.CodewordAsArray = new char[this.CurrentWord.Length];
 
             int superIndex = 0;
             for (int i = 0; i < this.CurrentWord.Length; i++)
+            {
                 if (i % 2 == 0)
                 {
                     this.CodewordAsArray[i] = this.Codeword[superIndex];
                     ++superIndex;
                 }
-                else this.CodewordAsArray[i] = ' ';
+                else
+                {
+                    this.CodewordAsArray[i] = ' ';
+                }
+            }
             this.CodewordWithSpaces = new string(this.CodewordAsArray);
 
             this.LttrsAlreadyUsed = new List<char>();
@@ -218,7 +228,7 @@ namespace ProjectSpaceman
         public string ErrorAsString { get; set; }
         public static void Intro()
         {
-            Console.WriteLine("\n\n\n\n\n");
+            // Console.WriteLine("\n\n\n\n\n");
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("     Guess the codeword to stop the abduction!\n");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -230,13 +240,16 @@ namespace ProjectSpaceman
         public void Inform()
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            if (DidLose()) Console.WriteLine("       ~~*~*~  STUFF HAPPENS! ~*~*~~");
-            else if (DidWin()) Console.WriteLine("         ~~*~*~  RUN HOME!  ~*~*~~");
+            if (DidLose()) 
+                Console.WriteLine("       ~~*~*~  STUFF HAPPENS! ~*~*~~");
+            else if (DidWin()) 
+                Console.WriteLine("         ~~*~*~  RUN HOME!  ~*~*~~");
             else if (WasWrong && CurrentWrongGuesses > 0)
                 Console.WriteLine("      ~~*~*~  SWING & A MISS!  ~*~*~~");
             else if (!WasWrong && CurrentRightGuesses > 0)
                 Console.WriteLine("         ~~*~*~  BASE HIT!  ~*~*~~");
-            else Console.WriteLine("          ~~*~*~ BATTER UP! ~*~*~~");
+            else 
+                Console.WriteLine("          ~~*~*~ BATTER UP! ~*~*~~");
         }
         public void Display()
         {
@@ -252,7 +265,9 @@ namespace ProjectSpaceman
                     Console.WriteLine(ErrorAsString);
                     ThereWasAnError = false;
                 }
-                else switch (guessesRemaining)
+                else
+                {
+                    switch (guessesRemaining)
                     {
                         case 1:
                             Console.WriteLine("    ~~*~ you're allowed hits only! ~*~~");
@@ -270,14 +285,18 @@ namespace ProjectSpaceman
                                             + (guessesRemaining - 1) + " more times ~*~~");
                             break;
                     }
+                }
+
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("\n      codeword: ");
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine(CurrentWord);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("      HIT|miss: ");
+
                 var ordered = LttrsAlreadyUsed.OrderBy(l => l);
                 foreach (char k in ordered)
+                {
                     if (CurrentWord.Contains(k))
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -288,9 +307,13 @@ namespace ProjectSpaceman
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(k + " ");
                     }
+                }
                 Console.WriteLine("\n");
             }
-            else Console.WriteLine("\n\n\n\n");
+            else
+            { 
+                Console.WriteLine("\n\n\n\n");
+            }
         }
         public void AssignValues(out IEnumerable<char> c1, out IEnumerable<char> c2,
             out IEnumerable<char> c3, out IEnumerable<char> c4, out IEnumerable<char> c5,
@@ -313,12 +336,17 @@ namespace ProjectSpaceman
                 Console.Write("   try another: ");
                 ItWasHitOrMiss = false;
             }
-            else Console.Write("  try a letter: ");
+            else
+            {
+                Console.Write("  try a letter: ");
+            }
+
             Console.ForegroundColor = ConsoleColor.DarkGray;
             string input = Console.ReadLine();
             IEnumerable<char> symNumSpa, symNum, alph, numb, symb, symSpa, alpNumSpa;
             AssignValues(out symNumSpa, out symNum, out alph, out numb, out symb,
                           out symSpa, out alpNumSpa, input);
+
             if (!String.IsNullOrEmpty(input))
             {
                 bool isANumber = int.TryParse(input, out _);
@@ -343,8 +371,10 @@ namespace ProjectSpaceman
                             ErrorAsString = "     ~~*~ ERROR: no extra spaces  ~*~~";
                         else if (numb.Any())
                             ErrorAsString = "     ~~*~ ERROR: no extra numbers ~*~~";
-                        else ErrorAsString = "     ~~*~ ERROR: no extra symbols ~*~~";
-                    else ErrorAsString = "   ~~*~ ERROR: no numbers & symbols ~*~~";
+                        else 
+                            ErrorAsString = "     ~~*~ ERROR: no extra symbols ~*~~";
+                    else 
+                        ErrorAsString = "   ~~*~ ERROR: no numbers & symbols ~*~~";
                     ThereWasAnError = true;
                     Display();
                     goto beginning;
@@ -358,11 +388,15 @@ namespace ProjectSpaceman
                 }
                 else
                 {
-                    if (input == input.ToUpper()) 
+                    if (input == input.ToUpper())
                         input = input.ToLower();
-                    if (WasARepeat(input)) goto beginning;
-                    else if (Codeword.Contains(input)) UpdateCurrentWord();
-                    else NextBadScene();
+
+                    if (WasARepeat(input)) 
+                        goto beginning;
+                    else if (Codeword.Contains(input)) 
+                        UpdateCurrentWord();
+                    else 
+                        NextBadScene();
                     ItWasHitOrMiss = true;
                 }
             }
@@ -380,10 +414,14 @@ namespace ProjectSpaceman
             CurrentRightGuesses++;
             char[] newTry = CurrentWord.ToCharArray();
             for (int idx = 0; idx < CurrentWord.Length; idx++)
-                if (CodewordAsArray[idx] == InputAsChar) newTry[idx] = InputAsChar;
+            {
+                if (CodewordAsArray[idx] == InputAsChar) 
+                    newTry[idx] = InputAsChar;
+            }
             LttrsAlreadyUsed.Add(InputAsChar);
             CurrentWord = new string(newTry);
-            if (DidWin()) alienCraft.SetFinal();
+            if (DidWin()) 
+                alienCraft.SetFinal();
         }
         public void NextBadScene()
         {
@@ -402,7 +440,10 @@ namespace ProjectSpaceman
                 Display();
                 return true;
             }
-            else return false;
+            else 
+            {
+                return false;
+            }
         }
         public bool DidLose() => (CurrentWrongGuesses == MaxNumberOfGuesses);
         public bool DidWin() => (CurrentWord == CodewordWithSpaces);
