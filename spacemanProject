@@ -229,7 +229,7 @@ namespace ProjectSpaceman
 
         public static void Intro()
         {
-            // Console.WriteLine("\n\n\n\n\n");
+            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("     GUESS THE CODEWORD TO STOP THE ABDUCTION!\n");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -242,6 +242,7 @@ namespace ProjectSpaceman
         public void Inform()
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
+
             if (DidLose()) 
                 Console.WriteLine("       ~~*~*~  STUFF HAPPENS! ~*~*~~");
             else if (DidWin()) 
@@ -358,8 +359,11 @@ namespace ProjectSpaceman
                 bool isANumber = int.TryParse(input, out _);
                 if (isANumber)
                 {
-                    if (!symSpa.Any()) ErrorAsString = "        ~~*~ ERROR: no numbers ~*~~";
-                    else ErrorAsString = "   ~~*~ ERROR: no spaces & numbers  ~*~~";
+                    if (!symSpa.Any()) 
+                        ErrorAsString = "        ~~*~ ERROR: no numbers ~*~~";
+                    else 
+                        ErrorAsString = "   ~~*~ ERROR: no spaces & numbers  ~*~~";
+
                     ThereWasAnError = true;
                     Display();
                     goto beginning;
@@ -381,6 +385,7 @@ namespace ProjectSpaceman
                             ErrorAsString = "     ~~*~ ERROR: no extra symbols ~*~~";
                     else 
                         ErrorAsString = "   ~~*~ ERROR: no numbers & symbols ~*~~";
+
                     ThereWasAnError = true;
                     Display();
                     goto beginning;
