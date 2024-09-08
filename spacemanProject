@@ -226,17 +226,19 @@ namespace ProjectSpaceman
         public char InputAsChar { get; set; }
         public bool WasWrong { get; set; }
         public string ErrorAsString { get; set; }
+
         public static void Intro()
         {
             // Console.WriteLine("\n\n\n\n\n");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("     Guess the codeword to stop the abduction!\n");
+            Console.WriteLine("     GUESS THE CODEWORD TO STOP THE ABDUCTION!\n");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("   Turn Ease of Access/Color filters on, select");
-            Console.WriteLine("    inverted, and maximize panel for best view.\n");
+            Console.WriteLine("   Maximize panel & set the display color filters");
+            Console.WriteLine("       to inverted for the best experience...\n");
             Console.Write("            Press any key to continue ...");
             Console.ReadKey();
         }
+
         public void Inform()
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -251,12 +253,14 @@ namespace ProjectSpaceman
             else 
                 Console.WriteLine("          ~~*~*~ BATTER UP! ~*~*~~");
         }
+
         public void Display()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\n\n" + alienCraft.Showcase());
             Inform();
             Console.ForegroundColor = ConsoleColor.Magenta;
+
             if (!DidWin() && !DidLose())
             {
                 int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
@@ -313,8 +317,9 @@ namespace ProjectSpaceman
             else
             { 
                 Console.WriteLine("\n\n\n\n");
-            }
+            }           
         }
+
         public void AssignValues(out IEnumerable<char> c1, out IEnumerable<char> c2,
             out IEnumerable<char> c3, out IEnumerable<char> c4, out IEnumerable<char> c5,
             out IEnumerable<char> c6, out IEnumerable<char> c7, string s)
@@ -327,6 +332,7 @@ namespace ProjectSpaceman
             c6 = s.Where(f => symbolsAndSpace.Contains(f));
             c7 = s.Where(g => alphasNumbersAndSpace.Contains(g));
         }
+
         public void Start()
         {
         beginning:
@@ -397,6 +403,7 @@ namespace ProjectSpaceman
                         UpdateCurrentWord();
                     else 
                         NextBadScene();
+
                     ItWasHitOrMiss = true;
                 }
             }
@@ -408,6 +415,7 @@ namespace ProjectSpaceman
                 goto beginning;
             }
         }
+
         public void UpdateCurrentWord()
         {
             WasWrong = false;
@@ -423,6 +431,7 @@ namespace ProjectSpaceman
             if (DidWin()) 
                 alienCraft.SetFinal();
         }
+
         public void NextBadScene()
         {
             WasWrong = true;
@@ -430,6 +439,7 @@ namespace ProjectSpaceman
             LttrsAlreadyUsed.Add(InputAsChar);
             alienCraft.AddPart();
         }
+
         public bool WasARepeat(string x)
         {
             InputAsChar = Convert.ToChar(x);
@@ -445,6 +455,7 @@ namespace ProjectSpaceman
                 return false;
             }
         }
+
         public bool DidLose() => (CurrentWrongGuesses == MaxNumberOfGuesses);
         public bool DidWin() => (CurrentWord == CodewordWithSpaces);
     }
