@@ -72,7 +72,7 @@ namespace ProjectSpaceman
             Console.ResetColor();
         }
     }
-	
+
     internal class Game
     {
         public UFO alienCraft = new UFO();
@@ -85,7 +85,7 @@ namespace ProjectSpaceman
         private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
         private readonly string numbers = "0123456789";
         private readonly string[] codewordOptions = {
-            "apocalypse", "scream", "tiger", "reptilian", "espionage", "extravagant",
+            "apocalypse", "scream", "tiger", "millennial", "espionage", "extravagant",
             "apathy", "generous", "rose", "fascination", "revolution", "artificial",
             "strife", "discrepancy", "ordinary", "rage", "devotion", "imagination",
             "delirious", "excruciating", "grateful", "capacity", "marathon", "volcano",
@@ -96,16 +96,16 @@ namespace ProjectSpaceman
             "gain", "strain", "domain", "remain", "cage", "rock", "luck", "train", "drain",
             "trash", "stash", "smash", "dose", "pose", "lose", "hose", "most", "dock",
             "amphibian", "stream", "resilient", "egregious", "fragrance", "romance",
-            "observe", "deserve", "obscure", "extreme", "rain", "grape", "cape", "tape",
+            "observe", "deserve", "obscure", "tape", "extreme", "rain", "grape", "cape",
             "dart", "cart", "fair", "rude", "nice", "cruel", "love", "fade", "fast", "cast",
             "past", "last", "pass", "mass", "fake", "rake", "lake", "rows", "toes", "foes",
             "fog", "dog", "log", "hog", "lazy", "hazy", "ironic", "moronic", "magic",
             "logic", "logos", "foggy", "fun", "pun", "fur", "gun", "run", "rug", "tug",
-            "life", "stress", "mess", "mind", "find", "freak", "leak", "race", "lace",
-            "face", "fact", "pact", "gaze", "maze", "lean", "cream", "dream", "steam",
-            "mean", "fry", "cry", "shy", "try", "why", "toys", "boy", "goat", "way",
-            "spider", "emotion", "intense", "defense", "offense", "stranger", "danger",
-            "ranger", "static", "stain", "sky", "stormy", "polite", "police", "glare",
+            "life", "stress", "mess", "mind", "find", "freak", "leak", "race", "lace", "face",
+            "fact", "pact", "gaze", "maze", "lean", "cream", "dream", "steam", "information",
+            "cry", "shy", "try", "why", "toys", "boy", "goat", "way", "mean", "fry",
+            "spider", "emotion", "intense", "danger", "defense", "offense", "stranger", "sky",
+            "ranger", "static", "stain",  "stormy", "polite", "police", "glare", "delegation",
             "stage", "bubonic", "crate", "cake", "case", "pace", "late", "fate", "mash",
             "date", "night", "gate", "mate", "cat", "rat", "fat", "mat", "map", "rest",
             "pest", "nest", "best", "test", "pear", "tear", "gear", "fear", "near", "rear",
@@ -114,67 +114,70 @@ namespace ProjectSpaceman
             "brand", "land", "band", "bear", "rare", "dare", "war", "wild", "waste", "taste",
             "paste", "grave", "wax", "fax", "boat", "water", "rated", "year", "cash", "crash",
             "fox", "box", "mop", "man", "tan", "fan", "gin", "girl", "live", "dive", "sting",
-            "smear", "steer", "trade", "maid", "glide", "hide", "ride", "fountain",
+            "smear", "ride", "trade", "maid", "hide", "fellow", "glide", "fountain", "steer",
             "mountain", "money", "honey", "mad", "fad", "glad", "sad", "bad", "lad", "bid",
             "bin", "bat", "hat", "win", "wit", "bit", "sit", "lit", "hit", "chance", "stance",
             "glance", "lord", "word", "loan", "wand", "sand", "wait", "slope", "hate", "fly",
-            "roar", "beat", "feet", "legit", "heat", "neat", "seat", "hollow", "follow",
-            "fellow", "mellow", "beet", "deer", "need", "seed", "bent", "rent", "tent",
-            "went", "feed", "weep", "when", "treat", "cheat", "seal", "device", "mice",
-            "rice", "dice", "regress", "impress", "repress", "brain", "grain", "splash",
-            "main", "rap", "gut", "hut", "nap", "instigate", "distorted", "mug", "hug",
-            "bug", "sage", "mage", "wizard", "lizard", "mouse", "house", "ram", "jam",
-            "say", "may", "hay", "lay", "fantastic", "bombastic", "drape", "propagation",
-            "information", "delegation", "desecration", "superstition", "emancipation",
-            "fame", "dame", "lam", "ham", "join", "coin", "meme", "vain", "vase", "baby",
-            "wary", "many", "dent", "send", "farm", "harm", "warm", "cold", "fold", "bold",
-            "sold", "mold", "moan", "foam", "drone", "long", "gong", "bong", "bone", "lone",
-            "wall", "pearl", "base", "leap", "leaf", "blow", "flow", "glow", "slow", "slot",
-            "hot", "bot", "got", "not", "lot", "prank", "frank", "crank", "lice", "mic",
-            "pic", "trick", "fungus", "lungs", "humus", "rip", "dip", "nip", "sip", "lip",
-            "reformation", "restitution", "infiltrate", "illustrate", "obfuscate", "denigrate",
-            "nut", "rot", "sun", "sin", "son", "moon", "soon", "loon", "foot", "loop", "goon",
-            "lock", "mock", "suck", "buck", "fuck", "funk", "sunk", "rank", "bank", "trans",
-            "swirl", "swift", "stiff", "sniff", "phone", "stone", "tall", "hall", "gall",
-            "ball", "balm", "palm", "erosion", "oration", "fixation", "rotation", "negation",
-            "clash", "brash", "sports", "shorts", "monument", "document", "regiment",
-            "sentient", "west", "loin", "steep", "deep", "sweep", "reef", "beef", "cow", "bow",
-            "low", "sow", "how", "tow", "row", "now", "elation", "mansion", "pension", "passion",
-            "tone", "zone", "lime", "like", "line", "light", "fight", "might", "right", "sight",
-            "strength", "hold", "gold", "flat", "seek", "reek", "seen", "weed", "geek", "meek",
-            "leek", "work", "warp", "wane", "tension", "nose", "vow", "fit", "slang", "spank",
-            "rust", "dust", "must", "lust", "bust", "trunk", "trump", "trust", "truck", "thick",
-            "leverage", "beverage", "book", "hook", "rook", "took", "look", "nook", "gook",
-            "cook", "lend", "bend", "tend", "mend", "lens", "zen", "hen", "den", "dot", "yen",
-            "cost", "lost", "host", "deal", "feel", "reel", "stuck", "steel", "wheel", "whiff",
-            "knife", "white", "black", "crack", "stack", "smack", "shack", "slack", "flash",
-            "harsh", "marsh", "first", "burst", "nurse", "curse", "purse", "feral", "formal",
-            "normal", "nordic", "gnostic", "radiation", "humiliation", "slave", "crane",
-            "trace", "blaze", "flame", "crave", "grade", "grass", "brass", "brave", "mile",
+            "roar", "beat", "feet", "legit", "heat", "neat", "seat", "follow", "need", "seed",
+            "mellow", "beet", "deer", "bent", "rent", "tent", "went", "instigate", "distorted",
+            "feed", "weep", "when", "treat", "seal", "hollow", "cheat", "device", "lizard",
+            "mice", "mug", "house", "ram", "jam", "rice", "dice", "regress", "impress",
+            "repress", "brain", "grain", "splash", "main", "rap", "gut", "hut", "nap", "hug",
+            "bug", "sage", "mage", "wizard", "mouse", "say", "may", "hay", "lay", "fantastic",
+            "bombastic", "drape", "propagation", "desecration", "superstition", "fungus",
+            "emancipation", "obfuscate", "denigrate", "fame", "dame", "lam", "ham", "join",
+            "coin", "meme", "vain", "vase", "baby", "wary", "many", "dent", "send", "farm",
+            "harm", "warm", "cold", "fold", "bold", "sold", "mold", "moan", "foam", "drone",
+            "long", "gong", "bong", "bone", "lone", "wall", "pearl", "base", "leap", "leaf",
+            "blow", "flow", "glow", "slow", "slot", "hot", "bot", "got", "not", "lot", "mic",
+            "prank", "frank", "crank", "lice", "pic", "trick", "lungs", "humus", "rip", "dip",
+            "nip", "sip", "lip", "reformation", "restitution", "infiltrate", "oration",
+            "illustrate", "erosion", "negation", "nut", "rot", "sun", "sin", "son", "bow",
+            "moon", "soon", "loon", "foot", "loop", "goon", "swirl", "swift", "stiff", "fuck",
+            "lock", "mock", "suck", "buck", "funk", "sunk", "rank", "bank", "trans", "sniff",
+            "phone", "stone", "tall", "hall", "gall", "ball", "balm", "palm", "fixation", 
+            "rotation", "clash", "brash", "sports", "shorts", "monument", "document", "sight",
+            "passion", "regiment", "sentient", "cow", "west", "loin", "steep", "deep", "sweep",
+            "reef", "beef", "low", "sow", "how", "tow", "row", "elation", "mansion", "now",
+            "pension", "meek", "spank", "thick", "tone", "zone", "lime", "like", "line",
+            "light", "fight", "might", "right", "strength", "hold", "gold", "flat",
+            "seek", "reek", "seen", "weed", "geek", "leek", "work", "warp", "wane", "mile",
+            "tension", "nose", "vow", "fit", "slang", "rust", "dust", "must", "lust", "bust",
+            "trunk", "trump", "trust", "truck", "leverage", "beverage", "book", "hook",
+            "rook", "took", "look", "nook", "gook", "cook", "lend", "bend", "tend", "mend",
+            "lens", "zen", "hen", "den", "dot", "yen", "cost", "lost", "host", "deal",
+            "feel", "reel", "stuck", "steel", "will", "wheel", "whiff", "flash", "formal",
+            "knife", "white", "black", "crack", "stack", "smack", "shack", "slack",
+            "harsh", "marsh", "first", "burst", "nurse", "curse", "purse", "feral",
+            "normal", "nordic", "gnostic", "crane", "radiation", "humiliation", "slave",
+            "trace", "blaze", "flame", "crave", "grade", "grass", "brass", "brave",
             "mine", "mike", "mist", "gist", "list", "food", "mood", "hood", "good", "doom",
             "root", "loot", "loom", "zoom", "hoot", "boot", "boom", "bowl", "howl", "soul",
-            "amazon", "just", "avalon", "rate", "bait", "reed", "space", "teen", "kill", "will",
+            "amazon", "just", "avalon", "rate", "bait", "reed", "space", "teen", "kill",
             "fill", "bill", "mill", "hill", "nail", "rail", "wail", "sail", "bail", "dean",
             "deaf", "quit", "spit", "slit", "slip", "slap", "keen", "peek", "peak", "sick",
             "wick", "lick", "beak", "queen", "queer", "seem", "seam", "zest", "part", "mart",
-            "hard", "pot", "cot", "spear", "shear", "swear", "surge", "purge", "merge", "forge",
-            "farce", "large", "lair", "liar", "tail", "gait", "fire", "wire", "pire", "tire",
-            "tier", "least", "beast", "lease", "feast", "east", "next", "peel", "real", "heal",
-            "pill", "verge", "blame", "blast", "bloom", "groom", "shirt", "flirt", "smart",
-            "sneer", "clear", "sheer", "swim", "suit", "pool", "tool", "gust", "swing", "spring",
-            "blare", "blade", "clean", "slide", "pride", "tribe", "pipe", "pine", "pint", "tint",
-            "wine", "dine", "fine", "hint", "hind", "side", "wind", "dire", "high", "nigh", "sigh",
-            "drop", "crop", "stop", "flop", "crow", "grow", "spot", "shot", "prop", "coat",
-            "goal", "grip", "flip", "ship", "ruin", "skip", "drip", "neon", "lion", "crime",
-            "spine", "shine", "swine", "slime", "poor", "gone", "done", "lane", "bane", "cane",
-            "mane", "pane", "door", "sane", "pick", "sock", "hock" };
+            "hard", "pot", "cot", "spear", "shear", "swear", "surge", "purge", "merge",
+            "forge", "heal", "smart", "spring", "farce", "large", "lair", "liar", "tail",
+            "gait", "fire", "wire", "pire", "tire", "tier", "least", "beast", "lease",
+            "feast", "east", "next", "peel", "real", "pill", "verge", "blame", "blast",
+            "bloom", "groom", "shirt", "flirt", "sneer", "clear", "sheer", "swim",
+            "suit", "pool", "tool", "gust", "swing", "blare", "blade", "clean", "slide",
+            "pride", "tribe", "pipe", "pine", "pint", "wine", "dine", "fine", "hint", "hind",
+            "side", "wind", "dire", "high", "nigh", "sigh", "tint", "drop", "crop", "stop",
+            "flop", "crow", "grow", "spot", "shot", "prop", "coat", "goal", "grip", "flip",
+            "ship", "ruin", "skip", "drip", "neon", "lion", "crime", "spine", "shine",
+            "swine", "slime", "poor", "gone", "done", "lane", "bane", "cane", "mane", "pane",
+            "door", "sane", "pick", "sock", "hock", "node", "code", "load", "road", "toad",
+            "soap", "soar", "soak", "soil", "boil", "coil", "jail", "pail", "toil", "foil",
+            "toll", "mall", "fall", "call", "doll", "told", "wood", "wool", "fool", "cool" };
 
         private readonly int x;
-
         private readonly Random rand = new Random();
+
         public Game()
         {
-            x = rand.Next(752);
+            x = rand.Next(777);
 
             this.MaxNumberOfGuesses = 5;
             this.CurrentWrongGuesses = 0;
@@ -182,6 +185,7 @@ namespace ProjectSpaceman
 
             int y = (this.Codeword.Length * 2) - 1;
             char[] emptyWordWithSpaces = new char[y];
+
             for (int z = 0; z < y; z++)
             {
                 if (z % 2 == 0)
@@ -189,10 +193,12 @@ namespace ProjectSpaceman
                 else
                     emptyWordWithSpaces[z] = ' ';
             }
+
             this.CurrentWord = new string(emptyWordWithSpaces);
             this.CodewordAsArray = new char[this.CurrentWord.Length];
 
             int superIndex = 0;
+
             for (int i = 0; i < this.CurrentWord.Length; i++)
             {
                 if (i % 2 == 0)
@@ -205,10 +211,12 @@ namespace ProjectSpaceman
                     this.CodewordAsArray[i] = ' ';
                 }
             }
+
             this.CodewordWithSpaces = new string(this.CodewordAsArray);
 
             this.LttrsAlreadyUsed = new List<char>();
             this.InputAsChar = ' ';
+
             this.WasWrong = false;
             this.ThereWasAnError = false;
             this.ItWasHitOrMiss = false;
@@ -300,6 +308,7 @@ namespace ProjectSpaceman
                 Console.Write("      HIT|miss: ");
 
                 var ordered = LttrsAlreadyUsed.OrderBy(l => l);
+
                 foreach (char k in ordered)
                 {
                     if (CurrentWord.Contains(k))
@@ -313,6 +322,7 @@ namespace ProjectSpaceman
                         Console.Write(k + " ");
                     }
                 }
+
                 Console.WriteLine("\n");
             }
             else
@@ -338,6 +348,7 @@ namespace ProjectSpaceman
         {
         beginning:
             Console.ForegroundColor = ConsoleColor.Magenta;
+
             if (ItWasHitOrMiss)
             {
                 Console.Write("   try another: ");
@@ -351,12 +362,13 @@ namespace ProjectSpaceman
             Console.ForegroundColor = ConsoleColor.DarkGray;
             string input = Console.ReadLine();
             IEnumerable<char> symNumSpa, symNum, alph, numb, symb, symSpa, alpNumSpa;
-            AssignValues(out symNumSpa, out symNum, out alph, out numb, out symb,
-                          out symSpa, out alpNumSpa, input);
+
+            AssignValues(out symNumSpa, out symNum, out alph, out numb, out symb, out symSpa, out alpNumSpa, input);
 
             if (!String.IsNullOrEmpty(input))
             {
                 bool isANumber = int.TryParse(input, out _);
+
                 if (isANumber)
                 {
                     if (!symSpa.Any()) 
@@ -426,11 +438,13 @@ namespace ProjectSpaceman
             WasWrong = false;
             CurrentRightGuesses++;
             char[] newTry = CurrentWord.ToCharArray();
+
             for (int idx = 0; idx < CurrentWord.Length; idx++)
             {
                 if (CodewordAsArray[idx] == InputAsChar) 
                     newTry[idx] = InputAsChar;
             }
+
             LttrsAlreadyUsed.Add(InputAsChar);
             CurrentWord = new string(newTry);
             if (DidWin()) 
@@ -448,6 +462,7 @@ namespace ProjectSpaceman
         public bool WasARepeat(string x)
         {
             InputAsChar = Convert.ToChar(x);
+
             if (LttrsAlreadyUsed.Contains(InputAsChar))
             {
                 ErrorAsString = "      ~~*~ ERROR: already in use  ~*~";
@@ -467,138 +482,94 @@ namespace ProjectSpaceman
 
     internal class UFO
     {
-        private readonly string s0 = @"
-
-
-
-
-
-
-
-            .-""^""-.
+        private readonly string s0 = "\n\n\n\n\n\n\n\n" +
+@"            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
        '-.,_________,.-'
-           |       |
-           |   0   |     ,---------.
-           | --|-- |____(" + " \u00A1Auxilio! )\n" +
-@"           |   |   |     `---------'
-          _|__/_\__|_                ";
-        private readonly string s1 = @"
+           |       |     ,---------.
+           |   0   |    (" + " \u00A1Auxilio! )\n" +
+@"           | --|-- | ___/`---------'
+           |   |   |
+          _|__/_\__|_";
 
-
-
-
-
-
-
-            .-""^""-.
+        private readonly string s1 = "\n\n\n\n\n\n\n\n" +
+@"            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
-       '-.,_________,.-'  
+       '-.,_________,.-'
            |   0   |     ,---------.
-           | --|-- |____(" + " \u00A1Socorro! )\n" +
+           | --|-- | ___(" + " \u00A1Socorro! )\n" +
 @"           |   |   |     `---------'
-           |  / \  |  
-          _|_______|_                ";
-        private readonly string s2 = @"
+           |  / \  |
+          _|_______|_";
 
-
-
-
-
-
-            .-""^""-.
+        private readonly string s2 = "\n\n\n\n\n\n\n" +
+@"            .-""^""-.
            /_....._\
        .-""`         `""-.
-      (  ooo  ooo  ooo  )    
+      (  ooo  ooo  ooo  )
        '-.,_________,.-'
            | --|-- |      ,--------.
-           |   |   |_____/" + " \u00A1R\u00E1pido  \\\n" +
+           |   |   | \__ /" + " \u00A1R\u00E1pido  \\\n" +
 @"           |  / \  |     \  boludo! /
-           |       |      `--------'          
+           |       |      `--------'" + "\n\n";
 
-                                     ";
-        private readonly string s3 = @"
-
-
-
-
-
-            .-""^""-.
+        private readonly string s3 = "\n\n\n\n\n\n" +
+@"            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  ) 
        '-.,_________,.-' ,---------.
-           |   |   |____/" + " \u00A1La est\u00E1s \\\n" +
-@"           |  / \  |    \  cagando! /
-           |       |     `---------'
-                  
-                
+           |   |   | \_ /" + " \u00A1Pi\u00E9nsala \\\n" +
+"           |  / \\  |    \\  imb\u00E9cil! /\n" +
+@"           |       |     `---------'" + "\n\n\n\n";
 
-                                     ";
-        private readonly string s4 = @"
-
-
-
-
-            .-""^""-.
+        private readonly string s4 = "\n\n\n\n\n" +
+@"            .-""^""-.
            /_....._\
        .-""`         `""-.
       (  ooo  ooo  ooo  ) 
-       '-.,_________,.-'      
-           |  / \  |        
-           |    \  |  ,------------. 
-                 \___(" + " \u00A1Gilipollas! )\n" +
-@"                      `------------'
-                                    
+       '-.,_________,.-'
+           |  / \  |
+           |    \  |   ,-----------.
+                 \___ /" + " \u00A1Gilipollas \\\n" +
+@"                      \  de mierda! /
+                       `-----------'" + "\n\n\n";
 
-
-                                     ";
-        private readonly string s5 = @"
-
-
-
-            .-""^""-.
-           /_..0.._\ -------+
-       .-""`         `""-.    | 
-      (  ooo  ooo  ooo  )   |
-       '-.,_________,.-'    |
-           |       |     ,--+------.                     
-                        /" + " \u00A1No se ve \\\n" +
-@"                        \   curva!  /
-                         `---------'
-
-
-
-
-                                     ";
-        private readonly string s6 = @"
-
-
-
-            .-""^""-.
-           /_....._\
+        private readonly string s5 = "\n\n\n\n" +
+@"            .-""^""-.
+           /_..0.._\
        .-""`         `""-.
       (  ooo  ooo  ooo  )
        '-.,_________,.-'
-                  
-                  
+           |    \  |     ,---------.
+                 \____ /" + " \u00A1No se ve \\\n" +
+@"                        \   curva!  /
+                         `---------'" + "\n\n\n\n\n";
 
-
-     
-                             0
+        private readonly string s6 = "\n\n\n\n" +
+@"            .-""^""-.
+           /_....._\
+       .-""`         `""-.
+      (  ooo  ooo  ooo  )
+       '-.,_________,.-'" + "\n\n\n\n\n" +
+@"                             0
                            --|--
                              |
-                          __/_\__  ";
+                          __/_\__";
+
         private readonly string[] ufos;
         private int stage;
+
         public UFO() => ufos = new string[] { s0, s1, s2, s3, s4, s5, s6 };
+
         public void AddPart()
         {
             stage++;
+
             if (stage >= ufos.Length)
             {
                 Console.WriteLine("staging error");
@@ -606,6 +577,7 @@ namespace ProjectSpaceman
                 Console.ReadKey();
             }
         }
+
         public void SetFinal() => stage = ufos.Length - 1;
         public string Showcase() => ufos[stage];
         public override string ToString() => "I'm a UFO object...";
