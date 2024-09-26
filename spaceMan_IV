@@ -9,7 +9,7 @@ namespace game
     *
     *     Also the player can exit any time via pressing Control+C.
     *  The text colors are selected to work best with the display
-    *  having its colors ionverted via system settings. Flags have
+    *  having its colors inverted via system settings. Flags have
     *  been set up to make sure colors revert to original settings when
     *  a player enters Control+C.  */
 
@@ -19,13 +19,17 @@ namespace game
         {
             Console.CancelKeyPress += new ConsoleCancelEventHandler(OnExit);
 
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Clear();
+
+            Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             Game.Intro();
 
             bool keepAlive;
             do
             {
                 Random rand = new();
-                Game g = new(rand.Next(1079));
+                Game g = new(rand.Next(1095));
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -82,6 +86,7 @@ namespace game
             } while (keepAlive);
 
             Console.ResetColor();
+        //    Console.Clear();
             Console.WriteLine("Exiting normally...");
         }
 
@@ -90,6 +95,7 @@ namespace game
             isExiting = true;
     //        k.Cancel = true;
             Console.ResetColor();
+    //        Console.Clear();
             Console.WriteLine("Force-exiting...");
             Environment.Exit(0);
         }
@@ -228,9 +234,11 @@ namespace game
             "toxic", "tonic", "sonic", "androgynous", "homogenous", "superfluous", "animal",
             "contamination", "strenuous", "vigorous", "enormous", "efficacious", "practical",
             "radical", "rational", "logical", "dogmatic", "fanatical", "superficial",
-            "extraordinary", "repetitious", "sacriligious", "superstitious", "revelation",
-            "indignation", "nation", "potion", "lotion", "motion", "concoction"
-
+            "extraordinary", "repetitious", "sacriligious", "superstitious", "indignation",
+            "concoction", "altercation", "computation", "substitution", "subterranean",
+            "desperation", "obliterate", "recuperate", "enumerate", "revelation", "nation",
+            "potion", "lotion", "motion", "bet", "knit", "red", "led", "wet", "set", "form", 
+			"norm"
         };
 
         public Game(int x)
@@ -336,10 +344,13 @@ namespace game
             else
             {
                 Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
                 Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
                 Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
                 Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("   //=================================\\\\");
