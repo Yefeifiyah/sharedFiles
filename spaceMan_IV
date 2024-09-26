@@ -239,7 +239,7 @@ namespace game
             "desperation", "obliterate", "recuperate", "enumerate", "revelation", "nation",
             "potion", "lotion", "motion", "bet", "knit", "red", "led", "wet", "set", "form", 
 	    "norm", "alteration", "divination", "confirmation", "suspicion", "elimination",
-            "division", "resistance", "existance", "restoration", "audacity", "lucidity",
+            "division", "resistance", "existence", "restoration", "audacity", "lucidity",
             "extremity", "motivation", "inspiration"
         };
 
