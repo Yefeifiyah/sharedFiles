@@ -20,7 +20,7 @@ namespace game
             Console.CancelKeyPress += new ConsoleCancelEventHandler(OnExit);
 
             Console.BackgroundColor = ConsoleColor.White;
-            Console.Clear();
+    //        Console.Clear();
 
             Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             Game.Intro();
