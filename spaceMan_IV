@@ -29,7 +29,7 @@ namespace game
             do
             {
                 Random rand = new();
-                Game g = new(rand.Next(1095));
+                Game g = new(rand.Next(1109));
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -238,7 +238,9 @@ namespace game
             "concoction", "altercation", "computation", "substitution", "subterranean",
             "desperation", "obliterate", "recuperate", "enumerate", "revelation", "nation",
             "potion", "lotion", "motion", "bet", "knit", "red", "led", "wet", "set", "form", 
-			"norm"
+	    "norm", "alteration", "divination", "confirmation", "suspicion", "elimination",
+            "division", "resistance", "existance", "restoration", "audacity", "lucidity",
+            "extremity", "motivation", "inspiration"
         };
 
         public Game(int x)
