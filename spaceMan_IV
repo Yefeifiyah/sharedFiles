@@ -19,8 +19,8 @@ namespace game
         {
             Console.CancelKeyPress += new ConsoleCancelEventHandler(OnExit);
 
-            Console.BackgroundColor = ConsoleColor.White;
-    //        Console.Clear();
+            if (Console.BackgroundColor != ConsoleColor.White)
+                Console.BackgroundColor = ConsoleColor.White;
 
             Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             Game.Intro();
@@ -29,7 +29,7 @@ namespace game
             do
             {
                 Random rand = new();
-                Game g = new(rand.Next(1109));
+                Game g = new(rand.Next(1183));
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -86,16 +86,13 @@ namespace game
             } while (keepAlive);
 
             Console.ResetColor();
-        //    Console.Clear();
             Console.WriteLine("Exiting normally...");
         }
 
         protected static void OnExit(object? sender, ConsoleCancelEventArgs k)
         {
             isExiting = true;
-    //        k.Cancel = true;
             Console.ResetColor();
-    //        Console.Clear();
             Console.WriteLine("Force-exiting...");
             Environment.Exit(0);
         }
@@ -135,7 +132,7 @@ namespace game
             "cry", "shy", "try", "why", "toys", "boy", "goat", "way", "mean", "fry", "tale",
             "spider", "emotion", "intense", "danger", "defense", "offense", "stranger",
             "ranger", "static", "stain", "stormy", "polite", "police", "glare", "delegation",
-            "stage", "bubonic", "crate", "cake", "case", "pace", "late", "fate", "mash",
+            "stage", "stereophonic", "crate", "cake", "case", "pace", "late", "fate", "mash",
             "date", "night", "gate", "mate", "cat", "rat", "fat", "mat", "map", "rest",
             "pest", "nest", "best", "test", "pear", "tear", "gear", "fear", "near", "rear",
             "dear", "beer", "bean", "bash", "star", "stay", "day", "ray", "cringe", "fringe",
@@ -172,17 +169,17 @@ namespace game
             "light", "fight", "might", "right", "strength", "hold", "gold", "flat", "pale",
             "seek", "reek", "seen", "weed", "geek", "leek", "work", "warp", "wane", "mile",
             "tension", "nose", "vow", "fit", "slang", "rust", "dust", "must", "lust", "bust",
-            "trunk", "trump", "trust", "truck", "leverage", "beverage", "book", "hook",
+            "trunk", "troll", "trust", "truck", "leverage", "beverage", "book", "hook",
             "rook", "took", "look", "nook", "gook", "cook", "lend", "bend", "tend", "mend",
             "lens", "zen", "hen", "den", "dot", "yen", "cost", "lost", "host", "deal",
             "feel", "reel", "stuck", "steel", "will", "wheel", "whiff", "flash", "formal",
             "knife", "white", "black", "crack", "stack", "smack", "shack", "slack", "sale",
             "harsh", "marsh", "first", "burst", "nurse", "curse", "purse", "feral", "hail",
-            "normal", "nordic", "gnostic", "crane", "radiation", "humiliation", "slave",
+            "normal", "porous", "agnostic", "crane", "radiation", "humiliation", "slave",
             "trace", "blaze", "flame", "crave", "grade", "grass", "brass", "brave", "fuck",
             "mine", "mike", "mist", "gist", "list", "food", "mood", "hood", "good", "doom",
             "root", "loot", "loom", "zoom", "hoot", "boot", "boom", "bowl", "howl", "soul",
-            "amazon", "just", "avalon", "rate", "bait", "reed", "space", "teen", "kill",
+            "amazon", "just", "stupid", "rate", "bait", "reed", "space", "teen", "kill",
             "fill", "bill", "mill", "hill", "nail", "rail", "wail", "sail", "bail", "dean",
             "deaf", "quit", "spit", "slit", "slip", "slap", "keen", "peek", "peak", "sick",
             "wick", "lick", "beak", "queen", "queer", "seem", "seam", "zest", "part", "mart",
@@ -208,15 +205,15 @@ namespace game
             "manipulation", "resuscitation", "proclamation", "decapitation", "excavation",
             "define", "design", "resign", "malign", "benign", "demonstration", "smirk",
             "strangulation", "electrocution", "dismembering", "distinguished", "bore", "go",
-            "lore", "gore", "fork", "dork", "torque", "pork", "sort", "store", "shore", "for",
+            "lore", "gore", "fork", "dork", "task", "pork", "sort", "store", "shore", "for",
             "whore", "score", "scope", "clone", "cone", "distorted", "hole", "pole", "sole",
             "fowl", "to", "at", "is", "haste", "by", "in", "flack", "whack", "flank", "fare",
-            "care", "pair", "hair", "sheet", "sweet", "sheen", "breed", "flask", "task",
+            "care", "pair", "hair", "sheet", "sweet", "sheen", "breed", "flask", "torque",
             "dye", "bye", "be", "sheep", "creep", "street", "respiration", "destination",
             "lie", "die", "leave", "leash", "learn", "steal", "mire", "spin", "do", "doe",
             "kite", "bite", "rite", "mite", "site", "file", "guile", "illumination",
-            "degradation", "suffocation", "repetition", "apparition", "sensation", "relation",
-            "frustration", "proficient", "sufficient", "cult", "bolt", "salt", "malt",
+            "degradation", "suffocation", "repetition", "apparition", "sensation", "malt",
+            "frustration", "proficient", "sufficient", "cult", "bolt", "salt", "relation",
             "halt", "pub", "bud", "mud", "put", "but", "cut", "same", "tame", "give", "jolt",
             "shock", "stock", "block", "reveal", "appeal", "surreal", "unreal", "dwell",
             "swell", "smell", "shell", "quell", "spell", "built", "quilt", "guilt", "stilt",
@@ -233,14 +230,24 @@ namespace game
             "snow", "snap", "snare", "stare", "stairs", "chair", "determination", "bionic",
             "toxic", "tonic", "sonic", "androgynous", "homogeneous", "superfluous", "animal",
             "contamination", "strenuous", "vigorous", "enormous", "efficacious", "practical",
-            "radical", "rational", "logical", "dogmatic", "fanatical", "superficial",
+            "radical", "rational", "logical", "dogmatic", "fanatical", "superficial", "rid",
             "extraordinary", "repetitious", "sacrilegious", "superstitious", "indignation",
-            "concoction", "altercation", "computation", "substitution", "subterranean",
+            "concoction", "altercation", "computation", "substitution", "subterranean", "id",
             "desperation", "obliterate", "recuperate", "enumerate", "revelation", "nation",
             "potion", "lotion", "motion", "bet", "knit", "red", "led", "wet", "set", "form",
             "norm", "alteration", "divination", "confirmation", "suspicion", "elimination",
             "division", "resistance", "existence", "restoration", "audacity", "lucidity",
-            "extremity", "motivation", "inspiration"
+            "extremity", "motivation", "inspiration", "oblivious", "contagious", "graphic",
+            "tremendous", "horrendous", "depravity", "dignity", "flare", "rapid", "vapid",
+            "morbidity", "ostentatious", "advantageous", "terrible", "terrific", "specific",
+            "horrific", "stupendous", "obligatory", "respiratory", "exposition", "sporadic",
+            "documentary", "special", "spatial", "racial", "permission", "submission", "big",
+            "dominance", "exuberance", "glacier", "hallucination", "promotion", "cognition",
+            "resignation", "designation", "vision", "volition", "restricted", "addicted",
+            "revision", "intoxicated", "medicated", "drugs", "prescription", "subscription",
+            "level", "label", "repel", "lapel", "rebel", "hotel", "motel", "camel", "cartel",
+            "caramel", "cater", "later", "crater", "traitor", "trader", "pander", "wonder",
+            "wander", "launder", "Lawn", "lunch", "crunch", "munch", "ranch", "range",
         };
 
         public Game(int x)
