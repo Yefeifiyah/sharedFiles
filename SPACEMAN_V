@@ -2,14 +2,14 @@ namespace game
 {
     internal class Program
     {
-    /* Extraterrestrials are abducting humans through tractor
-    *  beams. Players must guess the password before the 7th
-	  *  miss, otherwise by then the guy has been sucked through
-	  *  the tube entirely. Each wrong guess leaves one less part
-	  *  of the body. Player gets choice to start new game or exit,
-	  *  as well as exit any time with Control+C. A flag was
-	  *  strategically set at forced exit time to prevent lines
-	  *  from getting executed and messing with the colors. */
+    /*  Extraterrestrials are abducting humans through tractor beams. 
+    *  Players must guess the password before the 7th miss, otherwise 
+    *  by then the guy has been sucked through the tube entirely.
+    *
+    *   Each wrong guess leaves one less part of the body. Player gets 
+    *  choice to start new game or exit, as well as exit any time with 
+    *  Control+C. A flag gets strategically set at forced-exit time to 
+    *  prevent lines from getting executed and altering the colors. */
 
         public static bool isExiting = false;
 
@@ -27,7 +27,8 @@ namespace game
             do
             {
                 Random rand = new();
-                Game g = new(rand.Next(1207));
+                Game g = new(rand.Next(1555));
+       //         Game g = new(0);  //<-- for debugging
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -45,9 +46,9 @@ namespace game
             exit:
 
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(" PLAY AGAIN? (y/n): ");
+                Console.Write(" PLAY AGAIN?(y/n):");
 
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 string answer = Console.ReadLine() ?? "possible null assignment";
 
                 if (!string.IsNullOrEmpty(answer))
@@ -248,7 +249,54 @@ namespace game
             "wander", "launder", "Lawn", "lunch", "crunch", "munch", "ranch", "range", "end",
             "hunch", "bunch", "punch", "staunch", "park", "stork", "cork", "make", "bake",
             "take", "sake", "wake", "dark", "bark", "mark", "save", "safe", "wage", "weight",
-            "wave", "rave", "cave", "shave"
+            "wave", "rave", "cave", "shave", "into", "gastronomy", "supersonic",  "official",
+            "hydroponics", "astronomical", "physiological", "biological", "environmental",
+            "regulatory", "suicidal", "maniacal", "belt", "melt", "gel", "sell", "hell",
+            "bell", "well", "nerve", "serve", "verb", "heart", "charm", "orb", "starve",
+            "carve", "reservoir", "deceptive", "receptive", "inception", "digestion", "off",
+            "request", "respect", "dissect", "expectation", "restaurant", "gymnasium", "of",
+            "magnesium", "obsession", "aggression", "ignorance", "recession", "delusion",
+            "obvious", "devious", "heinous", "jealous", "glorious", "away", "delay", "relay",
+            "convey", "survey", "rule", "rune", "conversation", "registration", "suggestion",
+            "innovation", "cultivation", "chasm", "spasm", "erase", "ligation", "gradation",
+            "investment", "testament", "entail", "detail", "retail", "break", "steak", "nun",
+            "brake", "stile", "style", "glean", "legion", "region", "fresh", "frisk", "risk",
+            "section", "faction", "fiction", "diction", "frame", "friend", "disk", "shaft",
+            "mask", "art", "aim", "ail", "fail", "shade", "shame", "shark", "sharp", "shard",
+            "heap", "reap", "sleep", "stark", "shank", "plank", "dead", "drunk", "skunk",
+            "aggravate", "aggrandize", "criticize", "scrutinize", "pulverize", "astonish",
+            "demolish", "relish", "punish", "furnish", "sandwich", "garnish", "relinquish",
+            "creature", "feature", "future", "caress", "clueless", "guess", "jet", "let",
+            "frost", "ghost", "toast", "boast", "roast", "ban", "dam", "cam", "tap", "lap",
+            "gap", "cap", "lamb", "stunned", "bewildered", "amazed", "transmutation", "lo",
+            "dazed", "confused", "misused", "refuse", "use", "muse", "abused", "unused",
+            "repercussion", "intuition", "emergency", "outstanding", "astounding", "meal",
+            "advocacy", "reputation", "substance", "entrance", "embrace", "distance", "mow",
+            "refutation", "salutation", "deliverance", "grievance", "occupancy", "truce", 
+            "brainless", "adventure", "advertise", "glamorize", "devise", "revise", "reuse",
+            "suffice", "reprise", "demonize", "moralize", "monetize", "summarize", "throw",
+            "sacrifice", "mesmerize", "entice", "edifice", "memorize", "televise", "show",
+            "bemused", "new", "sew", "dew", "rew", "glitch", "bitch", "stitch", "snitch",
+            "ditch", "pitch", "witch", "rich", "niche", "feeling", "ceiling", "dressing",
+            "blessing", "opportunity", "calamity", "gravity", "terrain", "bedazzled",
+            "fixed", "stretch", "wretch", "suppose", "solemn", "emblem", "diagram", "arm",
+            "alarm", "disarm", "disaster", "narrow", "sorrow", "borrow", "burrow", "dorm",
+            "porn", "horn", "born", "torn", "corn", "creed", "riff", "cliff", "grief",
+            "strategy", "adversity", "velocity", "compliment", "complement", "condiment",
+            "complicity", "tranquility", "terminate", "eliminate", "illuminate", "amalgam",
+            "resuscitate", "elucidate", "divulge", "distribute", "contribute", "retribute",
+            "anagram", "animate", "agitate", "ensign", "visage", "mirage", "align", "sign",
+            "compartment", "symphony", "melody", "harmony", "distortion", "commotion", "eye",
+            "premonition", "recognize", "decorate", "stimulate", "organize", "create", "rye",
+            "confiscate", "decimate", "turbulence", "disturbance", "mutation", "conviction",
+            "prediction", "reaction", "attraction", "upheaval", "adrenaline", "gasoline",
+            "momentous", "exquisite", "attribute", "requisite", "alienation", "transcend",
+            "ascend", "descend", "rescind", "restraint", "trending", "remember", "motor",
+            "odor", "rotor", "lotus", "honesty", "modesty", "botox", "borax", "color", "ion",
+            "limb", "time", "rhyme", "chyme", "grime", "spike", "shallow", "yellow", "ice",
+            "brief", "belief", "relief", "spicy", "sour", "hour", "flour", "prowl", "growl",
+            "drool", "stool", "response", "ambulance", "emerge", "lurk", "rely", "angst",
+            "spy"
         };
 
         public Game(int x)
@@ -353,26 +401,26 @@ namespace game
             }
             else
             {
-                // Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                // if (Program.isExiting) return;
-                // Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                // if (Program.isExiting) return;
-                // Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                // if (Program.isExiting) return;
-                // Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
+                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
+                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if (Program.isExiting) return;
+                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 Console.WriteLine("\n\n\n\n\n");
 
                 if (Program.isExiting) 
                     return;
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("   //=================================\\\\");
+                Console.WriteLine("    //===============================\\\\");
 
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(alienCraft.Showcase());
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("   \\\\=================================//\n");
+                Console.WriteLine("    \\\\===============================//\n");
 
                 Inform();
 
@@ -414,6 +462,26 @@ namespace game
                     Console.Write("     codeword: ");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(CurrentWord);
+
+                    int number = 1;
+                    int firstDigit = 0;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("               ");
+                    foreach (char c in Codeword)
+                    {
+                        if (number > 9)
+                        {
+                            firstDigit = (number * 10) % 10;
+                            Console.Write(firstDigit + " ");
+                            number++;
+                        }
+                        else
+                        {
+                            Console.Write(number + " ");
+                            number++;
+                        }
+                    }
+
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.Write("\n     HIT");
                     Console.Write("|");
@@ -428,7 +496,7 @@ namespace game
                         if (CurrentWord.Contains(k))
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGray;
-                            Console.Write(Convert.ToString(k).ToUpper() + " ");
+                            Console.Write(Convert.ToString(k + " ").ToUpper());
                         }
                         else
                         {
@@ -442,13 +510,13 @@ namespace game
                 else if (!DidWin())
                 {
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.Write("\n the codeword was: ");
+                    Console.Write("\n\n the codeword was: ");
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine(Codeword + "\n");
+                    Console.WriteLine(Codeword + "\n\n");
                 }
                 else
                 {
-                    Console.WriteLine("\n");
+                    Console.WriteLine("\n\n\n");
                 }
             }
         }
@@ -488,7 +556,7 @@ namespace game
                     Console.Write(" try a letter: ");
                 }
 
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
 
                 string input = Console.ReadLine() ?? "possible null assignment";
 
@@ -622,130 +690,130 @@ namespace game
     internal class UFO
     {
         private readonly string s0 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |       |                \
-   \                                   /
-   /          |       |                \
-   \             \0/    __,---------.  /
-   /          |   ]   |  (" + " \u00A1ay\u00FAdame! ) \\\n" +
-    @"   \              A       `---------'  /
-   /          |  / \  |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          !       !                |
+   |          |       |                |
+   |          !       !                |
+   |          |  \0/  | __,---------.  |
+   |          !   ]   !  (" + " \u00A1ay\u00FAdame! ) |\n" +
+    @"   |          |   A   |   `---------'  |
+   \\         !  / \  !               //";
 
         private readonly string s1 =
-@"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |       |                \
-   \                                   /
-   /          |  \0/  | __,---------.  \
-   \              ]      (" + " \u00A1cojones! ) /\n" +
-@"   /          |   A   |   `---------'  \
-   \             / \                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          !       !                |
+   |          |       |                |
+   |          !   0   ! __,---------.  |
+   |          |  /[\  |  (" + " \u00A1cojones! ) |\n" +
+@"   |          !   A   !   `---------'  |
+   |          |  / \  |                |
+   \\         !       !               //";
 
         private readonly string s2 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |       |                \
-   \             \0/    __,---------.  /
-   /          |   ]   |  (" + " \u00A1pendejo! ) \\\n" +
-@"   \              A       `---------'  /
-   /          |  / \  |                \
-   \                                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          |       |                |
+   |          !   0/  ! __,---------.  |
+   |          |  /[   |  (" + " \u00A1pendejo! ) |\n" +
+@"   |          !   A   !   `---------'  |
+   |          |  / \  |                |
+   |          !       !                |
+   \\                                 //";
 
         private readonly string s3 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |  \0/  |                \
-   \              ]     ___,-------.   /
-   /          |   A   |   /" + " \u00A1pinche \\  \\\n" +
-    @"   \             / \      \ incapaz!/  /
-   /          |       |    `-------'   \
-   \                                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          !  \0   !                |
+   |          |   ]\  | ___,-------.   |
+   |          !   A   !   /" + " \u00A1pinche \\  |\n" +
+    @"   |          |  / \  |   \ incapaz!/  |
+   |          !       !    `-------'   |
+   |                                   |
+   \\                                 //";
 
         private readonly string s4 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |   ]   |                \
-   \              A  \____,--------.   /
-   /          |  / \  |  /" + "\u00A1pi\u00E9nsala \\  \\\n" +
-    "   \\                     \\ imb\u00E9cil! /  /\n" +
-@"   /          |       |   `--------'   \
-   \                                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          |  /]\  |                |
+   |          !   A   !\__,--------.   |
+   |          |  / \  |  /" + "\u00A1pi\u00E9nsala \\  |\n" +
+    "   |          !       !  \\ imb\u00E9cil! /  |\n" +
+@"   |                      `--------'   |
+   |                                   |
+   \\                                 //";
 
         private readonly string s5 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |   A   |    ,-------.   \
-   \             / \ \____/" + "\u00A1m\u00E9ndigo \\  /\n" +
-    @"   /          |       |   \ tarado! /  \
-   \                       `-------'   /
-   /          |       |                \
-   \                                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          !   A   ! \__,-------.   |
+   |          |  / \  |   /" + "\u00A1m\u00E9ndigo \\  |\n" +
+    @"   |          !       !   \ tarado! /  |
+   |                       `-------'   |
+   |                                   |
+   |                                   |
+   \\                                 //";
 
         private readonly string s6 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o9oOo oOo9oOo oOo9o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /          |  / \  | \,---------.   \
-   \                    /" + "\u00A1gilipollas\\  /\n" +
-   @"   /          |       | \ de mierda!/  \
-   \                     `---------'   /
-   /          |       |                \
-   \                                   /
-   /          |       |                \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          |  / \  |                |
+   |          !       !  ,---------.   |
+   |                 \__/" + "\u00A1gilipollas\\  |\n" +
+    @"   |                    \ de mierda!/  |
+   |                     `---------'   |
+   |                                   |
+   \\                                 //";
 
         private readonly string s7 =
-    @"   \           .-'""'-.                 /
-   /          /._\0/_.\ ---------+     \
-   \     .--""-'-""-'-""-'-""--.     |     /
-   /  <( o9oOo oOo9oOo oOo9o )>  |     \
-   \     `'-.,_,_,_,_,_,.-'`     |     /
-   /                             |     \
-   \                  ,----------+.    /
-   /                 /" + " \u00A1la  concha \\   \\\n" +
-    @"   \                 \ de la loria!/   /
-   /                  `-----------'    \
-   \                                   /
-   /                                   \";
+    @"   //          .-'""'-.                \\
+   |          /._\0/_.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |          !       !                |
+   |                \_,----------.     |
+   |                 /" + "\u00A1la  concha \\    |\n" +
+@"   |                 \ de la lora!/    |
+   |                  `----------'     |
+   |                                   |
+   \\                                 //";
 
         private readonly string s8 =
-    @"   \           .-'""'-.                 /
-   /          /._._._.\                \
-   \     .--""-'-""-'-""-'-""--.           /
-   /  <( o6oOo oOo6oOo oOo6o )>        \
-   \     `'-.,_,_,_,_,_,.-'`           /
-   /                                   \
-   \                                   /
-   /                                   \
-   \                         _ 0       /
-   /                        / /\_      \
-   \                          A        /
-   /                         / \       \";
+    @"   //          .-'""'-.                \\
+   |          /._._._.\                |
+   |     .--""-'-""-'-""-'-""--.           |
+   |  <( ooOo6ooOo6ooOo6ooOo )>        |
+   |     `'-.,_,_,_,_,_,.-'`           |
+   |                                   |
+   |                                   |
+   |        ,-------.                  |
+   |       /" + "\u00A1de puta \\___    _ 0       |\n" +
+@"   |       \  madre! /      / ]\_      |
+   |        `-------'         A        |
+   \\                        / \      //";
 
         private readonly string[] ufos;
         private int stage;
