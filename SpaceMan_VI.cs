@@ -27,7 +27,6 @@ namespace game
             {
                 Random rand = new();
                 Game g = new(rand.Next(words.Program.wordsArray.Count));
-       //         Game g = new(0);  //<-- for debugging
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -108,7 +107,6 @@ namespace game
         private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
         private readonly string numbers = "0123456789";
         public readonly string[] codewordOptions;
-        //       private readonly words.Program prog = new();
 
         public Game(int x)
         {
@@ -154,7 +152,6 @@ namespace game
 
             // fresh calculation for length counts on most current collection
             words.Program.GetLengthCounts();
-
             this.WordChoicesCount = 0;
             if (Codeword.Length == 13)
                 this.WordChoicesCount = words.Program.ThirteensCount;
@@ -189,6 +186,7 @@ namespace game
             this.ThereWasAnError = false;
             this.ItWasHitOrMiss = false;
         }
+        
         public int MaxNumberOfGuesses { get; private set; }
         public int CurrentWrongGuesses { get; private set; }
         public int WordChoicesCount { get; }
@@ -366,8 +364,8 @@ namespace game
             {
                 Console.WriteLine("\n\n\n");
             }
-
         }
+        
         public int GetMatches(string input)
         {
             int index = 0;
@@ -411,7 +409,6 @@ namespace game
                     count++;
                 }
             }
-
             return count;
         }
 
@@ -977,47 +974,58 @@ namespace words
             "repetitive","exterminator", "incapacitate", "reproduction", "celebration", 
             "experimental", "detrimental", "rudimentary", "exponentially", "argumentative",
             "resurgent", "insurgent", "invitational", "intertwined", "recreational", "old",
-            "ale", "collaborate", "regurgitate", "facilitate"
-            
+            "ale", "collaborate", "regurgitate", "facilitate"            
         ];
 
         private static int _2sCount, _3sCount, _4sCount, _5sCount,
                     _6sCount, _7sCount, _8sCount, _9sCount,
                     _10sCount, _11sCount, _12sCount, _13sCount;
-        public static int TwosCount {
+        public static int TwosCount 
+        {
             get { return _2sCount; } 
         }
-        public static int ThreesCount {
+        public static int ThreesCount 
+        {
             get { return _3sCount; } 
         }
-        public static int FoursCount {
+        public static int FoursCount 
+        {
             get { return _4sCount; } 
         }
-        public static int FivesCount {
+        public static int FivesCount 
+        {
             get { return _5sCount; } 
         }
-        public static int SixesCount {
+        public static int SixesCount 
+        {
             get { return _6sCount; } 
         }
-        public static int SevensCount {
+        public static int SevensCount 
+        {
             get { return _7sCount; } 
         }
-        public static int EightsCount {
+        public static int EightsCount 
+        {
             get { return _8sCount; } 
         }
-        public static int NinesCount {
+        public static int NinesCount 
+        {
             get { return _9sCount; } 
         }
-        public static int TensCount {
+        public static int TensCount 
+        {
             get { return _10sCount; } 
         }
-        public static int ElevensCount {
+        public static int ElevensCount 
+        {
             get { return _11sCount; } 
         }
-        public static int TwelvesCount {
+        public static int TwelvesCount 
+        {
             get { return _12sCount; } 
         }
-        public static int ThirteensCount {
+        public static int ThirteensCount 
+        {
             get { return _13sCount; } 
         }
 
@@ -1075,16 +1083,12 @@ namespace words
             GetLengthCounts();
 
             if (lengthError)
-            {
                 return;
-            }
 
             Console.Write(" size tots: ");
 
             Console.WriteLine($"2 = {_2sCount} | 3 = {_3sCount} | 4 = {_4sCount} | 5 = {_5sCount} ({_2sCount + _3sCount + _4sCount + _5sCount})");
-
             Console.WriteLine($"           6 = {_6sCount} | 7 = {_7sCount} | 8 = {_8sCount} |  9 = {_9sCount} ({_6sCount + _7sCount + _8sCount + _9sCount})");
-
             Console.WriteLine($"           10 = {_10sCount} | 11 = {_11sCount} | 12 = {_12sCount} | 13 = {_13sCount} ({_10sCount + _11sCount + _12sCount + _13sCount})");
 
             if (wordsArray.Count != wordsArray.Distinct().Count())
@@ -1099,10 +1103,16 @@ namespace words
                             .ToList();
 
             if (duplicates.Count != 0)
+            {
                 foreach (string s in duplicates)
+                {
                     Console.Write(s + " ");
+                }
+            }
             else
+            {
                 Console.Write("list was empty");
+            }
 
             Console.Write("\n       count: " + wordsArray.Count + " | ");
 
