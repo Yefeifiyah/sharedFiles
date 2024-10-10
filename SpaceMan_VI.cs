@@ -1078,7 +1078,9 @@ namespace words
                     _2sCount++;
             }
         }
-        private static void Main(string[] args)
+
+ // commenting out main on words namespace to avoid conflicts at execution  
+ /*       private static void Main(string[] args)
         {
             GetLengthCounts();
 
@@ -1117,6 +1119,6 @@ namespace words
             Console.Write("\n       count: " + wordsArray.Count + " | ");
 
             Console.Write($"max length: 13");
-        }
+        }    */
     }
 }
