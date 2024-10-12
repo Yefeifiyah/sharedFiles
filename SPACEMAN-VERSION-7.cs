@@ -1034,11 +1034,15 @@ namespace words
             "reprehensible", "indefensible", "dereliction", "television", "supervision",
             "restroom", "installation", "upgrade", "uptake", "uphill", "uptown", "downtown",
             "downturn", "showtime", "shrapnel", "industrialize", "recycle", "bicycle",
-            "cycle", "baguette", "rosette", "tenet", "container", "divider", "trap", "crap",
-            "foul", "contemptible", "depart", "department", "enact", "enable", "disable",
+            "cycle", "baguette", "rosette", "tenet", "container", "enact", "trap", "entrap",
+            "foul", "contemptible", "depart", "department", "divider", "enable", "disable",
             "scapegoat", "steamboat", "skyscraper", "undertaker", "restorative", "decor",
             "decorative", "restore", "ignore", "galore", "connote", "support", "comfort",
-            "software", "discipline", "trespass", "coalesce", "definite", "infinity", "relegate", 
+            "software", "discipline", "trespass", "coalesce", "definite", "infinity",
+            "relegate", "separate", "exculpate", "immigrant", "repatriate", "incinerate",
+            "ingratiate", "infuriate", "repudiate", "exclamation", "congregate", "fixate",
+            "asphyxiate", "contemporary", "commemorative", "elegance", "circumstance",
+            "untangle", "reprimand", "continental", "stratosphere"
         ];
 
         private static int _2sCount, _3sCount, _4sCount, _5sCount,
@@ -1074,10 +1078,10 @@ namespace words
 
             foreach (string x in wordsArray)
             {
-                if (x.Length > 13)
+                if (x.Length > 13 || x.Length < 2)
                 {
                     lengthError = true;
-                    Console.Write("a newly entered word was over 13 chars...exiting.");
+                    Console.WriteLine("\nERROR: \n  words must be between 2 and 13 chars inclusive--please correct...\n");
                     return;
                 }
 
@@ -1108,7 +1112,7 @@ namespace words
     //         Console.Write(" size tots: ");
     //         Console.WriteLine($"2 = {_2sCount} | 3 = {_3sCount} | 4 = {_4sCount} | 5 = {_5sCount} ({_2sCount + _3sCount + _4sCount + _5sCount})");
     //         Console.WriteLine($"           6 = {_6sCount} | 7 = {_7sCount} | 8 = {_8sCount} | 9 = {_9sCount} ({_6sCount + _7sCount + _8sCount + _9sCount})");
-    //         Console.WriteLine($"           10 = {_10sCount} | 11 = {_11sCount} | 12 = {_12sCount} | 13 = {_13sCount} ({_10sCount + _11sCount + _12sCount + _13sCount})");
+    //         Console.WriteLine($"          10 = {_10sCount} | 11 = {_11sCount} | 12 = {_12sCount} | 13 = {_13sCount} ({_10sCount + _11sCount + _12sCount + _13sCount})");
 
     //         Console.Write("       count: " + wordsArray.Count + " | ");
 
