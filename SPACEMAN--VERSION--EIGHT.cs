@@ -8,12 +8,12 @@
 // two projects as part of the main solution... then in VS-Code, you open the folder up,
 // you go to the game folder and you create files Game.cs, UFO.cs, the Program
 // files you just edit for each app completely erase with the new code, then lastly
-// right click on Game.csproj and select 'add reference' and then choose 'words', then in
+// right click on game.csproj and select 'add reference' and then choose 'words.csproj', 
+// forgot exactly if it's a dialog or a command palette, but it's easy... then in
 // the terminal first do a 'dotnet build' and then 'dotnet run --project game' or 'dotnet
 // run --project words'... when you are at the top level, but if you navigate to each
 // individual folder, then you can just do a 'dotnet run' without additional parameters.
-// so, new features are it gives the instance id # (that's just something weird i thought up)
-// wish i could use that for the seed of the random number... anybody got any thoughts?
+// new features are it gives the instance id # in case there are two terminals running it,
 // also gives better instructions when you first load it up, eg: to set the colors properly,
 // etc. namely to make sure to have the text a certain way and then reverse it with the
 // display settings to end up with a dark setting if you will...just looks better.
