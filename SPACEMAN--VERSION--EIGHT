@@ -6,9 +6,10 @@
 // then after you make dotnet new console -n game and dotnet new console -n words,
 // you enter 'dotnet sln add words', and 'dotnet sln add game' and now you have the 
 // two projects as part of the main solution... then in VS-Code, you open the folder up,
-// you go to the game folder and you create files Game.cs, UFO.cs that's it. the Program
-// files you just edit for each app completely erase with the new code, then go to
-// the terminal and do a 'dotnet build' and then 'dotnet run --project game' or 'dotnet
+// you go to the game folder and you create files Game.cs, UFO.cs, the Program
+// files you just edit for each app completely erase with the new code, then lastly
+// right click on Game.csproj and select 'add reference' and then choose 'words', then in
+// the terminal first do a 'dotnet build' and then 'dotnet run --project game' or 'dotnet
 // run --project words'... when you are at the top level, but if you navigate to each
 // individual folder, then you can just do a 'dotnet run' without additional parameters.
 // so, new features are it gives the instance id # (that's just something weird i thought up)
