@@ -17,7 +17,7 @@
 // also gives better instructions when you first load it up, eg: to set the colors properly,
 // etc. namely to make sure to have the text a certain way and then reverse it with the
 // display settings to end up with a dark setting if you will...just looks better.
-// but it can be ran either way, just saying...
+// but it can be ran either way, just saying... also features a colorized UFO.
 
 
 // ...SMS3/game/Program.cs :
