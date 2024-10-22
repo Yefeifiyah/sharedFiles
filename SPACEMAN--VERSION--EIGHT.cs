@@ -1246,7 +1246,7 @@ namespace words
             "propaganda", "organism", "activism", "theory", "relativity", "configuration",
             "capitulation", "surrender", "bandage", "rampage", "savage", "ravage", "cabbage",
             "vocabulary", "cemetery", "auxiliary", "redundancy", "extradition", "resort",
-            "traditional", "reformed", "longivity", "remedy", "cure", "sure", "pure", "puke",
+            "traditional", "reformed", "longevity", "remedy", "cure", "sure", "pure", "puke",
             "slurp", "gulp", "pulp", "nuke", "duke", 
 
         ];
