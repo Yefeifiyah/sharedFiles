@@ -56,7 +56,6 @@ namespace game
             {
                 Random rand = new();
                 Game g = new(rand.Next(words.Program.wordsArray.Count));
-       //         Game g = new(0);  //<-- for debugging
 
                 while (!g.DidWin() && !g.DidLose())
                 {
@@ -143,15 +142,11 @@ namespace game
         private readonly string alphas = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
         private readonly string numbers = "0123456789";
 
-        //  public readonly string[] codewordOptions; <-- comment out for testing
-
         public Game(int x)
         {
             this.MaxNumberOfGuesses = 7;
             this.CurrentWrongGuesses = 0;
             this.CurrentRightGuesses = 0;
-
-            //  this.codewordOptions = [.. words.Program.wordsArray]; <- unnecessary
 
             this.Codeword = words.Program.wordsArray[x];
             int y = (this.Codeword.Length * 2) - 1;
@@ -290,7 +285,6 @@ namespace game
             // necessary so color won't change on forced exit
             if (Program.isExiting)
                 return;
-            // loos ugly but it's working...
             Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n");
             if (Program.isExiting)
                 return;
@@ -432,13 +426,6 @@ namespace game
 
         private void PrintUFO(int _currentWrongGuesses)
         {
-            // have to determine the index of the showcase to be called 
-            // each time and then each one will have a different print 
-            // method for the face in a varying position each time or it 
-            // won't show up at all so have ' if no face, then so and so, 
-            // then if face, then nested within if face which index and 
-            // then call the correct method.
-
             string specialInput = alienCraft.Showcase();
             int indexOfZero = GetIndexOfZero(specialInput);
             int indexOfSix = GetIndexOfSix(specialInput);
@@ -470,7 +457,6 @@ namespace game
                 }
                 else
                 {
-                    // anything else normal color
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Write(specialInput[i]);
                 }
@@ -543,8 +529,6 @@ namespace game
                 }
             }
 
-            // get rid of spaces for example 'g_ab' 
-            // not 'g _ a b', then turn it into a string
             char[] reducedInput = new char[input.Length - spaceCount];
             foreach (char h in input)
             {
@@ -1391,10 +1375,6 @@ namespace words
                 Console.WriteLine("no duplicates found");
             }
 
-    //   var longest = wordsArray.OrderByDescending(s => s.Length).First();
-    //   string superLongWord = longest.ToString();
-    //        Console.Write($"longest:   13 | ");
-
             decimal averageLength = (decimal) _allLettersCount / (decimal) wordsArray.Count;
             Console.Write($"   average: {averageLength:F2} | ");
 
@@ -1420,4 +1400,3 @@ namespace words
 }
 
 //=====================EOF
-
