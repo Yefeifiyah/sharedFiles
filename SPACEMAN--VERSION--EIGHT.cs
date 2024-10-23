@@ -322,8 +322,17 @@ namespace game
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("    \\\\===============================//");
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"   #{game.Program.InstanceID}");
+            if (ThereWasAnError)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(ErrorAsString);
+                ThereWasAnError = false;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"   #{game.Program.InstanceID}");
+            }
 
             Inform();
 
@@ -331,33 +340,25 @@ namespace game
             if (!DidWin() && !DidLose())
             {
                 int guessesRemaining = MaxNumberOfGuesses - CurrentWrongGuesses;
-                if (ThereWasAnError)
+                switch (guessesRemaining)
                 {
-                    Console.WriteLine(ErrorAsString);
-                    ThereWasAnError = false;
-                }
-                else
-                {
-                    switch (guessesRemaining)
-                    {
-                        case 1:
-                            Console.WriteLine("   ~~*~ game ends if you get a miss ~*~~");
-                            break;
-                        case 2:
-                            Console.WriteLine("     ~~*~ you can get 1 more miss ~*~~");
-                            break;
-                        case 7:
-                            if (CurrentRightGuesses == 0)
-                                Console.WriteLine("   ~~*~  you can get up to 6 misses ~*~~");
-                            else
-                                Console.WriteLine("   ~~*~  you can still get 6 misses ~*~~");
+                    case 1:
+                        Console.WriteLine("   ~~*~ game ends if you get a miss ~*~~");
+                        break;
+                    case 2:
+                        Console.WriteLine("     ~~*~ you can get 1 more miss ~*~~");
+                        break;
+                    case 7:
+                        if (CurrentRightGuesses == 0)
+                            Console.WriteLine("   ~~*~  you can get up to 6 misses ~*~~");
+                        else
+                            Console.WriteLine("   ~~*~  you can still get 6 misses ~*~~");
 
-                            break;
-                        default:
-                            Console.WriteLine("    ~~*~ you can get "
-                                            + (guessesRemaining - 1) + " more misses ~*~~");
-                            break;
-                    }
+                        break;
+                    default:
+                        Console.WriteLine("    ~~*~ you can get "
+                                        + (guessesRemaining - 1) + " more misses ~*~~");
+                        break;
                 }
 
                 int count = words.Program.wordsArray.Count;
