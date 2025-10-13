@@ -582,9 +582,9 @@ namespace HomePetProject
                                                         PauseWithMessage($"Pet-ID {inputID} has one required field missing: {incompleteFields[0]}.");
                                                 else
                                                     if (ourPets[index, 3] != "tbd")
-                                                    PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required field missing: {string.Join(", ", incompleteFields)}.");
+                                                    PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
                                                 else
-                                                    PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required field missing: {string.Join(", ", incompleteFields)}.");
+                                                    PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
 
                                             foreach (string fieldWasEmptyAtFirst in incompleteFields)
                                             {
