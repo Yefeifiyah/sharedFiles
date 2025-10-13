@@ -21,7 +21,7 @@ namespace HomePetProject
 
             bool infoWasModified = false; // set a global flag for whether to display menu option 'S' or not
 
-            string dataFile = "pets.txt";
+            string dataFile = "pets.txt";  // there's a copy of pets.txt in the sharedFiles folder...
             LoadPetsInfoFile(dataFile, ourPets);
 
             List<string> petIDs = [];
