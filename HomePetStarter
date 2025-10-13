@@ -142,7 +142,7 @@ namespace HomePetProject
                                                         Console.WriteLine($"{fieldNames[j]}: \"{thisField}\"");
                                                     else
                                                         Console.WriteLine($"{fieldNames[j]}: {thisField}");
-                    }
+                                                }
                                                 // else
                                                 // {
                                                 //     incompleteRecord = true;
@@ -247,30 +247,8 @@ namespace HomePetProject
                                     //     }
                                     // }
 
-                                    bool validAge = false;
+                                    est_age = PromptForAge(_species);
 
-                                    while (!validAge)
-                                    {
-                                        Console.Clear();
-
-                                   //   Console.Write($"Note: Entering an age isn't mandatory, but it might help us better manage certain situations \n(eg: decisions around placement, nutrition, medical treatments, etc.) \n\nEnter a value for this {species}'s 'age' (eg: '2 mos.', '1.5 yrs', '11') or '?' if unknown: ");
-                                  //      Console.Write($"Note: Providing an age is optional, but it can help us make better decisions in areas such as placement, nutrition, and medical care.\n\nPlease enter this {species}'s age (e.g., '2 mos.', '1.5 yrs', '11'), or type '?' if unknown: ");
-                                        Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {_species}'s age or a best estimate (eg: 'six months', \n'2 mos.', '1.5 yrs', '11') or type '?' if unknown: ");
-
-                                        readResult = Console.ReadLine();
-
-                                        if (readResult != null)
-                                        {
-                                            est_age = readResult.Trim();
-
-                                            if (est_age == "?")
-                                                validAge = true;
-                                            else if (!string.IsNullOrWhiteSpace(est_age))
-                                                validAge = true;
-                                            else
-                                                PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
-                                        }
-                                    }
 
                                     // while (string.IsNullOrWhiteSpace(nickname))
                                     // {
@@ -497,8 +475,11 @@ namespace HomePetProject
                                         // Console.Write($"\n\nEnter a value for this {species}'s age (e.g., '2 mos.', \n'1.5 yrs', '11') or '?' if unknown: ");
 
 
-                           //             Console.WriteLine("Note: Age isn't a required field, but providing one (or an educated guess) \nwould be of aid if something age-related came up.");
-                           //             Console.Write($"\n\nEnter a value for this {species}'s age (e.g., '2 mos.', \n'1.5 yrs', '11') or '?' if unknown: ");
+                                        //             Console.WriteLine("Note: Age isn't a required field, but providing one (or an educated guess) \nwould be of aid if something age-related came up.");
+                                        //             Console.Write($"\n\nEnter a value for this {species}'s age (e.g., '2 mos.', \n'1.5 yrs', '11') or '?' if unknown: ");
+
+
+
 
                                         string agePrompt, ageResponse;
                                         agePrompt = ourPets[index, 3] == "tbd"
@@ -508,36 +489,40 @@ namespace HomePetProject
 
                                         if (ageResponse == "y")
                                         {
-                                            bool validAge = false;
-                                            while (!validAge)
-                                            {
-                                                string enterAnAge = ourPets[index, 3] == "tbd"
-                                                    ? $"Please enter this {thisSpecies}'s age: "
-                                                    : $"Please enter {ourPets[index, 3]}'s age: ";
-                                                Console.Write(enterAnAge);
+                                            // bool validAge = false;
+                                            // while (!validAge)
+                                            // {
+                                            //     string enterAnAge = ourPets[index, 3] == "tbd"
+                                            //         ? $"Please enter this {thisSpecies}'s age: "
+                                            //         : $"Please enter {ourPets[index, 3]}'s age: ";
+                                            //     Console.Write(enterAnAge);
 
-                                                string ageInput = Console.ReadLine()?.Trim() ?? "";
-                                                if (int.TryParse(ageInput, out int age) && age > 0)
-                                                {
-                                                    ourPets[index, 2] = age.ToString();
-                                                    validAge = true;
-                                                    ageUpdatedThisRun = true;
-                                                    infoWasModified = true;
+                                            //     string ageInput = Console.ReadLine()?.Trim() ?? "";
 
-                                                    string ageUpdatedConfirmation = ourPets[index, 3] == "tbd"
-                                                        ? $"This {thisSpecies}'s age has been updated."
-                                                        : $"{ourPets[index, 3]}'s age has been updated.";
-                                                    PauseWithMessage($"{ageUpdatedConfirmation}");
-                                                }
-                                                else if (int.TryParse(ageInput, out int age2) && age2 <= 0)
-                                                {
-                                                    PauseWithMessage("ERROR: The number cannot be zero or less.");
-                                                }
-                                                else
-                                                {
-                                                    PauseWithMessage("ERROR: Invalid input. Please try again.");
-                                                }
-                                            }
+                                            string thisAge = PromptForAge(thisSpecies);
+
+                                            // if (int.TryParse(ageInput, out int age) && age > 0)
+                                            // {
+                                            //     ourPets[index, 2] = thisAge.ToString();
+                                            ourPets[index, 2] = thisAge;
+                                            //        validAge = true;
+                                            ageUpdatedThisRun = true;
+                                            infoWasModified = true;
+
+                                            string ageUpdatedConfirmation = ourPets[index, 3] == "tbd"
+                                                ? $"This {thisSpecies}'s age has been updated."
+                                                : $"{ourPets[index, 3]}'s age has been updated.";
+                                            PauseWithMessage($"{ageUpdatedConfirmation}");
+                                            // }
+                                            // else if (int.TryParse(ageInput, out int age2) && age2 <= 0)
+                                            // {
+                                            //     PauseWithMessage("ERROR: The number cannot be zero or less.");
+                                            // }
+                                            // else
+                                            // {
+                                            //     PauseWithMessage("ERROR: Invalid input. Please try again.");
+                                            // }
+                                            //}
                                         }
                                     }
 
@@ -576,15 +561,19 @@ namespace HomePetProject
                                             //             Console.Clear();
                                             if (!returning)
                                                 if (incompleteFields.Count == 1)
+                                                {
                                                     if (ourPets[index, 3] != "tbd")
                                                         PauseWithMessage($"{ourPets[index, 3]} has one required field missing: {incompleteFields[0]}.");
                                                     else
                                                         PauseWithMessage($"Pet-ID {inputID} has one required field missing: {incompleteFields[0]}.");
+                                                }
                                                 else
+                                                {
                                                     if (ourPets[index, 3] != "tbd")
-                                                    PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
-                                                else
-                                                    PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                        PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                    else
+                                                        PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                }
 
                                             foreach (string fieldWasEmptyAtFirst in incompleteFields)
                                             {
@@ -592,22 +581,35 @@ namespace HomePetProject
                                                 //     ? $"Enter a {missingField} for this {thisSpecies} or press 'enter' to skip: "
                                                 //     : $"Describe this {thisSpecies}'s {missingField} or press 'enter' to skip: ";
 
+                                        // nick_name = PromptForField($"Enter this {_species}'s name/nickname or leave blank by pressing 'enter': ");
+
+                                        // if (!string.IsNullOrWhiteSpace(nick_name))
+                                        //     _physique = PromptForField($"Describe {nick_name}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
+                                        // else
+                                        //     _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
+
+                                        // if (!string.IsNullOrWhiteSpace(nick_name))
+                                        //     _demeanor = PromptForField($"Describe {nick_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+                                        // else
+                                        //     _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+
+
                                                 string prompt = "";
                                                 if (fieldWasEmptyAtFirst == "nickname")
                                                 {
-                                                    prompt = $"Enter this {thisSpecies}'s nickname or just leave blank for now: ";
+                                                    prompt = $"Enter this {thisSpecies}'s name/nickname or leave blank by pressing 'enter': ";
                                                 }
                                                 else if (fieldWasEmptyAtFirst == "physique")
                                                 {
                                                     prompt = ourPets[index, 3] == "tbd"
-                                                        ? $"Describe this {thisSpecies}'s appearance (size, color, gender, weight, housebroken, etc.) or just leave blank for now: "
-                                                        : $"Describe {ourPets[index, 3]}'s appearance (size, color, gender, weight, housebroken, etc.) or just leave blank for now: ";
+                                                        ? $"Describe {thisSpecies}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': "
+                                                        : $"Describe {ourPets[index, 3]}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ";
                                                 }
                                                 else if (fieldWasEmptyAtFirst == "demeanor")
                                                 {
                                                     prompt = ourPets[index, 3] == "tbd"
-                                                       ? $"Describe this {thisSpecies}'s temperament (likes or dislikes, tricks, energy level, etc.) or just leave blank for now: "
-                                                       : $"Describe {ourPets[index, 3]}'s temperament (likes or dislikes, tricks, energy level, etc.) or just leave blank for now: ";
+                                                       ? $"Describe this {thisSpecies}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': "
+                                                       : $"Describe {ourPets[index, 3]}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ";
                                                 }
                                                 Console.Clear();
                                                 Console.Write($"{prompt}");
@@ -757,7 +759,7 @@ namespace HomePetProject
 
 
 
-                                                    PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
                                                 goto MENU;
                                             }
                                         }
@@ -929,5 +931,34 @@ namespace HomePetProject
             return result;
         }
 
+        static string PromptForAge(string species, string age = "")
+        {
+            bool validAge = false;
+
+            while (!validAge)
+            {
+                Console.Clear();
+
+                //   Console.Write($"Note: Entering an age isn't mandatory, but it might help us better manage certain situations \n(eg: decisions around placement, nutrition, medical treatments, etc.) \n\nEnter a value for this {species}'s 'age' (eg: '2 mos.', '1.5 yrs', '11') or '?' if unknown: ");
+                //      Console.Write($"Note: Providing an age is optional, but it can help us make better decisions in areas such as placement, nutrition, and medical care.\n\nPlease enter this {species}'s age (e.g., '2 mos.', '1.5 yrs', '11'), or type '?' if unknown: ");
+                Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {species}'s age or a best estimate (eg: 'six months', \n'2 mos.', '1.5 yrs', '11') or type '?' if unknown: ");
+
+                string? result = Console.ReadLine();
+
+                if (result != null)
+                {
+                    age = result.Trim();
+
+                    if (age == "?")
+                        validAge = true;
+                    else if (!string.IsNullOrWhiteSpace(age))
+                        validAge = true;
+                    else
+                        PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
+                }
+            }
+
+            return age;
+        }
     }
 }
