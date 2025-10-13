@@ -21,7 +21,7 @@ namespace HomePetProject
 
             bool infoWasModified = false; // set a global flag for whether to display menu option 'S' or not
 
-            string dataFile = "pets.txt";
+            string dataFile = "pets.txt";   // find a sample in 'sharedFiles'
             LoadPetsInfoFile(dataFile, ourPets);
 
             List<string> petIDs = [];
@@ -165,8 +165,9 @@ namespace HomePetProject
                         case 2:
                             {
                                 // Add a new pet friend to the family
-                                string pet_ID, _species = "", est_age = "", nick_name, _physique, _demeanor;  // transient variables
+                                string pet_ID, _species = "", est_age, nick_name, _physique, _demeanor;  // transient variables
                                 string anotherPet = "y";
+                                string? speciesResult;
                                 int petCount = 0;
 
                                 for (int i = 0; i < maxPets; i++)
@@ -187,11 +188,11 @@ namespace HomePetProject
                                     {
                                         Console.Clear();
                                         Console.Write("Enter 'dog' or 'cat' to begin a new entry or '0' to cancel: ");
-                                        readResult = Console.ReadLine();
+                                        speciesResult = Console.ReadLine();
 
-                                        if (readResult != null)
+                                        if (IsLegit(speciesResult))
                                         {
-                                            _species = readResult?.ToLower().Trim() ?? "";
+                                            _species = speciesResult?.ToLower().Trim() ?? "";
 
                                             if (_species == "0")
                                             {
@@ -217,97 +218,96 @@ namespace HomePetProject
 
                                     petIDs.Add(pet_ID);
 
-                                    //    petIDToIndex[petID] = petCount;  <- if using dictionary
+                                    /*                                        petIDToIndex[petID] = petCount;  <- if using dictionary
 
-                                    // bool validAge = false;
+                                                                        bool validAge = false;
 
-                                    // while (!validAge)
-                                    // {
-                                    //     Console.Clear();
-                                    //     Console.Write($"Enter this {species}'s age if known or '?' if unknown: ");
+                                                                        while (!validAge)
+                                                                        {
+                                                                            Console.Clear();
+                                                                            Console.Write($"Enter this {species}'s age if known or '?' if unknown: ");
 
-                                    //     readResult = Console.ReadLine();
+                                                                            readResult = Console.ReadLine();
 
-                                    //     if (readResult != null)
-                                    //     {
-                                    //         age = readResult?.Trim() ?? "";
+                                                                            if (readResult != null)
+                                                                            {
+                                                                                age = readResult?.Trim() ?? "";
 
-                                    //         if (age != "?")
-                                    //         {
-                                    //             validAge = int.TryParse(age, out int petAge);
-                                    //             if (validAge == false || petAge <= 0)
-                                    //                 PauseWithMessage("ERROR: Age must be a whole number greater than zero or '?' if not known.");
-                                    //             if (petAge == 0)
-                                    //                 validAge = false;
-                                    //         }
-                                    //         else
-                                    //         {
-                                    //             validAge = true;
-                                    //         }
-                                    //     }
-                                    // }
-
+                                                                                if (age != "?")
+                                                                                {
+                                                                                    validAge = int.TryParse(age, out int petAge);
+                                                                                    if (validAge == false || petAge <= 0)
+                                                                                        PauseWithMessage("ERROR: Age must be a whole number greater than zero or '?' if not known.");
+                                                                                    if (petAge == 0)
+                                                                                        validAge = false;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    validAge = true;
+                                                                                }
+                                                                            }
+                                                                        }
+                                     */
                                     est_age = PromptForAge(_species);
 
+                                    /*                                     while (string.IsNullOrWhiteSpace(nickname))
+                                                                        {
+                                                                            Console.Clear();
+                                                                            Console.Write($"Enter a nickname for the {species} or press 'enter' to skip: ");
+                                                                            readResult = Console.ReadLine();
 
-                                    // while (string.IsNullOrWhiteSpace(nickname))
-                                    // {
-                                    //     Console.Clear();
-                                    //     Console.Write($"Enter a nickname for the {species} or press 'enter' to skip: ");
-                                    //     readResult = Console.ReadLine();
+                                                                            if (readResult != null)
+                                                                                nickname = readResult?.Trim() ?? "";
 
-                                    //     if (readResult != null)
-                                    //         nickname = readResult?.Trim() ?? "";
+                                                                            if (nickname == "")
+                                                                            {
+                                                                                // optional: PauseWithMessage($"You skipped the {species}'s nickname but you can update it by selecting option 4 from the main menu.");
+                                                                                nickname = "tbd";
+                                                                            }
+                                                                        }
 
-                                    //     if (nickname == "")
-                                    //     {
-                                    //         // optional: PauseWithMessage($"You skipped the {species}'s nickname but you can update it by selecting option 4 from the main menu.");
-                                    //         nickname = "tbd";
-                                    //     }
-                                    // }
+                                                                        // get a description of the pet's physical appearance/condition - animalPhysicalDescription can be blank.
+                                                                        while (string.IsNullOrWhiteSpace(physique))
+                                                                        {
+                                                                            Console.Clear();
+                                                                            Console.Write($"Describe the {species}'s appearance (size, color, gender, weight, \nhousebroken, etc.) or press 'enter' to skip: ");
+                                                                            readResult = Console.ReadLine();
 
-                                    // // get a description of the pet's physical appearance/condition - animalPhysicalDescription can be blank.
-                                    // while (string.IsNullOrWhiteSpace(physique))
-                                    // {
-                                    //     Console.Clear();
-                                    //     Console.Write($"Describe the {species}'s appearance (size, color, gender, weight, \nhousebroken, etc.) or press 'enter' to skip: ");
-                                    //     readResult = Console.ReadLine();
+                                                                            if (readResult != null)
+                                                                                physique = readResult?.Trim() ?? "";
 
-                                    //     if (readResult != null)
-                                    //         physique = readResult?.Trim() ?? "";
+                                                                            if (physique == "")
+                                                                            {
+                                                                                physique = "tbd";
+                                                                                //                 PauseWithMessage($"You skipped the {species}'s appearance but you can update it by selecting option 4 from the main menu.");
+                                                                            }
+                                                                        }
 
-                                    //     if (physique == "")
-                                    //     {
-                                    //         physique = "tbd";
-                                    //         //                 PauseWithMessage($"You skipped the {species}'s appearance but you can update it by selecting option 4 from the main menu.");
-                                    //     }
-                                    // }
+                                                                        // get a description of the pet's temperament - behavior can be blank.
+                                                                        while (string.IsNullOrWhiteSpace(behavior))
+                                                                        {
+                                                                            Console.Clear();
+                                                                            Console.Write($"Enter a description of the {species}'s temperament (likes or dislikes, \ntricks, energy level, etc.) or press 'enter' to skip: ");
+                                                                            readResult = Console.ReadLine();
 
-                                    // // get a description of the pet's temperament - behavior can be blank.
-                                    // while (string.IsNullOrWhiteSpace(behavior))
-                                    // {
-                                    //     Console.Clear();
-                                    //     Console.Write($"Enter a description of the {species}'s temperament (likes or dislikes, \ntricks, energy level, etc.) or press 'enter' to skip: ");
-                                    //     readResult = Console.ReadLine();
+                                                                            if (readResult != null)
+                                                                                behavior = readResult?.Trim() ?? "";
 
-                                    //     if (readResult != null)
-                                    //         behavior = readResult?.Trim() ?? "";
-
-                                    //     if (behavior == "")
-                                    //     {
-                                    //         behavior = "tbd";
-                                    //         //                PauseWithMessage($"You skipped the {species}'s temperament but you can update it by selecting option 4 from the main menu.");
-                                    //     }
-                                    // }
-
+                                                                            if (behavior == "")
+                                                                            {
+                                                                                behavior = "tbd";
+                                                                                //                PauseWithMessage($"You skipped the {species}'s temperament but you can update it by selecting option 4 from the main menu.");
+                                                                            }
+                                                                        }
+                                     */
                                     nick_name = PromptForField($"Enter this {_species}'s name/nickname or leave blank by pressing 'enter': ");
 
-                                    if (IsLegit(nick_name))
+                                    if (nick_name != "tbd")
                                         _physique = PromptForField($"Describe {nick_name}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
                                     else
                                         _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
 
-                                    if (IsLegit(nick_name))
+                                    if (nick_name != "tbd")
                                         _demeanor = PromptForField($"Describe {nick_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
                                     else
                                         _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
@@ -581,17 +581,17 @@ namespace HomePetProject
                                                 //     ? $"Enter a {missingField} for this {thisSpecies} or press 'enter' to skip: "
                                                 //     : $"Describe this {thisSpecies}'s {missingField} or press 'enter' to skip: ";
 
-                                        // nick_name = PromptForField($"Enter this {_species}'s name/nickname or leave blank by pressing 'enter': ");
+                                                // nick_name = PromptForField($"Enter this {_species}'s name/nickname or leave blank by pressing 'enter': ");
 
-                                        // if (!string.IsNullOrWhiteSpace(nick_name))
-                                        //     _physique = PromptForField($"Describe {nick_name}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
-                                        // else
-                                        //     _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
+                                                // if (!string.IsNullOrWhiteSpace(nick_name))
+                                                //     _physique = PromptForField($"Describe {nick_name}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
+                                                // else
+                                                //     _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
 
-                                        // if (!string.IsNullOrWhiteSpace(nick_name))
-                                        //     _demeanor = PromptForField($"Describe {nick_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
-                                        // else
-                                        //     _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+                                                // if (!string.IsNullOrWhiteSpace(nick_name))
+                                                //     _demeanor = PromptForField($"Describe {nick_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+                                                // else
+                                                //     _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
 
 
                                                 string prompt = "";
@@ -915,7 +915,7 @@ namespace HomePetProject
         static string PromptForField(string promptMessage, string fallbackValue = "tbd")
         {
             string result = "";
-            while (IsLegit(result))
+            while (!IsLegit(result))
             {
                 Console.Clear();
                 Console.Write(promptMessage);
@@ -945,16 +945,23 @@ namespace HomePetProject
 
                 string? result = Console.ReadLine();
 
-                if (result != null)
+                if (IsLegit(result))
                 {
-                    age = result.Trim();
+                    age = result?.Trim() ?? "";
 
                     if (age == "?")
+                    {
                         validAge = true;
+                        continue;
+                    }
                     else if (IsLegit(age))
+                    {
                         validAge = true;
+                    }
                     else
+                    {
                         PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
+                    }
                 }
             }
 
