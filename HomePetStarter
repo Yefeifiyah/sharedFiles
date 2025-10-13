@@ -21,7 +21,7 @@ namespace HomePetProject
 
             bool infoWasModified = false; // set a global flag for whether to display menu option 'S' or not
 
-            string dataFile = "pets.txt";  // there's a copy of pets.txt in the sharedFiles folder...
+            string dataFile = "pets.txt";
             LoadPetsInfoFile(dataFile, ourPets);
 
             List<string> petIDs = [];
@@ -29,7 +29,7 @@ namespace HomePetProject
             for (int i = 0; i < maxPets; i++)
             {
                 string? id = ourPets[i, 0];
-                if (!string.IsNullOrWhiteSpace(id))
+                if (IsLegit(id))
                 {
                     petIDs.Add(id);
                 }
@@ -68,7 +68,7 @@ namespace HomePetProject
                 readResult = Console.ReadLine();
                 menuSelection = readResult?.Trim() ?? "";
 
-                if (string.IsNullOrWhiteSpace(menuSelection))
+                if (!IsLegit(menuSelection))
                 {
                     PauseWithMessage("ERROR: No input detected. Please try again.");
                 }
@@ -170,7 +170,7 @@ namespace HomePetProject
                                 int petCount = 0;
 
                                 for (int i = 0; i < maxPets; i++)
-                                    if (!string.IsNullOrWhiteSpace(ourPets[i, 0]))
+                                    if (IsLegit(ourPets[i, 0]))
                                         petCount++;
 
                                 if (petCount >= maxPets)
@@ -197,7 +197,7 @@ namespace HomePetProject
                                             {
                                                 goto END;
                                             }
-                                            else if (string.IsNullOrWhiteSpace(_species))
+                                            else if (!IsLegit(_species))
                                             {
                                                 PauseWithMessage("ERROR: Nothing was entered. Please try again.");
                                             }
@@ -302,12 +302,12 @@ namespace HomePetProject
 
                                     nick_name = PromptForField($"Enter this {_species}'s name/nickname or leave blank by pressing 'enter': ");
 
-                                    if (!string.IsNullOrWhiteSpace(nick_name))
+                                    if (IsLegit(nick_name))
                                         _physique = PromptForField($"Describe {nick_name}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
                                     else
                                         _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
 
-                                    if (!string.IsNullOrWhiteSpace(nick_name))
+                                    if (IsLegit(nick_name))
                                         _demeanor = PromptForField($"Describe {nick_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
                                     else
                                         _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
@@ -420,7 +420,7 @@ namespace HomePetProject
                                         inputID = petIDs[index];
                                         validID = true;
                                     }
-                                    else if (string.IsNullOrWhiteSpace(selection))
+                                    else if (!IsLegit(selection))
                                     {
                                         PauseWithMessage("ERROR: Nothing was entered. Please try again.");
                                     }
@@ -615,7 +615,7 @@ namespace HomePetProject
                                                 Console.Write($"{prompt}");
                                                 string newValue = Console.ReadLine()?.Trim() ?? "";
 
-                                                if (!string.IsNullOrWhiteSpace(newValue))
+                                                if (IsLegit(newValue))
                                                 {
                                                     switch (fieldWasEmptyAtFirst)
                                                     {
@@ -855,7 +855,7 @@ namespace HomePetProject
                 {
                     validEntry = true;
                 }
-                else if (string.IsNullOrWhiteSpace(response))
+                else if (!IsLegit(response))
                 {
                     PauseWithMessage("ERROR: Nothing entered. Please enter 'y' or 'n'.");
                     Console.Clear();
@@ -883,7 +883,7 @@ namespace HomePetProject
 
             for (int i = 0; i < maxEntries; i++)
             {
-                if (!string.IsNullOrWhiteSpace(ourPets[i, 0]))
+                if (IsLegit(ourPets[i, 0]))
                 {
                     string line = string.Join("|",
                         Enumerable.Range(0, 6).Select(j => ourPets[i, j]));
@@ -915,7 +915,7 @@ namespace HomePetProject
         static string PromptForField(string promptMessage, string fallbackValue = "tbd")
         {
             string result = "";
-            while (string.IsNullOrWhiteSpace(result))
+            while (IsLegit(result))
             {
                 Console.Clear();
                 Console.Write(promptMessage);
@@ -951,7 +951,7 @@ namespace HomePetProject
 
                     if (age == "?")
                         validAge = true;
-                    else if (!string.IsNullOrWhiteSpace(age))
+                    else if (IsLegit(age))
                         validAge = true;
                     else
                         PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
