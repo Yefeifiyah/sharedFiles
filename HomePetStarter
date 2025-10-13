@@ -646,7 +646,7 @@ namespace HomePetProject
                                                         case "physique":
                                                             ourPets[index, 4] = "tbd";
                                                             break;
-                                                        case "behavior":
+                                                        case "demeanor":
                                                             ourPets[index, 5] = "tbd";
                                                             break;
                                                     }
