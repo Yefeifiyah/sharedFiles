@@ -1,0 +1,785 @@
+using System;
+
+namespace HomePetProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            HashSet<int> validChoices = [1, 2, 3, 4, 5, 6];
+            HashSet<string> alphabeticAnswers = ["one", "two", "three", "four", "five", "six"];
+
+            int index = 0;
+            int maxPets = 8;
+
+            string? readResult;
+            string menuSelection;
+            string[,] ourPets = new string[maxPets, 6];
+
+            bool infoWasModified = false; // set a global flag for whether to display menu option 'S' or not
+
+            string dataFile = "pets.txt";
+            LoadPetsInfoFile(dataFile, ourPets);
+
+            List<string> petIDs = [];
+
+            for (int i = 0; i < maxPets; i++)
+            {
+                string? id = ourPets[i, 0];
+                if (IsValid(id))
+                {
+                    petIDs.Add(id);
+                }
+            }
+
+            do
+            {
+            // display the top-level menu options               
+            OPTIONS_MENU:
+                Console.Clear();
+                Console.WriteLine("\x1b[95m*****Welcome to the Contoso PetFriends options menu:*****\x1b[0m");  // Bright Red
+
+                if (infoWasModified)
+                    Console.WriteLine("       \x1b[96m(Warning: Some pet info hasn't been saved)\x1b[0m");   // Bright Cyan
+                else
+                    Console.WriteLine("      \x1b[92m(All current pet information has been saved)\x1b[0m");  // Bright Magenta
+                                                                                                             //                 Console.WriteLine(" 1. List all of our current pet information");
+                Console.WriteLine(" 1. List all of our current pet information");
+                Console.WriteLine(" 2. Add a pet record (*Note: Not Saved Automatically/use menu option 'S')");
+                Console.WriteLine(" 3. Confirm a pet record is complete and all required info is present (*NSA)");
+                Console.WriteLine(" 4. Update the information in a pet's record (*NSA)");
+                Console.WriteLine(" 5. Display all cats that match specified criteria");
+                Console.WriteLine(" 6. Display all dogs that match specified criteria");
+
+                if (infoWasModified)
+                {
+                    Console.WriteLine(" \x1b[91mS. Save all of the current pet information\x1b[0m");
+                    Console.Write("Enter an item number/letter from the menu or '0' to exit: ");
+                }
+                else
+                {
+                    Console.WriteLine("\x1b[91m---------------------------------------------------------\x1b[0m");
+                    Console.Write("Enter an item number from the menu or '0' to exit: ");
+                }
+
+                readResult = Console.ReadLine();
+                menuSelection = readResult?.Trim() ?? "";
+
+                if (!IsValid(menuSelection))
+                {
+                    PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                }
+                else if (menuSelection == "0")
+                {
+                    break;
+                }
+                else if ("s".Equals(menuSelection, StringComparison.OrdinalIgnoreCase))
+                {
+                    UpdateAllPetsSavedInfo(infoWasModified, maxPets, ourPets);
+                    if (infoWasModified)
+                        PauseWithMessage("Success: All the current pet information has been saved.");
+                    infoWasModified = false;
+                    goto OPTIONS_MENU;
+                }
+                else if (int.TryParse(menuSelection, out int y) && !validChoices.Contains(y))
+                {
+                    PauseWithMessage($"ERROR: {y} is not a valid option. Please try again.");
+                }
+                else if (int.TryParse(menuSelection, out int x) && validChoices.Contains(x))
+                {
+                    //        PauseWithMessage($"You selected menu option {x}.");
+
+                    switch (x)
+                    {
+                        case 1:
+                            {
+                                // List all of our current pet information
+
+                                //   optional: clear scrollback buffer-may not work in all terminals
+                                //      Console.Write("\x1b[3J");
+
+                                for (int i = 0; i < 44; i++)
+                                    Console.WriteLine("");
+                                Console.WriteLine("===== Current Pet Records =====");
+
+                                int totalRecs = 0;
+                                int completeRecs = 0;
+                                int incompleteRecs = 0;
+
+                                for (int i = 0; i < maxPets; i++)
+                                {
+                                    bool incompleteRecord = false;
+
+                                    if (petIDs.Contains(ourPets[i, 0]))
+                                    {
+                                        string thisPetID = ourPets[i, 0]; // Get ID
+
+                                        if (!string.IsNullOrEmpty(thisPetID))
+                                        {
+                                            totalRecs++;
+                                            Console.WriteLine($"\nRECORD #{i + 1}");
+
+                                            for (int j = 0; j < 6; j++)
+                                            {
+                                                string thisField = ourPets[i, j];
+
+                                                if (thisField == "tbd")
+                                                {
+                                                    incompleteRecord = true;
+                                                    //continue;   // optional: use for not displaying 'tbd' fields
+                                                }
+
+                                                string[] fieldNames = ["Pet ID No.", "Species", "Age", "Name", "Physique", "Demeanor"];
+
+                                                if (j == 0)
+                                                {
+                                                    // ID line
+                                                    Console.WriteLine($"{fieldNames[j]}: {thisField}");
+                                                }
+                                                else if (IsValid(thisField))
+                                                {
+                                                    if (thisField == "tbd")
+                                                        Console.WriteLine($"{fieldNames[j]}: \"{thisField}\"");
+                                                    else
+                                                        Console.WriteLine($"{fieldNames[j]}: {thisField}");
+                                                }
+                                                // else
+                                                // {
+                                                //     incompleteRecord = true;
+                                                // }
+                                            }
+
+                                            if (incompleteRecord)
+                                                incompleteRecs++;
+                                            else
+                                                completeRecs++;
+                                        }
+                                    }
+                                }
+
+                                Console.WriteLine($"\nEnd of query...there were {totalRecs} records total out of {maxPets} possible: {completeRecs} completed and {incompleteRecs} incomplete. \nNote: a '?' for 'estimated age' is valid and won't cause a record to be incomplete. \nMaximize terminal and/or scroll back as needed to view more records. ");
+                                Console.Write("\nPress 'enter' to continue ...");
+                                Console.ReadKey();
+                                break;
+                            }
+                        case 2:
+                            {
+                                // Add a new pet friend to the family
+                                string _petID, _species = "", _age, _name, _physique, _demeanor;  // transient variables
+                                string anotherPet = "y";
+                                string? speciesResult;
+                                int petCount = 0;
+
+                                for (int i = 0; i < maxPets; i++)
+                                    if (IsValid(ourPets[i, 0]))
+                                        petCount++;
+
+                                if (petCount >= maxPets)
+                                {
+                                    PauseWithMessage("We're currently at maximum capacity and regrettably cannot house \nany more pets at this time. Please check back soon.");
+                                    goto END;
+                                }
+
+                                while (anotherPet == "y" && petCount < maxPets)
+                                {
+                                    bool validEntry = false;
+
+                                    while (!validEntry)
+                                    {
+                                        Console.Clear();
+                                        Console.Write("Enter 'dog' or 'cat' to begin a new entry or '0' to cancel: ");
+                                        speciesResult = Console.ReadLine();
+
+                                        if (IsValid(speciesResult))
+                                        {
+                                            _species = speciesResult?.ToLower().Trim() ?? "";
+
+                                            if (_species == "0")
+                                            {
+                                                goto END;
+                                            }
+                                            else if (!IsValid(_species))
+                                            {
+                                                PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                                            }
+                                            else if (_species != "dog" && _species != "cat")
+                                            {
+                                                PauseWithMessage($"ERROR: You entered '{_species}'. The only valid species are 'cat' and 'dog'. Please try again.");
+                                                validEntry = false;
+                                            }
+                                            else
+                                            {
+                                                validEntry = true;
+                                            }
+                                        }
+                                    }
+
+                                    _petID = string.Concat(_species[..1].ToUpper(), (petCount + 1).ToString());
+                                    petIDs.Add(_petID);
+                                    _age = PromptForAge(_species);
+                                    _name = PromptForField($"Enter this {_species}'s name or nickname (note: you can leave it blank for now \nand fill it in later with option 3 from the main menu): ");
+                                    if (_name != "tbd")
+                                        _physique = PromptForField($"Describe {_name}'s physical traits (e.g.: breed, color, weight, abandoned, lost, well trained, etc.) or leave blank by pressing 'enter': ");
+                                    else
+                                        _physique = PromptForField($"Describe this {_species}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ");
+                                    if (_name != "tbd")
+                                        _demeanor = PromptForField($"Describe {_name}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+                                    else
+                                        _demeanor = PromptForField($"Describe this {_species}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ");
+
+                                    ourPets[petCount, 0] = _petID;
+                                    ourPets[petCount, 1] = _species;
+                                    ourPets[petCount, 2] = _age;
+                                    ourPets[petCount, 3] = _name;
+                                    ourPets[petCount, 4] = _physique;
+                                    ourPets[petCount, 5] = _demeanor;
+
+                                    petCount++;
+                                    PauseWithMessage($"Success: Record {petCount} was added with pet-ID: {_petID}.");
+                                    infoWasModified = true;
+
+                                    if (petCount < maxPets)
+                                    {
+                                        Console.Clear();
+                                        string message = $"We're presently managing {petCount} displaced pets in need of a caretaker. \nWe have space for {maxPets - petCount} more pet(s). \n\nWould you like to add one more? (y/n): ";
+                                        anotherPet = PromptYesOrNo(message);
+                                    }
+
+                                    if (petCount >= maxPets)
+                                        PauseWithMessage("We're sorry--we've reached maximum capacity and are unable to manage \nany more pets at this time. Pleae check back again soon.");
+                                }
+                            END:
+                                break;
+                            }
+                        case 3:
+                            {
+                            // Ensure a pet's profile has required input
+                            MENU:
+                                bool validID = false;
+                                string inputID = "";
+                                string selection = "";
+
+                                while (!validID)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("The following pet-IDs have been found in our system:");
+                                    Console.Write("    ");
+
+                                    //          List<string> petIDKeys = [.. petIDToIndex.Keys]; // raw IDs like "D4", "C3"
+
+                                    for (int i = 0; i < petIDs.Count; i++)
+                                    {
+                                        if (i == petIDs.Count - 1)
+                                        {
+                                            Console.Write($"{i + 1}. {petIDs[i]}");
+                                        }
+                                        else
+                                            Console.Write($"{i + 1}. {petIDs[i]} ,  ");
+                                    }
+
+                                    Console.Write("\n\nPlease enter an item number or '0' to cancel: ");
+                                    selection = Console.ReadLine()?.Trim() ?? "";
+
+                                    if (petIDs.Contains(selection.ToUpper()))
+                                    {
+                                        PauseWithMessage($"ERROR: You entered '{selection}'. Please enter the item number--not the pet-ID.");
+                                    }
+                                    else if (selection == "0")
+                                    {
+                                        // All the remaining code will be skipped and will return to the id menu.
+                                        validID = true;
+                                    }
+                                    else if (int.TryParse(selection, out int idx) && idx > 0 && idx <= petIDs.Count)
+                                    {
+                                        index = idx - 1;
+                                        inputID = petIDs[index];
+                                        validID = true;
+                                    }
+                                    else if (!IsValid(selection))
+                                    {
+                                        PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                                    }
+                                    else
+                                    {
+                                        PauseWithMessage($"ERROR: You entered '{selection}'. Try a digit like 1, 2, 3, etc.");
+                                    }
+                                }
+
+                                if (selection != "0")
+                                {
+                                    //     int index = petIDToIndex[inputID];
+                                    //     PauseWithMessage($"You entered '{inputID}' which is located at record {index + 1}.");
+
+                                    List<string> fieldsThatBeganEmpty = [];
+                                    bool ageWasUnknownAtStart = ourPets[index, 2] == "?";
+
+                                    if (ourPets[index, 3] == "tbd")
+                                        fieldsThatBeganEmpty.Add("Name");
+                                    if (ourPets[index, 4] == "tbd")
+                                        fieldsThatBeganEmpty.Add("Physique");
+                                    if (ourPets[index, 5] == "tbd")
+                                        fieldsThatBeganEmpty.Add("Demeanor");
+
+                                    char speciesCode = inputID[0];
+                                    string thisSpecies = speciesCode switch
+                                    {
+                                        'C' => "cat",
+                                        'D' => "dog",
+                                        _ => "pet"
+                                    };
+
+                                    // Display current pet info
+                                    bool returning = false;
+                                    bool allFieldsComplete = false;
+                                    bool ageUpdatedThisRun = false;
+                                    HashSet<string> completedThisRun = [];
+                                    HashSet<string> skippedThisRun = [];
+
+                                AGE_CHECK:
+                                    if (ourPets[index, 2] == "?")
+                                    {
+                                        Console.Clear();
+
+                                        string agePrompt, ageResponse;
+                                        agePrompt = ourPets[index, 3] == "tbd"
+                                            ? $"This {thisSpecies}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): "
+                                            : $"{ourPets[index, 3]}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): ";
+                                        ageResponse = PromptYesOrNo(agePrompt);
+
+                                        if (ageResponse == "y")
+                                        {
+                                            string thisAge = PromptForAge(thisSpecies);
+
+                                            // if (int.TryParse(ageInput, out int age) && age > 0)  // optional: used for numeric input only
+                                            // {
+                                            //     ourPets[index, 2] = thisAge.ToString();
+
+                                            ourPets[index, 2] = thisAge;
+                                            ageUpdatedThisRun = true;
+                                            infoWasModified = true;
+
+                                            string ageUpdatedConfirmation = ourPets[index, 3] == "tbd"
+                                                ? $"This {thisSpecies}'s age has been updated."
+                                                : $"{ourPets[index, 3]}'s age has been updated.";
+                                            PauseWithMessage($"{ageUpdatedConfirmation}");
+
+                                            // }
+                                            // else if (int.TryParse(ageInput, out int age2) && age2 <= 0)
+                                            // {
+                                            //     PauseWithMessage("ERROR: The number cannot be zero or less.");
+                                            // }
+                                            // else
+                                            // {
+                                            //     PauseWithMessage("ERROR: Invalid input. Please try again.");
+                                            // }
+                                            //}
+                                        }
+                                    }
+
+                                    while (!allFieldsComplete)
+                                    {
+                                        List<string> incompleteFields = [];
+                                        int stillIncompleteCount = 0;
+
+                                        if (ourPets[index, 3] == "tbd")
+                                            incompleteFields.Add("Name");
+                                        if (ourPets[index, 4] == "tbd")
+                                            incompleteFields.Add("Physique");
+                                        if (ourPets[index, 5] == "tbd")
+                                            incompleteFields.Add("Demeanor");
+
+                                        if (incompleteFields.Count == 0)
+                                        {
+                                            if (ourPets[index, 2] == "?")
+                                            {
+                                                if (returning)
+                                                    PauseWithMessage($"Success: All the required fields for pet-ID {inputID} have now been completed and 'age' is unknown.");
+                                                else
+                                                    PauseWithMessage($"All the required fields for pet-ID {inputID} were previously completed and 'age' is unknown.");
+                                            }
+                                            else
+                                            {
+                                                if (returning)
+                                                    PauseWithMessage($"Success: All the required fields for pet-ID {inputID} have now been completed and 'age' is known.");
+                                                else
+                                                    PauseWithMessage($"All the required fields for pet-ID {inputID} were previously completed and 'age' is known.");
+                                            }
+                                            goto MENU;
+                                        }
+                                        else
+                                        {
+                                            //             Console.Clear();
+                                            if (!returning)
+                                                if (incompleteFields.Count == 1)
+                                                {
+                                                    if (ourPets[index, 3] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, 3]} has one required field missing: {incompleteFields[0]}.");
+                                                    else
+                                                        PauseWithMessage($"Pet-ID {inputID} has one required field missing: {incompleteFields[0]}.");
+                                                }
+                                                else
+                                                {
+                                                    if (ourPets[index, 3] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                    else
+                                                        PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                }
+
+                                            foreach (string fieldWasEmptyAtFirst in incompleteFields)
+                                            {
+                                                string prompt = "";
+                                                if (fieldWasEmptyAtFirst == "Name")
+                                                {
+                                                    prompt = $"Enter this {thisSpecies}'s name/nickname or leave blank by pressing 'enter': ";
+                                                }
+                                                else if (fieldWasEmptyAtFirst == "Physique")
+                                                {
+                                                    prompt = ourPets[index, 3] == "tbd"
+                                                        ? $"Describe {thisSpecies}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': "
+                                                        : $"Describe {ourPets[index, 3]}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ";
+                                                }
+                                                else if (fieldWasEmptyAtFirst == "Demeanor")
+                                                {
+                                                    prompt = ourPets[index, 3] == "tbd"
+                                                       ? $"Describe this {thisSpecies}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': "
+                                                       : $"Describe {ourPets[index, 3]}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ";
+                                                }
+                                                Console.Clear();
+                                                Console.Write($"{prompt}");
+                                                string newValue = Console.ReadLine()?.Trim() ?? "";
+
+                                                if (IsValid(newValue))
+                                                {
+                                                    switch (fieldWasEmptyAtFirst)
+                                                    {
+                                                        case "Name":
+                                                            ourPets[index, 3] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "Physique":
+                                                            ourPets[index, 4] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "Demeanor":
+                                                            ourPets[index, 5] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                    }
+
+                                                    completedThisRun.Add(fieldWasEmptyAtFirst);
+                                                    skippedThisRun.Remove(fieldWasEmptyAtFirst); // optional, if it was previously skipped
+                                                }
+                                                else   // meaning it's either null, empty or white space
+                                                {
+                                                    switch (fieldWasEmptyAtFirst)
+                                                    {
+                                                        case "Name":
+                                                            ourPets[index, 3] = "tbd";
+                                                            break;
+                                                        case "Physique":
+                                                            ourPets[index, 4] = "tbd";
+                                                            break;
+                                                        case "Demeanor":
+                                                            ourPets[index, 5] = "tbd";
+                                                            break;
+                                                    }
+
+                                                    stillIncompleteCount++;
+                                                    skippedThisRun.Add(fieldWasEmptyAtFirst);
+                                                }
+                                            }
+
+                                            // handle skipped fields or unknown age
+                                            if (stillIncompleteCount > 0 || ourPets[index, 2] == "?")
+                                            {
+                                                Console.Clear();
+                                                string retryMessage = stillIncompleteCount > 0
+                                                    ? (stillIncompleteCount == 1
+                                                        ? $"Pet-ID {inputID}'s '{skippedThisRun.First()}' field still lacks required info. \n\nAre you sure you want to leave it blank? (y/n): "
+                                                        : $"Pet-ID {inputID} still has {stillIncompleteCount} fields that lack required info: {string.Join(", ", skippedThisRun)}. \n\nAre you sure you want to leave them blank? (y/n): ")
+                                                    : $"All the required fields for pet-ID {inputID} are complete, but 'age' is unknown. \n\nAre you sure you want to leave it blank? (y/n): ";
+
+                                                // need to introduce the nick variation of the above procedure:
+
+
+
+
+
+                                                string retryResponse = PromptYesOrNo(retryMessage);
+
+                                                if (retryResponse == "n")
+                                                {
+                                                    returning = true;
+                                                    allFieldsComplete = false;
+                                                    if (ourPets[index, 2] == "?")
+                                                        goto AGE_CHECK;
+                                                    continue; // if they didn't need age_check it continues checking for  empty fields.
+                                                              // age_check is just an extra setp bot it goes to checking after that.
+                                                }             // shows intent even if no code below would execute any way
+                                                else
+                                                {
+                                                    // user declined to continue -> final message and exit
+                                                    if (ourPets[index, 2] == "?")
+                                                    {
+                                                        Console.Clear();
+                                                        Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' unknown.");
+                                                        PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                        goto MENU;
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.Clear();
+                                                        if (!ageUpdatedThisRun)
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' was known.");
+                                                        else
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' was updated.");
+                                                        PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                        goto MENU;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // no skipped fields and age was known or updated -> success summary and exit
+                                                Console.Clear();
+                                                // if (!ageUpdatedThisRun)
+                                                //     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'age' is known.");
+                                                // else
+                                                //     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'age' is unknown.");
+
+                                                if (ourPets[index, 2] == "?")
+                                                {
+                                                    Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' is unknown.");
+                                                }
+                                                else
+                                                {
+                                                    if (ageWasUnknownAtStart)
+                                                        Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' was updated.");
+                                                    else
+                                                        Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' was known.");
+                                                }
+
+
+
+
+                                                PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                goto MENU;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                        case 4:
+                            // Update a pet's profile
+                            PauseWithMessage("Challenge Project - please check back soon to see progress.");
+                            break;
+                        case 5:
+                            // Display all cats that match specified criteria
+                            PauseWithMessage("UNDER CONSTRUCTION - please check back next month to see progress.");
+                            break;
+                        case 6:
+                            // Display all dogs that match specified criteria
+                            PauseWithMessage("UNDER CONSTRUCTION - please check back next month to see progress.");
+                            break;
+                    }
+                }
+                else
+                {
+                    if (alphabeticAnswers.Contains(menuSelection))
+                    {
+                        PauseWithMessage($"You entered '{menuSelection}' which is a menu option. However, the program is stupid and only understands whole numbers. Just use the digit and you're good. We apologize for the inconvenience.");
+                        continue;
+                    }
+                    PauseWithMessage("ERROR: A valid menu option wasn't entered. Please try again.");
+                }
+
+            } while (menuSelection != "0");
+
+            Console.Clear();
+        }
+
+        static void PauseWithMessage(string message)
+        {
+            Console.Clear();
+            Console.WriteLine(message);
+            Console.Write("\nPress 'enter' to continue ... ");
+            Console.ReadKey();
+        }
+
+        static bool IsValid(string? value)
+        {
+            return !string.IsNullOrWhiteSpace(value);
+        }
+
+        static void PrintSummary(List<string> initiallyEmpty, HashSet<string> completedRun, HashSet<string> skippedRun, bool ageUnknown, bool ageUpdated)
+        {
+            string incompleteDisplay = initiallyEmpty.Count > 0
+                ? string.Join(", ", initiallyEmpty)
+                : "none";
+
+            bool completedAllMissing = initiallyEmpty.All(completedRun.Contains);
+            string completedDisplay = completedRun.Count == 0
+                ? "none"
+                : completedAllMissing ? "all" : string.Join(", ", completedRun);
+
+            bool skippedAllMissing = initiallyEmpty.All(skippedRun.Contains);
+            string skippedDisplay = skippedRun.Count == 0
+                ? "none"
+                : skippedAllMissing ? "all" : string.Join(", ", skippedRun);
+
+            Console.WriteLine("\n         ==== Summary of Validation Run ====");
+            Console.WriteLine($"Start of run -> Age: {(ageUnknown ? "unknown" : "known")} | Incomplete: {incompleteDisplay}");
+
+            if (ageUnknown)
+            {
+                Console.WriteLine($" End of run --> Age: {(ageUpdated ? "updated" : "unknown")} | Completed: {completedDisplay} | Skipped: {skippedDisplay}");
+            }
+            else
+            {
+                Console.WriteLine($" End of run --> Completed: {completedDisplay} | Skipped: {skippedDisplay}");
+            }
+
+            Console.Write("\nPress 'enter' to continue ... ");
+            Console.ReadKey();
+        }
+
+        static string PromptYesOrNo(string message)
+        {
+            string response = "";
+            bool validEntry = false;
+
+            while (!validEntry)
+            {
+                Console.Write(message);
+                response = Console.ReadLine()?.Trim().ToLower() ?? "";
+                if (response == "y" || response == "n")
+                {
+                    validEntry = true;
+                }
+                else if (!IsValid(response))
+                {
+                    PauseWithMessage("ERROR: Nothing entered. Please enter 'y' or 'n'.");
+                    Console.Clear();
+                }
+                else
+                {
+                    PauseWithMessage("ERROR: Invalid input. Please enter 'y' or 'n'.");
+                    Console.Clear();
+                }
+            }
+
+            return response;
+        }
+
+        static void UpdateAllPetsSavedInfo(bool infoModified, int maxEntries, string[,] ourPets)
+        {
+            if (!infoModified)
+            {
+                PauseWithMessage("No info was modified so saving isn't needed.");
+                return;
+            }
+
+            string exportPath = "pets.txt";
+            using StreamWriter writer = new(exportPath);
+
+            for (int i = 0; i < maxEntries; i++)
+            {
+                if (IsValid(ourPets[i, 0]))
+                {
+                    string line = string.Join("|",
+                        Enumerable.Range(0, 6).Select(j => ourPets[i, j]));
+
+                    writer.WriteLine(line);
+                }
+            }
+        }
+
+        static void LoadPetsInfoFile(string filePath, string[,] ourPets)
+        {
+            if (!File.Exists(filePath)) return;
+
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length && i < ourPets.GetLength(0); i++)
+            {
+                string[] fields = lines[i].Split('|');
+                if (fields.Length < 6) continue; // skip malformed lines
+
+                ourPets[i, 0] = fields[0];
+                ourPets[i, 1] = fields[1];
+                ourPets[i, 2] = fields[2];
+                ourPets[i, 3] = fields[3];
+                ourPets[i, 4] = fields[4];
+                ourPets[i, 5] = fields[5];
+            }
+        }
+
+        static string PromptForField(string promptMessage, string fallbackValue = "tbd")
+        {
+            string result = "";
+            while (!IsValid(result))
+            {
+                Console.Clear();
+                Console.Write(promptMessage);
+                string? input = Console.ReadLine();
+                result = input?.Trim() ?? "";
+
+                if (result == "")
+                {
+                    result = fallbackValue;
+                }
+            }
+
+            return result;
+        }
+
+        static string PromptForAge(string species, string age = "")
+        {
+            bool validAge = false;
+
+            while (!validAge)
+            {
+                Console.Clear();
+                Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {species}'s age or a best estimate (eg: 'six months', \n'2 mos.', '1.5 yrs', '11') or type '?' if unknown: ");
+                string? result = Console.ReadLine();
+                // if (IsValid(result))
+                // {
+                //     age = result?.Trim() ?? "";
+
+                //     if (age == "?")
+                //     {
+                //         validAge = true;
+                //         continue;
+                //     }
+                //     else if (IsValid(age))
+                //     {
+                //         validAge = true;
+                //     }
+                //     else
+                //     {
+                //         PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
+                //     }
+                // }
+
+                age = result?.Trim() ?? "";
+
+                if (age == "?")
+                {
+                    validAge = true;
+                    continue;
+                }
+                else if (IsValid(age))
+                {
+                    validAge = true;
+                }
+                else
+                {
+                    PauseWithMessage("ERROR: You must type some value or '?' but you may not leave blank. Please try again.");
+                }
+            }
+
+            return age;
+        }
+    }
+}
