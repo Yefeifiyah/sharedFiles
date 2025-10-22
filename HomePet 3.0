@@ -26,8 +26,6 @@ namespace HomePetProject
             var codeToWord = new Dictionary<string, string>
                     {
                         { "b", "male" },
-                        { "c", "cat" },
-                        { "d", "dog" },
                         { "g", "female" },
                         { "h", "hybrid" },
                         { "l", "large" },
