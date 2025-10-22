@@ -2,3 +2,8 @@ D1|dog|?|fido|medium sized cream colored female golden retriever weighing about 
 D2|dog|9|bucko|large reddish-brown male golden retriever weighing about 65 pounds.|loves to lean-in and give doggy hugs.
 C3|cat|15|tbd|small white female weighing about 8 pounds.|dumb and lazy
 C4|cat|7|whiskers|old|very astute and cautious but can become playful.
+
+-------FOR HOMEPET 3.O USE THE FOLLOWING FOR PETS.TXT STARTER:
+
+C1|c|tbd|?|g|h|tbd|5.5
+
