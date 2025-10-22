@@ -377,14 +377,18 @@ namespace HomePetProject
                                     //     PauseWithMessage($"You entered '{inputID}' which is located at record {index + 1}.");
 
                                     List<string> fieldsThatBeganEmpty = [];
-                                    bool ageWasUnknownAtStart = ourPets[index, 2] == "?";
+                                    bool ageWasUnknownAtStart = ourPets[index, Age] == "?";
 
-                                    if (ourPets[index, 3] == "tbd")
-                                        fieldsThatBeganEmpty.Add("Name");
-                                    if (ourPets[index, 4] == "tbd")
-                                        fieldsThatBeganEmpty.Add("Physique");
-                                    if (ourPets[index, 5] == "tbd")
-                                        fieldsThatBeganEmpty.Add("Demeanor");
+                                    if (ourPets[index, Name] == "tbd")
+                                        fieldsThatBeganEmpty.Add("name");
+                                    if (ourPets[index, GenderCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("gender");
+                                    if (ourPets[index, BreedCategory] == "tbd")
+                                        fieldsThatBeganEmpty.Add("breed");
+                                    if (ourPets[index, SizeCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("size");
+                                    if (ourPets[index, Weight] == "tbd")
+                                        fieldsThatBeganEmpty.Add("weight");
 
                                     char speciesCode = inputID[0];
                                     string thisSpecies = speciesCode switch
@@ -402,44 +406,28 @@ namespace HomePetProject
                                     HashSet<string> skippedThisRun = [];
 
                                 AGE_CHECK:
-                                    if (ourPets[index, 2] == "?")
+                                    if (ourPets[index, Age] == "?")
                                     {
                                         Console.Clear();
 
                                         string agePrompt, ageResponse;
-                                        agePrompt = ourPets[index, 3] == "tbd"
+                                        agePrompt = ourPets[index, Name] == "tbd"
                                             ? $"This {thisSpecies}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): "
-                                            : $"{ourPets[index, 3]}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): ";
+                                            : $"{ourPets[index, Name]}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): ";
                                         ageResponse = PromptYesOrNo(agePrompt);
 
-                                        string promptName = ourPets[index, 3];
+                                        string promptName = ourPets[index, Name];
                                         if (ageResponse == "y")
                                         {
                                             string thisAge = PromptForAge(thisSpecies, promptName);
-
-                                            // if (int.TryParse(ageInput, out int age) && age > 0)  // optional: used for numeric input only
-                                            // {
-                                            //     ourPets[index, 2] = thisAge.ToString();
-
-                                            ourPets[index, 2] = thisAge;
+                                            ourPets[index, Age] = thisAge;
                                             ageUpdatedThisRun = true;
                                             infoWasModified = true;
 
-                                            string ageUpdatedConfirmation = ourPets[index, 3] == "tbd"
+                                            string ageUpdatedConfirmation = ourPets[index, Name] == "tbd"
                                                 ? $"This {thisSpecies}'s age has been updated."
-                                                : $"{ourPets[index, 3]}'s age has been updated.";
+                                                : $"{ourPets[index, Name]}'s age has been updated.";
                                             PauseWithMessage($"{ageUpdatedConfirmation}");
-
-                                            // }
-                                            // else if (int.TryParse(ageInput, out int age2) && age2 <= 0)
-                                            // {
-                                            //     PauseWithMessage("ERROR: The number cannot be zero or less.");
-                                            // }
-                                            // else
-                                            // {
-                                            //     PauseWithMessage("ERROR: Invalid input. Please try again.");
-                                            // }
-                                            //}
                                         }
                                     }
 
@@ -448,16 +436,21 @@ namespace HomePetProject
                                         List<string> incompleteFields = [];
                                         int stillIncompleteCount = 0;
 
-                                        if (ourPets[index, 3] == "tbd")
-                                            incompleteFields.Add("Name");
-                                        if (ourPets[index, 4] == "tbd")
-                                            incompleteFields.Add("Physique");
-                                        if (ourPets[index, 5] == "tbd")
-                                            incompleteFields.Add("Demeanor");
+                                        if (ourPets[index, Name] == "tbd")
+                                            incompleteFields.Add("name");
+                                        if (ourPets[index, GenderCode] == "tbd")
+                                            incompleteFields.Add("gender");
+                                        if (ourPets[index, BreedCategory] == "tbd")
+                                            incompleteFields.Add("breed");
+                                        if (ourPets[index, SizeCode] == "tbd")
+                                            incompleteFields.Add("size");
+                                        if (ourPets[index, Weight] == "tbd")
+                                            incompleteFields.Add("weight");
+
 
                                         if (incompleteFields.Count == 0)
                                         {
-                                            if (ourPets[index, 2] == "?")
+                                            if (ourPets[index, Age] == "?")
                                             {
                                                 if (returning)
                                                     PauseWithMessage($"Success: All the required fields for pet-ID {inputID} have now been completed and 'age' is unknown.");
@@ -479,56 +472,58 @@ namespace HomePetProject
                                             if (!returning)
                                                 if (incompleteFields.Count == 1)
                                                 {
-                                                    if (ourPets[index, 3] != "tbd")
-                                                        PauseWithMessage($"{ourPets[index, 3]} has one required field missing: {incompleteFields[0]}.");
+                                                    if (ourPets[index, Name] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, Name]} has one required field missing: {incompleteFields[0]}.");
                                                     else
                                                         PauseWithMessage($"Pet-ID {inputID} has one required field missing: {incompleteFields[0]}.");
                                                 }
                                                 else
                                                 {
-                                                    if (ourPets[index, 3] != "tbd")
-                                                        PauseWithMessage($"{ourPets[index, 3]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                    if (ourPets[index, Name] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, Name]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
                                                     else
                                                         PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
                                                 }
 
+                                            string newValue = "";
                                             foreach (string fieldWasEmptyAtFirst in incompleteFields)
                                             {
-                                                string prompt = "";
-                                                if (fieldWasEmptyAtFirst == "Name")
-                                                {
-                                                    prompt = $"Enter this {thisSpecies}'s name/nickname or leave blank by pressing 'enter': ";
-                                                }
-                                                else if (fieldWasEmptyAtFirst == "Physique")
-                                                {
-                                                    prompt = ourPets[index, 3] == "tbd"
-                                                        ? $"Describe {thisSpecies}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': "
-                                                        : $"Describe {ourPets[index, 3]}'s physical traits (e.g.: breed, color, weight, abandoned, \nlost, well trained, etc.) or leave blank by pressing 'enter': ";
-                                                }
-                                                else if (fieldWasEmptyAtFirst == "Demeanor")
-                                                {
-                                                    prompt = ourPets[index, 3] == "tbd"
-                                                       ? $"Describe this {thisSpecies}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': "
-                                                       : $"Describe {ourPets[index, 3]}'s temperament/demeanor (e.g.: social or reserved, likes or dislikes, \ntricks, energy level, grumpy, etc.) or leave blank by pressing 'enter': ";
-                                                }
-                                                Console.Clear();
-                                                Console.Write($"{prompt}");
-                                                string newValue = Console.ReadLine()?.Trim() ?? "";
+                                                string this_species = KeyToWord(ourPets[index, SpeciesCode]);
+                                                string this_name = ourPets[index, Name];
+
+                                                if (fieldWasEmptyAtFirst == "name")
+                                                    newValue = PromptForField(BuildPrompt("name", this_species, "tbd"), "name");
+                                                else if (fieldWasEmptyAtFirst == "gender")
+                                                    newValue = PromptForField(BuildPrompt("gender", this_species, this_name), "gender");
+                                                else if (fieldWasEmptyAtFirst == "breed")
+                                                    newValue = PromptForField(BuildPrompt("breed", this_species, this_name), "breed");
+                                                else if (fieldWasEmptyAtFirst == "size")
+                                                    newValue = PromptForField(BuildPrompt("size", this_species, this_name), "size");
+                                                else if (fieldWasEmptyAtFirst == "weight")
+                                                    newValue = PromptForField(BuildPrompt("weight", this_species, this_name), "weight");
 
                                                 if (HasData(newValue))
                                                 {
                                                     switch (fieldWasEmptyAtFirst)
                                                     {
-                                                        case "Name":
-                                                            ourPets[index, 3] = newValue;
+                                                        case "name":
+                                                            ourPets[index, Name] = newValue;
                                                             infoWasModified = true;
                                                             break;
-                                                        case "Physique":
-                                                            ourPets[index, 4] = newValue;
+                                                        case "gender":
+                                                            ourPets[index, GenderCode] = newValue;
                                                             infoWasModified = true;
                                                             break;
-                                                        case "Demeanor":
-                                                            ourPets[index, 5] = newValue;
+                                                        case "breed":
+                                                            ourPets[index, BreedCategory] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "size":
+                                                            ourPets[index, SizeCode] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "weight":
+                                                            ourPets[index, Weight] = newValue;
                                                             infoWasModified = true;
                                                             break;
                                                     }
@@ -540,14 +535,20 @@ namespace HomePetProject
                                                 {
                                                     switch (fieldWasEmptyAtFirst)
                                                     {
-                                                        case "Name":
-                                                            ourPets[index, 3] = "tbd";
+                                                        case "name":
+                                                            ourPets[index, Name] = "tbd";
                                                             break;
-                                                        case "Physique":
-                                                            ourPets[index, 4] = "tbd";
+                                                        case "gender":
+                                                            ourPets[index, GenderCode] = "tbd";
                                                             break;
-                                                        case "Demeanor":
-                                                            ourPets[index, 5] = "tbd";
+                                                        case "breed":
+                                                            ourPets[index, BreedCategory] = "tbd";
+                                                            break;
+                                                        case "size":
+                                                            ourPets[index, SizeCode] = "tbd";
+                                                            break;
+                                                        case "weight":
+                                                            ourPets[index, Weight] = "tbd";
                                                             break;
                                                     }
 
@@ -557,7 +558,7 @@ namespace HomePetProject
                                             }
 
                                             // handle skipped fields or unknown age
-                                            if (stillIncompleteCount > 0 || ourPets[index, 2] == "?")
+                                            if (stillIncompleteCount > 0 || ourPets[index, Age] == "?")
                                             {
                                                 Console.Clear();
                                                 string retryMessage = stillIncompleteCount > 0
@@ -578,7 +579,7 @@ namespace HomePetProject
                                                 {
                                                     returning = true;
                                                     allFieldsComplete = false;
-                                                    if (ourPets[index, 2] == "?")
+                                                    if (ourPets[index, Age] == "?")
                                                         goto AGE_CHECK;
                                                     continue; // if they didn't need age_check it continues checking for  empty fields.
                                                               // age_check is just an extra setp bot it goes to checking after that.
@@ -586,10 +587,10 @@ namespace HomePetProject
                                                 else
                                                 {
                                                     // user declined to continue -> final message and exit
-                                                    if (ourPets[index, 2] == "?")
+                                                    if (ourPets[index, Age] == "?")
                                                     {
                                                         Console.Clear();
-                                                        Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' unknown.");
+                                                        Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' unknown.");
                                                         PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
                                                         goto MENU;
                                                     }
@@ -597,9 +598,9 @@ namespace HomePetProject
                                                     {
                                                         Console.Clear();
                                                         if (!ageUpdatedThisRun)
-                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' was known.");
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' was known.");
                                                         else
-                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'estimated age' was updated.");
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' was updated.");
                                                         PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
                                                         goto MENU;
                                                     }
@@ -614,7 +615,7 @@ namespace HomePetProject
                                                 // else
                                                 //     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'age' is unknown.");
 
-                                                if (ourPets[index, 2] == "?")
+                                                if (ourPets[index, Age] == "?")
                                                 {
                                                     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' is unknown.");
                                                 }
