@@ -1,0 +1,929 @@
+using System;
+
+namespace HomePetProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            HashSet<int> validChoices = [1, 2, 3, 4, 5];
+            HashSet<string> alphabeticAnswers = ["one", "two", "three", "four", "five"];
+
+            int index = 0;
+            int maxPets = 35;
+
+            const int PetID = 0;
+            const int SpeciesCode = 1;
+            const int Name = 2;
+            const int Age = 3;
+            const int GenderCode = 4;   //  b  g
+            const int BreedCategory = 5;   //  p  h  u
+            const int SizeCode = 6;   //  s  m  l
+            const int Weight = 7;
+            const int FurColorCode = 8;  // bk  wt  gy  db  lb  cb  un
+            const int EyeColorCode = 9;  // bu  gn  br  gy  am  he  un
+            const int DistinguishingFeatures = 10;
+            const int ActivityLevel = 11;  // 1 to 5 , super slow to super active
+            const int TemperamentalCodes = 12;
+            const int SocialScore = 13;   // 1 to 5 , super reserved to super social
+            const int AttachmentStyle = 14;  // d  i
+
+            string menuSelection;
+            string[,] ourPets = new string[maxPets, 15]; // 15 fields per pet
+
+            var codeToWord = new Dictionary<string, string>
+                    {
+                        { "am", "amber" },
+                        { "as", "assertive" },
+                        { "b", "male" },
+                        { "bo", "bold" },
+                        { "bk", "black"},
+                        { "bl", "blue" },
+                        { "br", "brown" },
+                        { "ca", "cautious" },
+                        { "d", "dependent"},
+                        { "ex", "exploratory" },
+                        { "g", "female" },
+                        { "h", "hybrid" },
+                        { "i", "independent" },
+                        { "l", "large" },
+                        { "m", "medium" },
+                        { "p", "purebred" },
+                        { "s", "small" },
+                        { "u", "unknown" },
+                        { "gn", "green" },
+                        { "gy", "gray" },
+                        { "hc", "heterochromatic" },
+                        { "hz", "hazel" },
+                        { "db", "dark brown" },
+                        { "lb", "light brown" },
+                        { "mx", "mixed colors" },
+                        { "na", "non-aggressive" },
+                        { "pa", "passive" },
+                        { "sl", "social" },
+                        { "sy", "solitary" },
+                        { "te", "territorial" },
+                        { "un", "undefined" },
+                        { "wh", "white" }
+                    };
+
+            string KeyToWord(string code)
+            {
+                return codeToWord.TryGetValue(code, out string? value) ? value : code;
+            }
+
+            string KeysToWords(string codes)
+            {
+                return string.Join(", ", codes.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                              .Select(KeyToWord));
+            }
+
+            bool infoWasModified = false; // set a global flag for whether to display menu option 'S' or not
+
+            string dataFile = "pets.txt"; // sample copy in 'sharedFiles'
+            LoadPetsInfoFile(dataFile, ourPets);
+
+            List<string> petIDs = [];
+
+            for (int i = 0; i < maxPets; i++)
+            {
+                string? id = ourPets[i, PetID];
+                if (HasData(id))
+                {
+                    petIDs.Add(id);
+                }
+            }
+
+            do
+            {
+            // display the top-level menu options               
+            OPTIONS_MENU:
+                Console.Clear();
+                Console.WriteLine("\x1b[95m     ***** Welcome to the 'Lost Pet Care Center' menu *****\x1b[0m");  // Bright Red
+
+                if (infoWasModified)
+                    Console.WriteLine("       \x1b[96m(WARNING: Info on file needs to be updated using option 'S')\x1b[0m");   // Bright Cyan
+                else
+                    Console.WriteLine("      \x1b[92m(NOTE: All of the current pet info has been updated)\x1b[0m");  // Bright Magenta
+                Console.WriteLine(" 1. List all of our current pet records");
+                Console.WriteLine(" 2. Add a pet record (*Note: Not Saved Automatically/use option 'S')");
+                Console.WriteLine(" 3. Validate a pet's record's required info has been entered (*NSA)");
+                Console.WriteLine(" 4. Modify/Update a pet's record (*NSA)");
+                Console.WriteLine(" 5. Show pets of the same species that share a smiliar trait");
+
+                if (infoWasModified)
+                {
+                    Console.WriteLine(" \x1b[91mS. Save/Update all of the current pet information\x1b[0m");
+                    Console.Write("Enter an item number/letter from the menu or '0' to exit: ");
+                }
+                else
+                {
+                    Console.WriteLine("\x1b[91m---------------------------------------------------------\x1b[0m");
+                    Console.Write("Enter an item number from the menu or '0' to exit: ");
+                }
+
+                string readResult = Console.ReadLine() ?? "";
+                menuSelection = readResult?.Trim() ?? "";
+
+                if (!HasData(menuSelection))
+                {
+                    PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                }
+                else if (menuSelection == "0")
+                {
+                    break;
+                }
+                else if ("s".Equals(menuSelection, StringComparison.OrdinalIgnoreCase))
+                {
+                    UpdateAllPetsSavedInfo(infoWasModified, maxPets, ourPets);
+                    if (infoWasModified)
+                        PauseWithMessage("Success: All the current pet information has been saved.");
+                    infoWasModified = false;
+                    goto OPTIONS_MENU;
+                }
+                else if (int.TryParse(menuSelection, out int y) && !validChoices.Contains(y))
+                {
+                    PauseWithMessage($"ERROR: {y} is not a valid option. Please try again.");
+                }
+                else if (int.TryParse(menuSelection, out int x) && validChoices.Contains(x))
+                {
+                    //        PauseWithMessage($"You selected menu option {x}.");
+
+                    switch (x)
+                    {
+                        case 1:
+                            {
+                                // List all of our current pet information
+
+                                //   optional: clear scrollback buffer-may not work in all terminals
+                                //      Console.Write("\x1b[3J");
+
+                                for (int i = 0; i < 44; i++)
+                                    Console.WriteLine("");
+                                Console.WriteLine("===== Current Pet Records =====");
+
+                                int totalRecs = 0;
+                                int completeRecs = 0;
+                                int incompleteRecs = 0;
+
+                                for (int i = 0; i < maxPets; i++)
+                                {
+                                    bool incompleteRecord = false;
+
+                                    if (petIDs.Contains(ourPets[i, PetID]))
+                                    {
+                                        string thisPetID = ourPets[i, PetID]; // Get ID
+                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed", "Size", "Weight", "Fur Color", "Eye Color", "Distinguishing Features", "Activity Level", "Temperament/Demeanor", "Social Score"];
+
+                                        if (!string.IsNullOrEmpty(thisPetID))
+                                        {
+                                            totalRecs++;
+                                            Console.WriteLine($"\nRECORD #{i + 1}");
+
+                                            for (int j = 0; j < 14; j++)
+                                            {
+                                                string thisField = ourPets[i, j];
+
+                                                if (thisField == "tbd")
+                                                {
+                                                    incompleteRecord = true;
+                                                    //continue;   // optional: use for not displaying 'tbd' fields
+                                                }
+
+
+                                                if (j == 0)
+                                                {
+                                                    // ID line
+                                                    Console.WriteLine($"{fieldNames[j]}: {thisField}");
+                                                }
+                                                else if (HasData(thisField))
+                                                {
+                                                    if (thisField == "tbd")
+                                                    {
+                                                        Console.WriteLine($"{fieldNames[j]}: \"{thisField}\"");
+                                                    }
+                                                    else if (thisField == ourPets[i, PetID] || thisField == ourPets[i, Name] || thisField == ourPets[i, Age] || thisField == ourPets[i, DistinguishingFeatures])
+                                                    {
+                                                        Console.WriteLine($"{fieldNames[j]}: {thisField}");
+                                                    }
+                                                    else if (thisField == ourPets[i, Weight])
+                                                    {
+                                                        Console.WriteLine($"{fieldNames[j]}: {thisField} lbs.");
+                                                    }
+                                                    else if (thisField == ourPets[i, TemperamentalCodes])
+                                                    {
+                                                        string decodedLabel = KeysToWords(thisField);
+                                                        Console.WriteLine($"{fieldNames[j]}: {decodedLabel}");
+                                                    }
+                                                    else
+                                                    {
+                                                        string decodedLabel = KeyToWord(thisField);
+                                                        Console.WriteLine($"{fieldNames[j]}: {decodedLabel}");
+                                                    }
+                                                }
+                                            }
+
+                                            if (incompleteRecord)
+                                                incompleteRecs++;
+                                            else
+                                                completeRecs++;
+                                        }
+                                    }
+                                }
+
+                                Console.WriteLine($"\nEnd of query...there were {totalRecs} records total out of {maxPets} possible: {completeRecs} completed and {incompleteRecs} incomplete. \nNote: a '?' for 'estimated age' is valid and won't cause a record to be incomplete. \nMaximize terminal and/or scroll back as needed to view more records. ");
+                                Console.Write("\nPress 'enter' to continue ...");
+                                Console.ReadKey();
+                                break;
+                            }
+                        case 2:
+                            {
+                                // Add a new pet friend to the family
+                                string _petID, _speciesCode = "", _name = "", _age, _genderCode = "", _breedCategory = "", _sizeCode = "", _weight = "", _furColorCode = "", _eyeColorCode = "", _distinguishingFeatures = "", _activityLevel = "", _temperamentalCodes = "", _socialScore = "";  // transient variables
+                                string anotherPet = "y";
+                                int petCount = 0;
+
+                                for (int i = 0; i < maxPets; i++)
+                                {
+                                    if (HasData(ourPets[i, 0]))
+                                        petCount++;
+                                }
+
+                                if (petCount >= maxPets)
+                                {
+                                    PauseWithMessage("We're currently at maximum capacity and regrettably cannot house \nany more pets at this time. Please check back soon.");
+                                    goto END;
+                                }
+
+                                while (anotherPet == "y" && petCount < maxPets)
+                                {
+                                    bool validEntry = false;
+                                    string? speciesResult;
+
+                                    while (!validEntry)
+                                    {
+                                        Console.Clear();
+                                        Console.Write("Type 'C' for cat or 'D' for dog to begin a new entry, or type '0' to cancel: ");
+                                        speciesResult = Console.ReadLine();
+
+                                        if (!HasData(speciesResult))
+                                        {
+                                            PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            _speciesCode = speciesResult?.ToLower().Trim() ?? "";
+
+                                            if (_speciesCode == "0")
+                                            {
+                                                goto END;
+                                            }
+                                            else if (_speciesCode != "d" && _speciesCode != "c")
+                                            {
+                                                PauseWithMessage($"ERROR: You must type 'C' or 'D' or the number '0' to abort.");
+                                                validEntry = false;
+                                            }
+                                            else
+                                            {
+                                                validEntry = true;
+                                            }
+                                        }
+                                    }
+
+                                    _petID = string.Concat(_speciesCode.ToUpper(), (petCount + 1).ToString());
+                                    petIDs.Add(_petID);
+                                    string species = KeyToWord(_speciesCode);
+
+                                    _name = PromptForField(BuildPrompt("name", species, "tbd"), "name");
+                                    _age = PromptForAge(species, _name);
+                                    _genderCode = PromptForField(BuildPrompt("gender", species, _name), "gender");
+                                    _breedCategory = PromptForField(BuildPrompt("breed", species, _name), "breed");
+                                    _sizeCode = PromptForField(BuildPrompt("size", species, _name), "size");
+                                    _weight = PromptForWeight(species, _name);
+                                    _furColorCode = PromptForField(BuildPrompt("fur", species, _name), "fur");
+                                    _eyeColorCode = PromptForField(BuildPrompt("eyes", species, _name), "eyes");
+                                    _distinguishingFeatures = PromptForField(BuildPrompt("marks", species, _name), "marks");
+                                    _activityLevel = PromptForField(BuildPrompt("energy", species, _name), "energy");
+                                    _temperamentalCodes = PromptForField(BuildPrompt("behaviors", species, _name), "behaviors");
+                                    _socialScore = PromptForField(BuildPrompt("sociability", species, _name), "sociability");
+
+                                    ourPets[petCount, PetID] = _petID;
+                                    ourPets[petCount, SpeciesCode] = _speciesCode;
+                                    ourPets[petCount, Name] = _name;
+                                    ourPets[petCount, Age] = _age;
+                                    ourPets[petCount, GenderCode] = _genderCode;
+                                    ourPets[petCount, BreedCategory] = _breedCategory;
+                                    ourPets[petCount, SizeCode] = _sizeCode;
+                                    ourPets[petCount, Weight] = _weight;
+                                    ourPets[petCount, FurColorCode] = _furColorCode;
+                                    ourPets[petCount, EyeColorCode] = _eyeColorCode;
+                                    ourPets[petCount, DistinguishingFeatures] = _distinguishingFeatures;
+                                    ourPets[petCount, ActivityLevel] = _activityLevel;
+                                    ourPets[petCount, TemperamentalCodes] = _temperamentalCodes;
+                                    ourPets[petCount, SocialScore] = _socialScore; // b-bold , c-cautious ,  e-exploratory , p-passive , a-assertive  , n-nonagressive
+                                    //                                    ourPets[petCount, 13] = _attachmentCode;     // d-dependent , i-independent
+                                    //                                  ourPets[petCount, 14] = _sociabilityCode; // sc-social , sl-solitary , t-territorial
+
+
+                                    petCount++;
+                                    PauseWithMessage($"Success: Record {petCount} was added with pet-ID: {_petID}.");
+                                    infoWasModified = true;
+
+                                    if (petCount < maxPets)
+                                    {
+                                        Console.Clear();
+                                        string message = $"We're presently managing {petCount} displaced pets in need of a caretaker. \nWe have space for {maxPets - petCount} more pet(s). \n\nWould you like to add one more? (y/n): ";
+                                        anotherPet = PromptYesOrNo(message);
+                                    }
+
+                                    if (petCount >= maxPets)
+                                        PauseWithMessage("We're sorry--we've reached maximum capacity and are unable to manage \nany more pets at this time. Pleae check back again soon.");
+                                }
+                            END:
+                                break;
+                            }
+                        case 3:
+                            {
+                            // Ensure a pet's profile has required input
+                            MENU:
+                                bool validID = false;
+                                string inputID = "";
+                                string selection = "";
+
+                                while (!validID)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("The following pet-IDs have been found in our system:");
+                                    Console.Write("    ");
+
+                                    //          List<string> petIDKeys = [.. petIDToIndex.Keys]; // raw IDs like "D4", "C3"
+
+                                    for (int i = 0; i < petIDs.Count; i++)
+                                    {
+                                        if (i == petIDs.Count - 1)
+                                        {
+                                            Console.Write($"{i + 1}. {petIDs[i]}");
+                                        }
+                                        else
+                                            Console.Write($"{i + 1}. {petIDs[i]} ,  ");
+                                    }
+
+                                    Console.Write("\n\nPlease enter an item number or '0' to cancel: ");
+                                    selection = Console.ReadLine()?.Trim() ?? "";
+
+                                    if (petIDs.Contains(selection.ToUpper()))
+                                    {
+                                        PauseWithMessage($"ERROR: You entered '{selection}'. Please enter the item number--not the pet-ID.");
+                                    }
+                                    else if (selection == "0")
+                                    {
+                                        // All the remaining code will be skipped and will return to the id menu.
+                                        validID = true;
+                                    }
+                                    else if (int.TryParse(selection, out int idx) && idx > 0 && idx <= petIDs.Count)
+                                    {
+                                        index = idx - 1;
+                                        inputID = petIDs[index];
+                                        validID = true;
+                                    }
+                                    else if (!HasData(selection))
+                                    {
+                                        PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                                    }
+                                    else
+                                    {
+                                        PauseWithMessage($"ERROR: You entered '{selection}'. Try a digit like 1, 2, 3, etc.");
+                                    }
+                                }
+
+                                if (selection != "0")
+                                {
+                                    //     int index = petIDToIndex[inputID];
+                                    //     PauseWithMessage($"You entered '{inputID}' which is located at record {index + 1}.");
+
+                                    List<string> fieldsThatBeganEmpty = [];
+                                    bool ageWasUnknownAtStart = ourPets[index, Age] == "?";
+
+                                    if (ourPets[index, Name] == "tbd")
+                                        fieldsThatBeganEmpty.Add("name");
+                                    if (ourPets[index, GenderCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("gender");
+                                    if (ourPets[index, BreedCategory] == "tbd")
+                                        fieldsThatBeganEmpty.Add("breed");
+                                    if (ourPets[index, SizeCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("size");
+                                    if (ourPets[index, Weight] == "tbd")
+                                        fieldsThatBeganEmpty.Add("weight");
+
+                                    char speciesCode = inputID[0];
+                                    string thisSpecies = speciesCode switch
+                                    {
+                                        'C' => "cat",
+                                        'D' => "dog",
+                                        _ => "pet"
+                                    };
+
+                                    // Display current pet info
+                                    bool returning = false;
+                                    bool allFieldsComplete = false;
+                                    bool ageUpdatedThisRun = false;
+                                    HashSet<string> completedThisRun = [];
+                                    HashSet<string> skippedThisRun = [];
+
+                                AGE_CHECK:
+                                    if (ourPets[index, Age] == "?")
+                                    {
+                                        Console.Clear();
+
+                                        string agePrompt, ageResponse;
+                                        agePrompt = ourPets[index, Name] == "tbd"
+                                            ? $"This {thisSpecies}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): "
+                                            : $"{ourPets[index, Name]}'s age is currently unknown. \n\nWould you like to enter one now? (y/n): ";
+                                        ageResponse = PromptYesOrNo(agePrompt);
+
+                                        string promptName = ourPets[index, Name];
+                                        if (ageResponse == "y")
+                                        {
+                                            string thisAge = PromptForAge(thisSpecies, promptName);
+                                            ourPets[index, Age] = thisAge;
+                                            ageUpdatedThisRun = true;
+                                            infoWasModified = true;
+
+                                            string ageUpdatedConfirmation = ourPets[index, Name] == "tbd"
+                                                ? $"This {thisSpecies}'s age has been updated."
+                                                : $"{ourPets[index, Name]}'s age has been updated.";
+                                            PauseWithMessage($"{ageUpdatedConfirmation}");
+                                        }
+                                    }
+
+                                    while (!allFieldsComplete)
+                                    {
+                                        List<string> incompleteFields = [];
+                                        int stillIncompleteCount = 0;
+
+                                        if (ourPets[index, Name] == "tbd")
+                                            incompleteFields.Add("name");
+                                        if (ourPets[index, GenderCode] == "tbd")
+                                            incompleteFields.Add("gender");
+                                        if (ourPets[index, BreedCategory] == "tbd")
+                                            incompleteFields.Add("breed");
+                                        if (ourPets[index, SizeCode] == "tbd")
+                                            incompleteFields.Add("size");
+                                        if (ourPets[index, Weight] == "tbd")
+                                            incompleteFields.Add("weight");
+
+
+                                        if (incompleteFields.Count == 0)
+                                        {
+                                            if (ourPets[index, Age] == "?")
+                                            {
+                                                if (returning)
+                                                    PauseWithMessage($"Success: All the required fields for pet-ID {inputID} have now been completed and 'age' is unknown.");
+                                                else
+                                                    PauseWithMessage($"All the required fields for pet-ID {inputID} were previously completed and 'age' is unknown.");
+                                            }
+                                            else
+                                            {
+                                                if (returning)
+                                                    PauseWithMessage($"Success: All the required fields for pet-ID {inputID} have now been completed and 'age' is known.");
+                                                else
+                                                    PauseWithMessage($"All the required fields for pet-ID {inputID} were previously completed and 'age' is known.");
+                                            }
+                                            goto MENU;
+                                        }
+                                        else
+                                        {
+                                            //             Console.Clear();
+                                            if (!returning)
+                                                if (incompleteFields.Count == 1)
+                                                {
+                                                    if (ourPets[index, Name] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, Name]} has one required field missing: {incompleteFields[0]}.");
+                                                    else
+                                                        PauseWithMessage($"Pet-ID {inputID} has one required field missing: {incompleteFields[0]}.");
+                                                }
+                                                else
+                                                {
+                                                    if (ourPets[index, Name] != "tbd")
+                                                        PauseWithMessage($"{ourPets[index, Name]} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                    else
+                                                        PauseWithMessage($"Pet-ID {inputID} has {incompleteFields.Count} required fields missing: {string.Join(", ", incompleteFields)}.");
+                                                }
+
+                                            string newValue = "";
+                                            foreach (string fieldWasEmptyAtFirst in incompleteFields)
+                                            {
+                                                string this_species = KeyToWord(ourPets[index, SpeciesCode]);
+                                                string this_name = ourPets[index, Name];
+
+                                                if (fieldWasEmptyAtFirst == "name")
+                                                    newValue = PromptForField(BuildPrompt("name", this_species, "tbd"), "name");
+                                                else if (fieldWasEmptyAtFirst == "gender")
+                                                    newValue = PromptForField(BuildPrompt("gender", this_species, this_name), "gender");
+                                                else if (fieldWasEmptyAtFirst == "breed")
+                                                    newValue = PromptForField(BuildPrompt("breed", this_species, this_name), "breed");
+                                                else if (fieldWasEmptyAtFirst == "size")
+                                                    newValue = PromptForField(BuildPrompt("size", this_species, this_name), "size");
+                                                else if (fieldWasEmptyAtFirst == "weight")
+                                                    newValue = PromptForField(BuildPrompt("weight", this_species, this_name), "weight");
+
+                                                if (HasData(newValue))
+                                                {
+                                                    switch (fieldWasEmptyAtFirst)
+                                                    {
+                                                        case "name":
+                                                            ourPets[index, Name] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "gender":
+                                                            ourPets[index, GenderCode] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "breed":
+                                                            ourPets[index, BreedCategory] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "size":
+                                                            ourPets[index, SizeCode] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "weight":
+                                                            ourPets[index, Weight] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                    }
+
+                                                    completedThisRun.Add(fieldWasEmptyAtFirst);
+                                                    skippedThisRun.Remove(fieldWasEmptyAtFirst); // optional, if it was previously skipped
+                                                }
+                                                else   // meaning it's either null, empty or white space
+                                                {
+                                                    switch (fieldWasEmptyAtFirst)
+                                                    {
+                                                        case "name":
+                                                            ourPets[index, Name] = "tbd";
+                                                            break;
+                                                        case "gender":
+                                                            ourPets[index, GenderCode] = "tbd";
+                                                            break;
+                                                        case "breed":
+                                                            ourPets[index, BreedCategory] = "tbd";
+                                                            break;
+                                                        case "size":
+                                                            ourPets[index, SizeCode] = "tbd";
+                                                            break;
+                                                        case "weight":
+                                                            ourPets[index, Weight] = "tbd";
+                                                            break;
+                                                    }
+
+                                                    stillIncompleteCount++;
+                                                    skippedThisRun.Add(fieldWasEmptyAtFirst);
+                                                }
+                                            }
+
+                                            // handle skipped fields or unknown age
+                                            if (stillIncompleteCount > 0 || ourPets[index, Age] == "?")
+                                            {
+                                                Console.Clear();
+                                                string retryMessage = stillIncompleteCount > 0
+                                                    ? (stillIncompleteCount == 1
+                                                        ? $"Pet-ID {inputID}'s '{skippedThisRun.First()}' field still lacks required info. \n\nAre you sure you want to leave it blank? (y/n): "
+                                                        : $"Pet-ID {inputID} still has {stillIncompleteCount} fields that lack required info: {string.Join(", ", skippedThisRun)}. \n\nAre you sure you want to leave them blank? (y/n): ")
+                                                    : $"All the required fields for pet-ID {inputID} are complete, but 'age' is unknown. \n\nAre you sure you want to leave it blank? (y/n): ";
+
+                                                // need to introduce the nick variation of the above procedure:
+
+
+
+
+
+                                                string retryResponse = PromptYesOrNo(retryMessage);
+
+                                                if (retryResponse == "n")
+                                                {
+                                                    returning = true;
+                                                    allFieldsComplete = false;
+                                                    if (ourPets[index, Age] == "?")
+                                                        goto AGE_CHECK;
+                                                    continue; // if they didn't need age_check it continues checking for  empty fields.
+                                                              // age_check is just an extra setp bot it goes to checking after that.
+                                                }             // shows intent even if no code below would execute any way
+                                                else
+                                                {
+                                                    // user declined to continue -> final message and exit
+                                                    if (ourPets[index, Age] == "?")
+                                                    {
+                                                        Console.Clear();
+                                                        Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' unknown.");
+                                                        PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                        goto MENU;
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.Clear();
+                                                        if (!ageUpdatedThisRun)
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' was known.");
+                                                        else
+                                                            Console.WriteLine($"Validation process for pet-ID {inputID} ended with {stillIncompleteCount} skipped field(s) and 'age' was updated.");
+                                                        PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                        goto MENU;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // no skipped fields and age was known or updated -> success summary and exit
+                                                Console.Clear();
+                                                // if (!ageUpdatedThisRun)
+                                                //     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'age' is known.");
+                                                // else
+                                                //     Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'age' is unknown.");
+
+                                                if (ourPets[index, Age] == "?")
+                                                {
+                                                    Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' is unknown.");
+                                                }
+                                                else
+                                                {
+                                                    if (ageWasUnknownAtStart)
+                                                        Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' was updated.");
+                                                    else
+                                                        Console.WriteLine($"Success: pet-ID {inputID} has zero missing fields and 'estimated age' was known.");
+                                                }
+
+                                                PrintSummary(fieldsThatBeganEmpty, completedThisRun, skippedThisRun, ageWasUnknownAtStart, ageUpdatedThisRun);
+                                                goto MENU;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                        case 4:
+                            // Update a pet's record information
+                            PauseWithMessage("Challenge Project - please check back soon to see progress.");
+                            break;
+                        case 5:
+                            // Display all of same species that match specified criteria
+                            PauseWithMessage("UNDER CONSTRUCTION - please check back next month to see progress.");
+                            break;
+                    }
+                }
+                else
+                {
+                    if (alphabeticAnswers.Contains(menuSelection))
+                    {
+                        PauseWithMessage($"You entered '{menuSelection}' which is a menu option. However, the program is stupid and only understands whole numbers. Just use the digit and you're good. We apologize for the inconvenience.");
+                        continue;
+                    }
+                    PauseWithMessage("ERROR: A valid menu option wasn't entered. Please try again.");
+                }
+
+            } while (menuSelection != "0");
+
+            Console.Clear();
+        }
+
+        static void PauseWithMessage(string message)
+        {
+            Console.Clear();
+            Console.WriteLine(message);
+            Console.Write("\nPress 'enter' to continue ... ");
+            Console.ReadKey();
+        }
+
+        static bool HasData(string? value)
+        {
+            return !string.IsNullOrWhiteSpace(value);
+        }
+
+        static void PrintSummary(List<string> initiallyEmpty, HashSet<string> completedRun, HashSet<string> skippedRun, bool ageUnknown, bool ageUpdated)
+        {
+            string incompleteDisplay = initiallyEmpty.Count > 0
+                ? string.Join(", ", initiallyEmpty)
+                : "none";
+
+            bool completedAllMissing = initiallyEmpty.All(completedRun.Contains);
+            string completedDisplay = completedRun.Count == 0
+                ? "none"
+                : completedAllMissing ? "all" : string.Join(", ", completedRun);
+
+            bool skippedAllMissing = initiallyEmpty.All(skippedRun.Contains);
+            string skippedDisplay = skippedRun.Count == 0
+                ? "none"
+                : skippedAllMissing ? "all" : string.Join(", ", skippedRun);
+
+            Console.WriteLine("\n         ==== Summary of Validation Run ====");
+            Console.WriteLine($"Start of run -> Age: {(ageUnknown ? "unknown" : "known")} | Incomplete: {incompleteDisplay}");
+
+            if (ageUnknown)
+            {
+                Console.WriteLine($" End of run --> Age: {(ageUpdated ? "updated" : "unknown")} | Completed: {completedDisplay} | Skipped: {skippedDisplay}");
+            }
+            else
+            {
+                Console.WriteLine($" End of run --> Completed: {completedDisplay} | Skipped: {skippedDisplay}");
+            }
+
+            Console.Write("\nPress 'enter' to continue ... ");
+            Console.ReadKey();
+        }
+
+        static string PromptYesOrNo(string message)
+        {
+            string response = "";
+            bool validEntry = false;
+
+            while (!validEntry)
+            {
+                Console.Write(message);
+                response = Console.ReadLine()?.Trim().ToLower() ?? "";
+                if (response == "y" || response == "n")
+                {
+                    validEntry = true;
+                }
+                else if (!HasData(response))
+                {
+                    PauseWithMessage("ERROR: Nothing entered. Please enter 'y' or 'n'.");
+                    Console.Clear();
+                }
+                else
+                {
+                    PauseWithMessage("ERROR: Invalid input. Please enter 'y' or 'n'.");
+                    Console.Clear();
+                }
+            }
+
+            return response;
+        }
+
+        static void UpdateAllPetsSavedInfo(bool infoModified, int maxEntries, string[,] ourPets)
+        {
+            if (!infoModified)
+            {
+                PauseWithMessage("No info was modified so saving isn't needed.");
+                return;
+            }
+
+            string exportPath = "pets.txt";
+            using StreamWriter writer = new(exportPath);
+
+            for (int i = 0; i < maxEntries; i++)
+            {
+                if (HasData(ourPets[i, 0]))
+                {
+                    string line = string.Join("|",
+                        Enumerable.Range(0, 8).Select(j => ourPets[i, j]));
+
+                    writer.WriteLine(line);
+                }
+            }
+        }
+
+        static void LoadPetsInfoFile(string filePath, string[,] ourPets)
+        {
+            if (!File.Exists(filePath)) return;
+
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length && i < ourPets.GetLength(0); i++)
+            {
+                string[] fields = lines[i].Split('|');
+                if (fields.Length < 8) continue; // skip malformed lines
+
+                ourPets[i, 0] = fields[0];
+                ourPets[i, 1] = fields[1];
+                ourPets[i, 2] = fields[2];
+                ourPets[i, 3] = fields[3];
+                ourPets[i, 4] = fields[4];
+                ourPets[i, 5] = fields[5];
+                ourPets[i, 6] = fields[6];
+                ourPets[i, 7] = fields[7];
+            }
+        }
+
+        static string PromptForField(string promptMessage, string thisField)
+        {
+            string result = "";
+
+            HashSet<string> allowedCodes = thisField switch
+            {
+                "gender" => ["b", "g"],
+                "breed" => ["p", "h", "u"],
+                "size" => ["s", "m", "l"],
+                "fur" => ["bk", "br", "db", "lb", "gy", "mx", "rd", "wh"],
+                "eyes" => ["am", "co", "bk", "bl", "br", "go", "gr", "hc", "hz", "un"],
+                "behaviors" => ["bo", "ca", "ex", "as", "pa", "na"],
+                _ => [],
+            };
+
+            bool isValidInput = false;
+
+            while (!isValidInput)
+            {
+                Console.Clear();
+                Console.Write(promptMessage);
+                string? input = Console.ReadLine();
+                result = input?.Trim() ?? "";
+
+                bool isFreeform = allowedCodes.Count == 0;
+                bool isCoded = allowedCodes.Contains(result.ToLower());
+
+                if (!HasData(result))
+                    isValidInput = true;
+                else if (isFreeform || isCoded)
+                    isValidInput = true;
+                else
+                    PauseWithMessage("ERROR: Invalid input. Please try again or leave it blank to skip.");
+            }
+
+            if (!HasData(result))
+                result = "tbd";
+
+            return result;
+        }
+
+        static string PromptForAge(string thisSpecies, string thisName)
+        {
+            string age = "";
+            bool validAge = false;
+
+            while (!validAge)
+            {
+                Console.Clear();
+                Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {thisSpecies}'s age or a best estimate (e.g., '2', '5', '11') or type '?' if unknown: ");
+                string? result = Console.ReadLine();
+                age = result?.Trim() ?? "";
+
+                if (age == "?")
+                    validAge = true;
+                else if (int.TryParse(age, out int petAge))
+                    if (petAge > 0)
+                        validAge = true;
+                    else
+                        PauseWithMessage("ERROR: A digit greater than zero wasn't entered. Please try again.");
+                else
+                    PauseWithMessage("ERROR: Neither a valid age nor a '?' was entered. Please try again.");
+            }
+
+            return age;
+        }
+
+        static string PromptForWeight(string thisSpecies, string thisName)
+        {
+            string weightAsString = "";
+            bool validWeight = false;
+
+            while (!validWeight)
+            {
+                Console.Clear();
+                if (thisName == "tbd")
+                    Console.Write($"Please enter this {thisSpecies}'s weight in pounds (e.g., '13.6', '7.2', '29') or leave blank for now: ");
+                else
+                    Console.Write($"Please enter {thisName}'s weight in pounds (e.g., '13.6', '7.2', '29') or leave blank for now: ");
+
+                string? result = Console.ReadLine();
+                weightAsString = result?.Trim() ?? "";
+
+                if (!HasData(weightAsString))
+                {
+                    weightAsString = "tbd";
+                    validWeight = true;
+                }
+                else if (float.TryParse(weightAsString, out float weight))
+                {
+                    if (weight > 0)
+                        validWeight = true;
+                    else
+                        PauseWithMessage("ERROR: The number cannot be zero or less. Please try again.");
+                }
+                else
+                {
+                    PauseWithMessage("ERROR: A valid number (e.g., 7.7, 0.9, 5) wasn't entered. Please try again.");
+                }
+            }
+
+            return weightAsString;
+        }
+
+        static string BuildPrompt(string field, string species, string name)
+        {
+            string subject = name == "tbd" ? $"this {species}" : name;
+
+            return field switch
+            {
+                "name" => $"Enter {subject}'s name or nickname or you may also leave it blank for now and update it later: ",
+                "gender" => $"Select an option for {subject}'s gender: \n        B = boy | G = girl   \n\nEnter your selection or you may leave it blank for now: ",
+                "breed" => $"Select an option for {subject}'s breed type: \n  P = purebred | H = hybrid | U = unknown   \n\nEnter your selection or you may leave it blank for now: ",
+                "size" => $"Select an option for {subject}'s size \n  S = small | M = medium | L = large   \n\nEnter your selection or you may leave it blank for now: ",
+                "fur" => $"Select an option for {subject}'s fur color: \n BK = black | WH = white | DB = dark-brown | BR = brown | LB = light-brown | GY = gray | RD = red/rust | MX = mixed   \n\nEnter your selection or you may leave it blank for now: ",
+                "eyes" => $"Select an option for {subject}'s eye color: \n AM = amber | CO = copper | BK = black | BR = brown | BL = blue | GR = green | GO = gold | HZ = hazel | HC = heterochromatic | UN = undefined  \n\nEnter your selection or you may leave it blank for now: ",
+                "marks" => $"Describe {subject}'s distinguishing features. Enter anything special that would make this pet stand out (e.g., fur color mixes, unusual fur colors, unusual eye colors or mixes, breed specific markings, scars, missing limbs, or anything else that helps identify them quickly. You may also leave it blank or fill it in part and update it later: ",
+                "behavior" => $"Select as many options separated by a space for {subject}'s temperament/demeanor or you may leave it blank for now: ",
+                _ => $"Enter {subject}'s {field} or you may leave it blank for now: ",
+            };
+        }
+    }
+}
