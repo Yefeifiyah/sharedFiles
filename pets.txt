@@ -7,3 +7,8 @@ C4|cat|7|whiskers|old|very astute and cautious but can become playful.
 
 C1|c|tbd|?|g|h|tbd|5.5
 
+-----for HomePet 4.0 use the following line for your sample pets.txt file:
+
+D1|d|fido|?|b|u|m|tbd|rd|db|tbd|3|bo as na|6|d
+
+
