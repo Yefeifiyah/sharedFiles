@@ -12,20 +12,20 @@ namespace HomePetProject
             int index = 0;
             int maxPets = 35;
 
-            const int PetID = 0;
-            const int SpeciesCode = 1;
-            const int Name = 2;
-            const int Age = 3;
+            const int PetID = 0;  // auto-generated like C1, D2, etc.
+            const int SpeciesCode = 1;  //  C   D
+            const int Name = 2;  // string
+            const int Age = 3;  // int in years or '?' for unknown
             const int GenderCode = 4;   //  b  g
             const int BreedCategory = 5;   //  p  h  u
             const int SizeCode = 6;   //  s  m  l
-            const int Weight = 7;
+            const int Weight = 7;  // float in pounds
             const int FurColorCode = 8;  // bk  wt  gy  db  lb  cb  un
             const int EyeColorCode = 9;  // bu  gn  br  gy  am  he  un
-            const int DistinguishingFeatures = 10;
+            const int DistinguishingFeatures = 10;  // strings
             const int ActivityLevel = 11;  // 1 to 5 , super slow to super active
-            const int TemperamentalCodes = 12;
-            const int SocialScore = 13;   // 1 to 5 , super reserved to super social
+            const int TemperamentalCodes = 12; // bo  ca  ex  as  pa  na
+            const int Sociability = 13;   // 1 to 5 , super reserved to super social
             const int AttachmentStyle = 14;  // d  i
 
             string menuSelection;
@@ -33,26 +33,28 @@ namespace HomePetProject
 
             var codeToWord = new Dictionary<string, string>
                     {
-                        { "am", "amber" },
-                        { "as", "assertive" },
                         { "b", "male" },
-                        { "bo", "bold" },
-                        { "bk", "black"},
-                        { "bl", "blue" },
-                        { "br", "brown" },
-                        { "ca", "cautious" },
-                        { "d", "dependent"},
-                        { "ex", "exploratory" },
+                        { "d", "needy"},
                         { "g", "female" },
                         { "h", "hybrid" },
-                        { "i", "independent" },
+                        { "i", "aloof" },
                         { "l", "large" },
                         { "m", "medium" },
                         { "p", "purebred" },
                         { "s", "small" },
                         { "u", "unknown" },
-                        { "gn", "green" },
+                        { "am", "amber" },
+                        { "as", "assertive" },
+                        { "bo", "bold" },
+                        { "bk", "black"},
+                        { "bl", "blue" },
+                        { "br", "brown" },
+                        { "ca", "cautious" },
+                        { "co", "copper" },
+                        { "gr", "green" },
+                        { "go", "gold" },
                         { "gy", "gray" },
+                        { "ex", "exploratory" },
                         { "hc", "heterochromatic" },
                         { "hz", "hazel" },
                         { "db", "dark brown" },
@@ -60,6 +62,7 @@ namespace HomePetProject
                         { "mx", "mixed colors" },
                         { "na", "non-aggressive" },
                         { "pa", "passive" },
+                        { "rd", "red/rust" },
                         { "sl", "social" },
                         { "sy", "solitary" },
                         { "te", "territorial" },
@@ -173,14 +176,14 @@ namespace HomePetProject
                                     if (petIDs.Contains(ourPets[i, PetID]))
                                     {
                                         string thisPetID = ourPets[i, PetID]; // Get ID
-                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed", "Size", "Weight", "Fur Color", "Eye Color", "Distinguishing Features", "Activity Level", "Temperament/Demeanor", "Social Score"];
+                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed", "Size", "Weight", "Fur Color", "Eye Color", "Distinguishing Features", "Activity Level", "Temperament/Demeanor", "Sociability", "Attachment Style"];
 
                                         if (!string.IsNullOrEmpty(thisPetID))
                                         {
                                             totalRecs++;
                                             Console.WriteLine($"\nRECORD #{i + 1}");
 
-                                            for (int j = 0; j < 14; j++)
+                                            for (int j = 0; j < 15; j++)
                                             {
                                                 string thisField = ourPets[i, j];
 
@@ -198,25 +201,64 @@ namespace HomePetProject
                                                 }
                                                 else if (HasData(thisField))
                                                 {
-                                                    if (thisField == "tbd")
+                                                    if (j == SpeciesCode)
                                                     {
-                                                        Console.WriteLine($"{fieldNames[j]}: \"{thisField}\"");
+                                                        if (thisField == "c")
+                                                            Console.WriteLine($"{fieldNames[j]}: cat");
+                                                        else if (thisField == "d")
+                                                            Console.WriteLine($"{fieldNames[j]}: dog");
+                                                        else
+                                                            Console.WriteLine($"{fieldNames[j]}: {thisField}");
                                                     }
-                                                    else if (thisField == ourPets[i, PetID] || thisField == ourPets[i, Name] || thisField == ourPets[i, Age] || thisField == ourPets[i, DistinguishingFeatures])
+                                                    else if (thisField == "tbd")
                                                     {
+                                                        Console.WriteLine($"{fieldNames[j]}: \"tbd\"");
+                                                    }
+                                                    else if (j == Name || j == Age || j == DistinguishingFeatures)
+                                                    {
+                                                        // these are freeform fields so just print as-is
                                                         Console.WriteLine($"{fieldNames[j]}: {thisField}");
                                                     }
-                                                    else if (thisField == ourPets[i, Weight])
+                                                    else if (j == Weight)
                                                     {
                                                         Console.WriteLine($"{fieldNames[j]}: {thisField} lbs.");
                                                     }
-                                                    else if (thisField == ourPets[i, TemperamentalCodes])
+                                                    else if (j == ActivityLevel)
+                                                    {
+                                                        string activityLabel = thisField switch
+                                                        {
+                                                            "1" => "very calm",
+                                                            "2" => "calm",
+                                                            "3" => "moderate",
+                                                            "4" => "energetic",
+                                                            "5" => "very active",
+                                                            "6" => "undetermined",
+                                                            _ => "unknown"
+                                                        };
+                                                        Console.WriteLine($"{fieldNames[j]}: {activityLabel}");
+                                                    }
+                                                    else if (j == TemperamentalCodes)
                                                     {
                                                         string decodedLabel = KeysToWords(thisField);
                                                         Console.WriteLine($"{fieldNames[j]}: {decodedLabel}");
                                                     }
+                                                    else if (j == Sociability)
+                                                    {
+                                                        string socialLabel = thisField switch
+                                                        {
+                                                            "1" => "very reserved",
+                                                            "2" => "reserved",
+                                                            "3" => "neutral",
+                                                            "4" => "social",
+                                                            "5" => "very social",
+                                                            "6" => "undetermined",
+                                                            _ => "unknown"
+                                                        };
+                                                        Console.WriteLine($"{fieldNames[j]}: {socialLabel}");
+                                                    }
                                                     else
                                                     {
+                                                        // only thing left is the single code fields
                                                         string decodedLabel = KeyToWord(thisField);
                                                         Console.WriteLine($"{fieldNames[j]}: {decodedLabel}");
                                                     }
@@ -239,7 +281,7 @@ namespace HomePetProject
                         case 2:
                             {
                                 // Add a new pet friend to the family
-                                string _petID, _speciesCode = "", _name = "", _age, _genderCode = "", _breedCategory = "", _sizeCode = "", _weight = "", _furColorCode = "", _eyeColorCode = "", _distinguishingFeatures = "", _activityLevel = "", _temperamentalCodes = "", _socialScore = "";  // transient variables
+                                string _petID, _speciesCode = "", _name = "", _age, _genderCode = "", _breedCategory = "", _sizeCode = "", _weight = "", _furColorCode = "", _eyeColorCode = "", _distinguishingFeatures = "", _activityLevel = "", _temperamentalCodes = "", _socialScore = "", _attachmentStyle = "";  // transient variables
                                 string anotherPet = "y";
                                 int petCount = 0;
 
@@ -293,7 +335,12 @@ namespace HomePetProject
 
                                     _petID = string.Concat(_speciesCode.ToUpper(), (petCount + 1).ToString());
                                     petIDs.Add(_petID);
-                                    string species = KeyToWord(_speciesCode);
+
+                                    string species = "";
+                                    if (_speciesCode == "c")
+                                        species = "cat";
+                                    else if (_speciesCode == "d")
+                                        species = "dog";
 
                                     _name = PromptForField(BuildPrompt("name", species, "tbd"), "name");
                                     _age = PromptForAge(species, _name);
@@ -307,6 +354,32 @@ namespace HomePetProject
                                     _activityLevel = PromptForField(BuildPrompt("energy", species, _name), "energy");
                                     _temperamentalCodes = PromptForField(BuildPrompt("behaviors", species, _name), "behaviors");
                                     _socialScore = PromptForField(BuildPrompt("sociability", species, _name), "sociability");
+                                    _attachmentStyle = PromptForField(BuildPrompt("attachment", species, _name), "attachment");
+
+                                    if (!HasData(_name))
+                                        _name = "tbd";
+                                    if (!HasData(_genderCode))
+                                        _genderCode = "tbd";
+                                    if (!HasData(_breedCategory))
+                                        _breedCategory = "tbd";
+                                    if (!HasData(_sizeCode))
+                                        _sizeCode = "tbd";
+                                    if (!HasData(_weight))
+                                        _weight = "tbd";
+                                    if (!HasData(_furColorCode))
+                                        _furColorCode = "tbd";
+                                    if (!HasData(_eyeColorCode))
+                                        _eyeColorCode = "tbd";
+                                    if (!HasData(_distinguishingFeatures))
+                                        _distinguishingFeatures = "tbd";
+                                    if (!HasData(_activityLevel))
+                                        _activityLevel = "tbd";
+                                    if (!HasData(_temperamentalCodes))
+                                        _temperamentalCodes = "tbd";
+                                    if (!HasData(_socialScore))
+                                        _socialScore = "tbd";
+                                    if (!HasData(_attachmentStyle))
+                                        _attachmentStyle = "tbd";
 
                                     ourPets[petCount, PetID] = _petID;
                                     ourPets[petCount, SpeciesCode] = _speciesCode;
@@ -321,9 +394,8 @@ namespace HomePetProject
                                     ourPets[petCount, DistinguishingFeatures] = _distinguishingFeatures;
                                     ourPets[petCount, ActivityLevel] = _activityLevel;
                                     ourPets[petCount, TemperamentalCodes] = _temperamentalCodes;
-                                    ourPets[petCount, SocialScore] = _socialScore; // b-bold , c-cautious ,  e-exploratory , p-passive , a-assertive  , n-nonagressive
-                                    //                                    ourPets[petCount, 13] = _attachmentCode;     // d-dependent , i-independent
-                                    //                                  ourPets[petCount, 14] = _sociabilityCode; // sc-social , sl-solitary , t-territorial
+                                    ourPets[petCount, Sociability] = _socialScore;
+                                    ourPets[petCount, AttachmentStyle] = _attachmentStyle;
 
 
                                     petCount++;
@@ -415,6 +487,20 @@ namespace HomePetProject
                                         fieldsThatBeganEmpty.Add("size");
                                     if (ourPets[index, Weight] == "tbd")
                                         fieldsThatBeganEmpty.Add("weight");
+                                    if (ourPets[index, FurColorCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("fur");
+                                    if (ourPets[index, EyeColorCode] == "tbd")
+                                        fieldsThatBeganEmpty.Add("eyes");
+                                    if (ourPets[index, DistinguishingFeatures] == "tbd")
+                                        fieldsThatBeganEmpty.Add("marks");
+                                    if (ourPets[index, ActivityLevel] == "tbd")
+                                        fieldsThatBeganEmpty.Add("energy");
+                                    if (ourPets[index, TemperamentalCodes] == "tbd")
+                                        fieldsThatBeganEmpty.Add("behaviors");
+                                    if (ourPets[index, Sociability] == "tbd")
+                                        fieldsThatBeganEmpty.Add("sociability");
+                                    if (ourPets[index, AttachmentStyle] == "tbd")
+                                        fieldsThatBeganEmpty.Add("attachment");
 
                                     char speciesCode = inputID[0];
                                     string thisSpecies = speciesCode switch
@@ -472,6 +558,20 @@ namespace HomePetProject
                                             incompleteFields.Add("size");
                                         if (ourPets[index, Weight] == "tbd")
                                             incompleteFields.Add("weight");
+                                        if (ourPets[index, FurColorCode] == "tbd")
+                                            incompleteFields.Add("fur");
+                                        if (ourPets[index, EyeColorCode] == "tbd")
+                                            incompleteFields.Add("eyes");
+                                        if (ourPets[index, DistinguishingFeatures] == "tbd")
+                                            incompleteFields.Add("marks");
+                                        if (ourPets[index, ActivityLevel] == "tbd")
+                                            incompleteFields.Add("energy");
+                                        if (ourPets[index, TemperamentalCodes] == "tbd")
+                                            incompleteFields.Add("behaviors");
+                                        if (ourPets[index, Sociability] == "tbd")
+                                            incompleteFields.Add("sociability");
+                                        if (ourPets[index, AttachmentStyle] == "tbd")
+                                            incompleteFields.Add("attachment");
 
 
                                         if (incompleteFields.Count == 0)
@@ -526,7 +626,21 @@ namespace HomePetProject
                                                 else if (fieldWasEmptyAtFirst == "size")
                                                     newValue = PromptForField(BuildPrompt("size", this_species, this_name), "size");
                                                 else if (fieldWasEmptyAtFirst == "weight")
-                                                    newValue = PromptForField(BuildPrompt("weight", this_species, this_name), "weight");
+                                                    newValue = PromptForWeight( this_species, this_name);
+                                                else if (fieldWasEmptyAtFirst == "fur")
+                                                    newValue = PromptForField(BuildPrompt("fur", this_species, this_name), "fur");
+                                                else if (fieldWasEmptyAtFirst == "eyes")
+                                                    newValue = PromptForField(BuildPrompt("eyes", this_species, this_name), "eyes");
+                                                else if (fieldWasEmptyAtFirst == "marks")
+                                                    newValue = PromptForField(BuildPrompt("marks", this_species, this_name), "marks");
+                                                else if (fieldWasEmptyAtFirst == "energy")
+                                                    newValue = PromptForField(BuildPrompt("energy", this_species, this_name), "energy");
+                                                else if (fieldWasEmptyAtFirst == "behaviors")
+                                                    newValue = PromptForField(BuildPrompt("behaviors", this_species, this_name), "behaviors");
+                                                else if (fieldWasEmptyAtFirst == "sociability")
+                                                    newValue = PromptForField(BuildPrompt("sociability", this_species, this_name), "sociability");
+                                                else if (fieldWasEmptyAtFirst == "attachment")
+                                                    newValue = PromptForField(BuildPrompt("attachment", this_species, this_name), "attachment");
 
                                                 if (HasData(newValue))
                                                 {
@@ -552,6 +666,34 @@ namespace HomePetProject
                                                             ourPets[index, Weight] = newValue;
                                                             infoWasModified = true;
                                                             break;
+                                                        case "fur":
+                                                            ourPets[index, FurColorCode] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "eyes":
+                                                            ourPets[index, EyeColorCode] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "marks":
+                                                            ourPets[index, DistinguishingFeatures] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "energy":
+                                                            ourPets[index, ActivityLevel] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "behaviors":
+                                                            ourPets[index, TemperamentalCodes] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "sociability":
+                                                            ourPets[index, Sociability] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
+                                                        case "attachment":
+                                                            ourPets[index, AttachmentStyle] = newValue;
+                                                            infoWasModified = true;
+                                                            break;
                                                     }
 
                                                     completedThisRun.Add(fieldWasEmptyAtFirst);
@@ -575,6 +717,27 @@ namespace HomePetProject
                                                             break;
                                                         case "weight":
                                                             ourPets[index, Weight] = "tbd";
+                                                            break;
+                                                        case "fur":
+                                                            ourPets[index, FurColorCode] = "tbd";
+                                                            break;
+                                                        case "eyes":
+                                                            ourPets[index, EyeColorCode] = "tbd";
+                                                            break;
+                                                        case "marks":
+                                                            ourPets[index, DistinguishingFeatures] = "tbd";
+                                                            break;
+                                                        case "energy":
+                                                            ourPets[index, ActivityLevel] = "tbd";
+                                                            break;
+                                                        case "behaviors":
+                                                            ourPets[index, TemperamentalCodes] = "tbd";
+                                                            break;
+                                                        case "sociability":
+                                                            ourPets[index, Sociability] = "tbd";
+                                                            break;
+                                                        case "attachment":
+                                                            ourPets[index, AttachmentStyle] = "tbd";
                                                             break;
                                                     }
 
@@ -776,7 +939,7 @@ namespace HomePetProject
                 if (HasData(ourPets[i, 0]))
                 {
                     string line = string.Join("|",
-                        Enumerable.Range(0, 8).Select(j => ourPets[i, j]));
+                        Enumerable.Range(0, 15).Select(j => ourPets[i, j]));
 
                     writer.WriteLine(line);
                 }
@@ -785,13 +948,14 @@ namespace HomePetProject
 
         static void LoadPetsInfoFile(string filePath, string[,] ourPets)
         {
+         //   return;  // temporarily disabled
             if (!File.Exists(filePath)) return;
 
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length && i < ourPets.GetLength(0); i++)
             {
                 string[] fields = lines[i].Split('|');
-                if (fields.Length < 8) continue; // skip malformed lines
+                if (fields.Length < 15) continue; // skip malformed lines
 
                 ourPets[i, 0] = fields[0];
                 ourPets[i, 1] = fields[1];
@@ -801,6 +965,13 @@ namespace HomePetProject
                 ourPets[i, 5] = fields[5];
                 ourPets[i, 6] = fields[6];
                 ourPets[i, 7] = fields[7];
+                ourPets[i, 8] = fields[8];
+                ourPets[i, 9] = fields[9];
+                ourPets[i, 10] = fields[10];
+                ourPets[i, 11] = fields[11];
+                ourPets[i, 12] = fields[12];
+                ourPets[i, 13] = fields[13];
+                ourPets[i, 14] = fields[14];
             }
         }
 
@@ -813,13 +984,18 @@ namespace HomePetProject
                 "gender" => ["b", "g"],
                 "breed" => ["p", "h", "u"],
                 "size" => ["s", "m", "l"],
-                "fur" => ["bk", "br", "db", "lb", "gy", "mx", "rd", "wh"],
-                "eyes" => ["am", "co", "bk", "bl", "br", "go", "gr", "hc", "hz", "un"],
+                "fur" => ["bk", "gy", "br", "db", "lb", "rd", "wh", "mx" ],
+                "eyes" => ["am", "co", "bk", "bl", "br", "db", "lb", "go", "gr", "hc", "hz", "un"],
+                "energy" => ["1", "2", "3", "4", "5", "6"],
                 "behaviors" => ["bo", "ca", "ex", "as", "pa", "na"],
+                "sociability" => ["1", "2", "3", "4", "5", "6"],
+                "attachment" => ["d", "i"],
                 _ => [],
             };
 
             bool isValidInput = false;
+            bool isFreeform = allowedCodes.Count == 0;
+            bool isCoded = false;
 
             while (!isValidInput)
             {
@@ -828,19 +1004,40 @@ namespace HomePetProject
                 string? input = Console.ReadLine();
                 result = input?.Trim() ?? "";
 
-                bool isFreeform = allowedCodes.Count == 0;
-                bool isCoded = allowedCodes.Contains(result.ToLower());
+                if (result.Length > 2 && !isFreeform)
+                {
+                    var codes = result.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var invalidCodes = codes.Where(code => !allowedCodes.Contains(code)).ToList();
+
+                    isCoded = codes.All(allowedCodes.Contains);
+
+                    if (invalidCodes.Count > 0)
+                    {
+                        string message = invalidCodes.Count == 1
+                            ? $"ERROR: The code \"{invalidCodes[0]}\" is not recognized. Please try again or leave it blank to skip."
+                            : $"ERROR: These codes are not recognized: {string.Join(", ", invalidCodes)}. Please try again or leave it blank to skip.";
+
+                        PauseWithMessage(message);
+                    }
+                }
+                else
+                {
+                    isCoded = allowedCodes.Contains(result.ToLower());
+                }
 
                 if (!HasData(result))
+                {
                     isValidInput = true;
+                }
                 else if (isFreeform || isCoded)
+                {
                     isValidInput = true;
+                }
                 else
-                    PauseWithMessage("ERROR: Invalid input. Please try again or leave it blank to skip.");
+                {
+                    PauseWithMessage("ERROR: Invalid input. Please try again or leave it blank for now.");
+                }
             }
-
-            if (!HasData(result))
-                result = "tbd";
 
             return result;
         }
@@ -853,19 +1050,26 @@ namespace HomePetProject
             while (!validAge)
             {
                 Console.Clear();
-                Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {thisSpecies}'s age or a best estimate (e.g., '2', '5', '11') or type '?' if unknown: ");
+                if (thisName == "tbd")
+                    Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter this {thisSpecies}'s age (e.g., '2', '5', '11') or '?' if unknown: ");
+                else
+                    Console.Write($"Note: Providing an age is optional, but it can help us make better decisions \nin areas such as placement, nutrition, and medical care.\n\nPlease enter {thisName}'s age (e.g., '2', '5', '11') or '?' if unknown: ");
                 string? result = Console.ReadLine();
                 age = result?.Trim() ?? "";
 
-                if (age == "?")
+                if (!HasData(age))
+                {
+                    PauseWithMessage("ERROR: Nothing was entered. Please try again.");
+                }
+                else if (age == "?")
                     validAge = true;
                 else if (int.TryParse(age, out int petAge))
                     if (petAge > 0)
                         validAge = true;
                     else
-                        PauseWithMessage("ERROR: A digit greater than zero wasn't entered. Please try again.");
+                        PauseWithMessage("ERROR: Age cannot be zero or negative. Please try again.");
                 else
-                    PauseWithMessage("ERROR: Neither a valid age nor a '?' was entered. Please try again.");
+                    PauseWithMessage("ERROR: Invalid input. Please try again.");
             }
 
             return age;
@@ -889,7 +1093,7 @@ namespace HomePetProject
 
                 if (!HasData(weightAsString))
                 {
-                    weightAsString = "tbd";
+          //          weightAsString = "tbd";
                     validWeight = true;
                 }
                 else if (float.TryParse(weightAsString, out float weight))
@@ -919,9 +1123,27 @@ namespace HomePetProject
                 "breed" => $"Select an option for {subject}'s breed type: \n  P = purebred | H = hybrid | U = unknown   \n\nEnter your selection or you may leave it blank for now: ",
                 "size" => $"Select an option for {subject}'s size \n  S = small | M = medium | L = large   \n\nEnter your selection or you may leave it blank for now: ",
                 "fur" => $"Select an option for {subject}'s fur color: \n BK = black | WH = white | DB = dark-brown | BR = brown | LB = light-brown | GY = gray | RD = red/rust | MX = mixed   \n\nEnter your selection or you may leave it blank for now: ",
-                "eyes" => $"Select an option for {subject}'s eye color: \n AM = amber | CO = copper | BK = black | BR = brown | BL = blue | GR = green | GO = gold | HZ = hazel | HC = heterochromatic | UN = undefined  \n\nEnter your selection or you may leave it blank for now: ",
-                "marks" => $"Describe {subject}'s distinguishing features. Enter anything special that would make this pet stand out (e.g., fur color mixes, unusual fur colors, unusual eye colors or mixes, breed specific markings, scars, missing limbs, or anything else that helps identify them quickly. You may also leave it blank or fill it in part and update it later: ",
-                "behavior" => $"Select as many options separated by a space for {subject}'s temperament/demeanor or you may leave it blank for now: ",
+                "eyes" => $"Select an option for {subject}'s eye color: \n AM = amber | CO = copper | BK = black | DB = dark-brown | BR = brown | LB = light-brown | BL = blue | GR = green | GO = gold | HZ = hazel | HC = heterochromatic | UN = undefined  \n\nEnter your selection or you may leave it blank for now: ",
+                "marks" => $"Describe {subject}'s distinguishing features. Enter anything special that would make this pet stand out (e.g., fur types or color mixes, unusual fur colors, unusual eye colors or mixes, breed specific markings, scars, missing limbs, or anything else that helps identify them quickly. You may also leave it blank or fill it in part and update it later: ",
+                "energy" => $"Select an option for {subject}'s activity level:  \n" +
+                    "    1 = very calm/sedentary (likes lounging, minimal movement) \n" +
+                    "    2 = calm but enjoys short play sessions \n" +
+                    "    3 = moderate activity (daily walks or playtime) \n" +
+                    "    4 = energetic (needs regular exercise, loves play) \n" +
+                    "    5 = very active / high-energy (runs, jumps, needs stimulation) \n" +
+                    "    6 = not yet determined \n\n" +
+                  "Enter your selection or you may leave it blank for now: ",
+                "behaviors" => $"Select as many options separated by a space for {subject}'s temperament/demeanor or you may leave it blank for now:  \n" +
+                   "BO = bold | CA = cautious | EX = exploratory | AS = assertive | PA = passive | NA = non-aggressive   \n\nEnter your selection or you may leave it blank for now: ",
+                "sociability" => $"Select an option for {subject}'s sociability level:  \n" +
+                    "    1 = very reserved (avoids interaction, prefers solitude) \n" +
+                    "    2 = reserved (shy but tolerant of brief contact) \n" +
+                    "    3 = neutral (neither avoids nor seeks out interaction) \n" +
+                    "    4 = social (enjoys company, seeks attention) \n" +
+                    "    5 = very social (thrives on interaction, highly people-oriented) \n" +
+                    "    6 = not yet determined \n\n" +
+                  "Enter your selection or you may leave it blank for now: ",
+                "attachment" => $"Select an option for {subject}'s attachment style: \n   D = clingy (seeks constant closeness, dislikes separation) \n   I = self-sufficient (comfortable alone, low separation anxiety)   \n\nEnter your selection or you may leave it blank for now: ",
                 _ => $"Enter {subject}'s {field} or you may leave it blank for now: ",
             };
         }
