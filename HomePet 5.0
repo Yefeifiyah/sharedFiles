@@ -261,7 +261,6 @@ namespace HomePetProject
                                                             "3" => "3 = moderate",
                                                             "4" => "4 = energetic",
                                                             "5" => "5 = hyperactive",
-                                                            "6" => "undetermined",
                                                             _ => "unknown"
                                                         };
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {activityLabel}");
@@ -275,7 +274,6 @@ namespace HomePetProject
                                                             "3" => "3 = neutral",
                                                             "4" => "4 = social",
                                                             "5" => "5 = very social",
-                                                            "6" => "undetermined",
                                                             _ => "unknown"
                                                         };
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {socialLabel}");
@@ -289,7 +287,6 @@ namespace HomePetProject
                                                             "3" => "3 = neutral",
                                                             "4" => "4 = curious",
                                                             "5" => "5 = highly curious",
-                                                            "6" => "undetermined",
                                                             _ => "unknown"
                                                         };
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {socialLabel}");
