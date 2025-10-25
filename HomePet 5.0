@@ -24,7 +24,7 @@ namespace HomePetProject
             const int FurType = 9;  // sh  lh  cr  dk  sp  fl  nk  sf  wr  un
             const int EyeColor = 10;  // am  co  bk  db  br  lb  bl  gr  go  hz  hc  un
             const int Physique = 11;  // strings
-            const int Behaviors = 12; // bo  ca  ex  as  pa  na  st  cu  ev  ob  re  fo  im  qu
+            const int Behaviors = 12; // ex  fo  mo  ad  qu  st  im  re  ca  se  in  sy  na  ev  pr  bo  as  pa  ob
             const int ActivityLevel = 13;  // 1 to 5 , very mellow to hyperactive
             const int SociabilityLevel = 14;   // 1 to 5 , very reserved to very social
             const int CuriosityScale = 15;   // 1 to 5 , very cautious to highly curious
@@ -46,24 +46,25 @@ namespace HomePetProject
                         { "p", "purebred" },
                         { "s", "small" },
                         { "u", "unknown" },
+                        { "ad", "adaptable" },
                         { "am", "amber" },
                         { "as", "assertive" },
                         { "bo", "bold" },
                         { "bk", "black"},
                         { "bl", "blue" },
                         { "br", "brown" },
-                        { "ca", "cautious" },
+                        { "ca", "calm" },
+                        { "cf", "aloof" },
                         { "co", "copper" },
-                        { "cr", "curly" },
-                        { "cu", "curious" },
+                        { "cy", "curly" },
                         { "db", "dark brown" },
                         { "de", "loyal"},
                         { "dk", "double-coated" },
-                        { "ex", "exploratory" },
                         { "ev", "expressive" },
+                        { "ex", "exploratory" },
                         { "ff", "free-fed" },
-                        { "fl", "fluffy" },
                         { "fo", "focused" },
+                        { "fy", "fluffy" },
                         { "gb", "gobbler" },
                         { "gr", "green" },
                         { "go", "gold" },
@@ -72,30 +73,31 @@ namespace HomePetProject
                         { "hl", "hairless" },
                         { "hz", "hazel" },
                         { "im", "impulsive" },
-                        { "in", "aloof" },
+                        { "in", "interactive" },
                         { "lb", "light brown" },
                         { "lh", "long-haired" },
+                        { "mo", "motivated" },
                         { "mx", "combination" },
                         { "na", "non-aggressive" },
                         { "ob", "obedient" },
                         { "pa", "passive" },
                         { "pe", "picky eater"},
+                        { "pr", "protective" },
                         { "qu", "quirky" },
                         { "rd", "red/rust" },
                         { "re", "reactive" },
-                        { "sc", "scheduled" },
-                        { "se", "choosy" },
-                        { "sf", "soft" },
+                        { "se", "sensitive" },
+                        { "sf", "scheduled" },
                         { "sh", "short-haired" },
-                        { "sl", "social" },
                         { "sn", "slow nibbler" },
+                        { "so", "soft" },
                         { "sp", "sparse" },
                         { "st", "spontaneous" },
+                        { "sv", "choosy" },
                         { "sy", "solitary" },
-                        { "te", "territorial" },
                         { "un", "undefined" },
                         { "wh", "white" },
-                        { "wr", "wiry" },
+                        { "wy", "wiry" },
                     };
 
             string KeyToWord(string code)
@@ -1064,14 +1066,14 @@ namespace HomePetProject
                 "breed" => ["p", "h", "u"],
                 "size" => ["s", "m", "l"],
                 "fur" => ["bk", "gy", "br", "db", "lb", "rd", "wh", "mx"],
-                "coat" => ["sh", "lh", "cr", "dk", "sp", "fl", "hl", "sf", "wr", "un"],
+                "coat" => ["sh", "lh", "cy", "dk", "sp", "fy", "hl", "so", "wy", "un"],
                 "eyes" => ["am", "co", "bk", "bl", "br", "db", "lb", "go", "gr", "hc", "hz", "un"],
-                "behaviors" => ["bo", "ca", "ex", "as", "pa", "na", "st", "cu", "ev", "ob", "re", "fo", "im", "qu"],
+                "behaviors" => ["ex", "fo", "mo", "ad", "qu", "st", "im", "re", "ca", "se", "in", "sy", "na", "ev", "pr", "bo", "as", "pa", "ob"],
                 "energy" => ["1", "2", "3", "4", "5"],
                 "sociability" => ["1", "2", "3", "4", "5"],
                 "curiosity" => ["1", "2", "3", "4", "5"],
-                "attachment" => ["de", "se", "in"],
-                "feeding" => ["ff", "sc", "pe", "gb", "sn", "un"],
+                "attachment" => ["de", "sv", "cf"],
+                "feeding" => ["ff", "sf", "pe", "gb", "sn", "un"],
                 _ => [],
             };
 
@@ -1205,11 +1207,11 @@ namespace HomePetProject
                 "breed" => $"Select an option for {subject}'s breed type: \n  P = purebred | H = hybrid | U = unknown   \n\nEnter your selection or leave blank for now: ",
                 "size" => $"Select an option for {subject}'s size \n  S = small | M = medium | L = large   \n\nEnter your selection or leave blank for now: ",
                 "fur" => $"Select an option for {subject}'s fur color: \n BK = black | WH = white | DB = dark-brown | BR = brown | LB = light-brown | GY = gray | RD = red/rust | MX = mixed   \n\nEnter your selection or leave blank for now: ",
-                "coat" => $"Select an option for {subject}'s fur type: \n SH = short-haired | LH = long-haired | CR = curly | DK = double-coated | SP = spiked | FL = fluffy | NK = hairless | SF = soft | WR = wiry | UN = undefined  \n\nEnter your selection or leave blank for now: ",
+                "coat" => $"Select an option for {subject}'s fur type: \n SH = short-haired | LH = long-haired | CY = curly | DK = double-coated | SP = spiked | FY = fluffy | NK = hairless | SO = soft | WY = wiry | UN = undefined  \n\nEnter your selection or leave blank for now: ",
                 "eyes" => $"Select an option for {subject}'s eye color: \n AM = amber | CO = copper | BK = black | DB = dark-brown | BR = brown | LB = light-brown | BL = blue | GR = green | GO = gold | HZ = hazel | HC = heterochromatic | UN = undefined  \n\nEnter your selection or leave blank for now: ",
                 "marks" => $"Describe {subject}'s distinguishing features. Enter anything special that would make this pet stand out (e.g., the specific breed or breeds if it's a hybrid, fur color combos, unusual fur colors, unusual eye colors or combos, breed specific markings, scars, missing limbs, or anything else that would help identify them. \n\nYou may also leave it blank or fill it in part and update it later: ",
                 "behaviors" => $"Select as many options as applicable for {subject}'s temperament/demeanor:  \n" +
-                   "BO = bold | CA = cautious | EX = exploratory | AS = assertive | PA = passive | NA = non-aggressive | ST = spontaneous | CU = curious | EV = expressive | OB = obedient | RE = reactive | FO = focused | IM = impulsive | QU = quirky   \n\nEnter your selections separated by a space, or you may leave it blank for now: ",
+                   "EX = exploratory | FO = focused | MO = motivated | AD = adaptable | QU = quirky | ST = spontaneous | IM = impulsive | RE = reactive | CA = calm | SE = sensitive | IN = interactive | SY = solitary | NA = non-aggressive | EV = expressive | PR = protective | BO = bold | AS = assertive | PA = passive | OB = obedient   \n\nEnter your selections separated by a space, or you may leave it blank for now: ",
                 "energy" => $"Select an option for {subject}'s activity level:  \n" +
                     "    1 = very mellow (lounges most of the day, minimal movement) \n" +
                     "    2 = calm (generally relaxed, enjoys brief play or strolls) \n" +
@@ -1231,8 +1233,8 @@ namespace HomePetProject
                     "    4 = curious (actively investigates new objects, sounds, or environments) \n" +
                     "    5 = highly curious (bold explorer, engages with everything, may get into trouble) \n\n" +
                   "Enter your selection or you may leave it blank for now: ",
-                "attachment" => $"Select an option for {subject}'s attachment style: \n       DE = devoted (e.g., dependent, always nearby, emotionally bonded)\n       SE = selective (occasionally affectionate, shows up now and then)\n       IN = carefree (independent, prefers space and solitude)   \n\nEnter your selection or leave blank for now: ",
-                "feeding" => $"Select an option for {subject}'s feeding style: \n FF = free-fed | SC = scheduled | PE = picky eater | GB = gobbler | SN = slow nibbler | UN = undefined)   \n\nEnter your selection or leave blank for now: ",
+                "attachment" => $"Select an option for {subject}'s attachment style: \n       DE = devoted (e.g., dependent, always nearby, emotionally bonded)\n       SV = selective (occasionally affectionate, shows up now and then)\n       CF = carefree (independent, prefers space and solitude)   \n\nEnter your selection or leave blank for now: ",
+                "feeding" => $"Select an option for {subject}'s feeding style: \n FF = free-fed | SF = scheduled | PE = picky eater | GB = gobbler | SN = slow nibbler | UN = undefined)   \n\nEnter your selection or leave blank for now: ",
                 _ => $"Enter {subject}'s {field} or leave it blank by pressing 'enter': ",
             };
         }
