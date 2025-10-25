@@ -553,6 +553,8 @@ namespace HomePetProject
                                         fieldsThatBeganEmpty.Add("feeding");
 
                                     char speciesCode = inputID[0];
+                                    //make speciesCode lower case
+                                    speciesCode = char.ToLower(speciesCode);
                                     string thisSpecies = KeyToWord(speciesCode.ToString());
 
                                     // Display current pet info
