@@ -13,23 +13,23 @@ namespace HomePetProject
             int maxPets = 30;
 
             const int PetID = 0;  // auto-generated like C1, D2, etc.
-            const int Species = 1;  //  C   D
+            const int Species = 1;  //  c  d
             const int Name = 2;  // string
             const int Age = 3;  // int in years or '?' for unknown
             const int Gender = 4;   //  b  g
             const int BreedType = 5;   //  p  h  u
             const int Size = 6;   //  s  m  l
             const int Weight = 7;  // float in pounds
-            const int FurColor = 8;  // bk  wt  gy  db  lb  cb  un
+            const int FurColor = 8;  // bk  wh  db  br  lb  gy rd  mx
             const int FurType = 9;  // sh  lh  cr  dk  sp  fl  nk  sf  wr  un
-            const int EyeColor = 10;  // bu  gn  br  gy  am  he  un
+            const int EyeColor = 10;  // am  co  bk  db  br  lb  bl  gr  go  hz  hc  un
             const int Physique = 11;  // strings
-            const int Behaviors = 12; // bo  ca  ex  as  pa  na (select as many as applicable)
-            const int ActivityLevel = 13;  // 1 to 5 , super slow to super active
-            const int SociabilityLevel = 14;   // 1 to 5 , super reserved to super social
-            const int CuriosityScale = 15;   // 1 to 5 , not curious to very curious
-            const int AttachmentStyle = 16;  // d  i
-            const int FeedingStyle = 17;  // ff  sf  pe  go  sn  un
+            const int Behaviors = 12; // bo  ca  ex  as  pa  na  st  cu  ev  ob  re  fo  im  qu
+            const int ActivityLevel = 13;  // 1 to 5 , very mellow to hyperactive
+            const int SociabilityLevel = 14;   // 1 to 5 , very reserved to very social
+            const int CuriosityScale = 15;   // 1 to 5 , very cautious to highly curious
+            const int AttachmentStyle = 16;  // de  se  in
+            const int FeedingStyle = 17;  // ff  sc  pe  gb  sn  un
 
             string menuSelection;
             string[,] ourPets = new string[maxPets, 18]; // 18 fields per pet
