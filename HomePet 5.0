@@ -552,10 +552,7 @@ namespace HomePetProject
                                     if (ourPets[index, FeedingStyle] == "tbd")
                                         fieldsThatBeganEmpty.Add("feeding");
 
-                                    char speciesCode = inputID[0];
-                                    //make speciesCode lower case
-                                    speciesCode = char.ToLower(speciesCode);
-                                    string thisSpecies = KeyToWord(speciesCode.ToString());
+                                    string thisSpecies = KeyToWord(ourPets[index, Species]);
 
                                     // Display current pet info
                                     bool returning = false;
