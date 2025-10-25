@@ -28,7 +28,7 @@ namespace HomePetProject
             const int ActivityLevel = 13;  // 1 to 5 , very mellow to hyperactive
             const int SociabilityLevel = 14;   // 1 to 5 , very reserved to very social
             const int CuriosityScale = 15;   // 1 to 5 , very cautious to highly curious
-            const int AttachmentStyle = 16;  // de  sv  in
+            const int AttachmentStyle = 16;  // de  sv  cf
             const int FeedingStyle = 17;  // ff  sc  pe  gb  sn  un
 
             string menuSelection;
