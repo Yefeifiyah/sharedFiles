@@ -1205,13 +1205,7 @@ namespace HomePetProject
                 "breed" => $"Select an option for {subject}'s breed type: \n  P = purebred | H = hybrid | U = unknown   \n\nEnter your selection or leave blank for now: ",
                 "size" => $"Select an option for {subject}'s size \n  S = small | M = medium | L = large   \n\nEnter your selection or leave blank for now: ",
                 "fur" => $"Select an option for {subject}'s fur color: \n BK = black | WH = white | DB = dark-brown | BR = brown | LB = light-brown | GY = gray | RD = red/rust | MX = mixed   \n\nEnter your selection or leave blank for now: ",
-
-
-            // needs to be fixed to allow multiple selections
-
                 "coat" => $"Select as many options as applicable for {subject}'s fur type: \n SH = short-haired | LH = long-haired | CY = curly | DK = double-coated | SP = spiked | FY = fluffy | NK = hairless | SO = soft | WY = wiry | UN = undefined  \n\nEnter your selections separated by a space or leave blank for now: ",
-
-
                 "eyes" => $"Select an option for {subject}'s eye color: \n AM = amber | CO = copper | BK = black | DB = dark-brown | BR = brown | LB = light-brown | BL = blue | GR = green | GO = gold | HZ = hazel | HC = heterochromatic | UN = undefined  \n\nEnter your selection or leave blank for now: ",
                 "marks" => $"Describe {subject}'s distinguishing features. Enter anything special that would make this pet stand out (e.g., the specific breed or breeds if it's a hybrid, fur color combos, unusual fur colors, unusual eye colors or combos, breed specific markings, scars, missing limbs, or anything else that would help identify them. \n\nYou may also leave it blank or fill it in part and update it later: ",
                 "behaviors" => $"Select as many options as applicable for {subject}'s temperament/demeanor:  \n" +
