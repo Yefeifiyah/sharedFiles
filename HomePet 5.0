@@ -832,12 +832,6 @@ namespace HomePetProject
                                                         : $"Pet-ID {inputID} still has {stillIncompleteCount} fields that lack required info: {string.Join(", ", skippedThisRun)}. \n\nAre you sure you want to leave them blank? (y/n): ")
                                                     : $"All the required fields for pet-ID {inputID} are complete, but 'age' is unknown. \n\nAre you sure you want to leave it blank? (y/n): ";
 
-                                                // need to introduce the nick variation of the above procedure:
-
-
-
-
-
                                                 string retryResponse = PromptYesOrNo(retryMessage);
 
                                                 if (retryResponse == "n")
