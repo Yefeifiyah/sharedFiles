@@ -14,3 +14,7 @@ D1|d|fido|?|b|u|m|tbd|rd|db|tbd|3|bo as na|6|d
 ------homePet 5.0 start: ----
 C1|c|bitzie|14|g|u|tbd|tbd|bk|lh so|tbd|tbd|tbd|2|1|3|de|pe
 
+--- 5.5 sample ---
+D1|d|bucko|5|b|h|m|tbd|db|sh|db|tbd|mo st se pr|5 9 1|4|3|2|cf|ff pe sn
+
+
