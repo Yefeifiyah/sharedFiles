@@ -263,7 +263,7 @@ namespace HomePetProject
                                     {
                                         string thisPetID = ourPets[i, PetID]; // Get ID
                                         string thisPetSpecies = ourPets[i, Species]; // Get species
-                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed Type", "Size", "Weight", "Fur Color", "Fur Type", "Eye Color", "Distinguishing Features", "Temperament/Demeanor", "Behavioral Traits", "Activity Level", "Sociability Level", "Curiosity Level", "Attachment Style", "Feeding Style"];
+                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed Type", "Size", "Weight", "Fur Color", "Fur Type", "Eye Color", "Distinguishing Features", "Temperament/Demeanor", "Behavioral Traits", "Quirks & Oddities", "Activity Level", "Sociability Level", "Curiosity Level", "Attachment Style", "Feeding Style"];
 
                                         if (!string.IsNullOrEmpty(thisPetID))
                                         {
@@ -313,33 +313,17 @@ namespace HomePetProject
                                                     }
                                                     else if (j == Marks)
                                                     {
-                                                        // there will be an empty catalog for marks and as they get enterned,
-                                                        // they will be parsed and entered into the dynamic catalog
-                                                        // as in CatalogOfMarks.Add(thisField);
-                                                        // it won't serve any immediate porpose here except to build up the catalog
 
 
                                                     }
                                                     else if (j == Quirks)
                                                     {
-                                                        // for quirks, they will be codified and inserted into 
-                                                        // the end of the behaviorNumbersToWord list or new dynamoic catalog when displaying
-                                                        // so that the field 'quirks' will be invisible in display.
-                                                        // so the if (j == Quirks) block has to come before the (j == Behaviors) block
-                                                        // then it will say if (j == Quirks) CodifyInto2LetterCode(behaviorNumbersToWord [or new dynamic catalog], thisField);
-                                                        // then it will just print out alongside the other codified behaviors the user entered in j == Behaviors...
-
-                                                        // these catalogs need to be dictionaries to associate them with petID,
-                                                        // then when a record gets deleted its associated marks or quirks will
-                                                        // also be removed from the dynamic catalogs
+                
+                
                                                     }
                                                     else if (j == Behaviors)
                                                     {
-                                                        // here we will have to add the quirks to the end of behaviors list and have them show up for future users as regular codes in coded behaviors
-                                                        // also optionally store (move) them in/to the behaviors field and have
-                                                        // quirks not get stored in the file... it's just a transient variable
-                                                        // so maybe the time to move them over is not at display but earlier
-                                                        
+
                                                         string decodedLabel = BehaviorNumbersToWords(thisField, thisPetSpecies);
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {decodedLabel}");
                                                     }
@@ -1328,7 +1312,7 @@ namespace HomePetProject
             if (species == "cat")
                 quirksString = $"Enter any of {subject}'s quirks, odd habits, or unique behaviors — things that make them stand out. Separate multiple entries with commas (e.g., sleeps in the sink,obsessed with chasing shadows,hisses at vacuum cleaners,refuses to eat unless bowl is in a corner). You may leave this field blank or enter one for now and add more later: ";
             else
-                quirksString = $"Enter any of {subject}'s quirks, odd habits, or unique behaviors — things that make them stand out. Separate multiple entries with commas (e.g., spins in circles before lying down,barks at doorbells on TV,refuses to walk on wet grass,needs to carry a toy during walks). You may leave this field blank or enter one fpr now and add more later: ";
+                quirksString = $"Enter any of {subject}'s quirks, odd habits, or unique behaviors — things that make them stand out. Separate multiple entries with commas (e.g., spins in circles before lying down,barks at doorbells on TV,refuses to walk on wet grass,needs to carry a toy during walks). You may leave this field blank or enter one for now and add more later: ";
 
             return field switch
             {
