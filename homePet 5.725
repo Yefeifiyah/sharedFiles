@@ -25,7 +25,7 @@ namespace HomePetProject
             const int EyeColor = 10;  // am  co  bk  db  br  lb  bl  gr  go  hz  hc  un
             const int Marks = 11;  // strings for any distinguishing marks/features
             const int Temperaments = 12; // ex  fo  mo  ad  qu  st  im  re  se  in  na  ev  pr  bo  as  pa  ob
-            const int Behaviors = 13; // 1 to 15 from a list specific to the species
+            const int CoreTraits = 13; // 1 to 15 from a list specific to the species
             const int Quirks = 14; // strings for any other behaviors not in the list
             const int ActivityLevel = 15;  // 1 to 5 , very mellow to hyperactive
             const int SociabilityLevel = 16;   // 1 to 5 , very reserved to very social
@@ -281,7 +281,6 @@ namespace HomePetProject
                                                     //continue;   // optional: use for not displaying 'tbd' fields
                                                 }
 
-
                                                 if (j == 0)
                                                 {
                                                     // ID line
@@ -317,7 +316,7 @@ namespace HomePetProject
                                                         // fields that need to be parsed for comma inconsistencies
                                                         
                                                     }
-                                                    else if (j == Behaviors)
+                                                    else if (j == CoreTraits)
                                                     {
                                                         string decodedLabel = BehaviorNumbersToWords(thisField, thisPetSpecies);
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {decodedLabel}");
@@ -454,7 +453,7 @@ namespace HomePetProject
                                     _eyeColorCode = PromptForField(BuildPrompt("eyes", species, _name), "eyes");
                                     _distinguishingFeatures = PromptForField(BuildPrompt("marks", species, _name), "marks");
                                     _temperamentalCodes = PromptForField(BuildPrompt("temperaments", species, _name), "temperaments");
-                                    _behavioralCodes = PromptForField(BuildPrompt("behaviors", species, _name), "behaviors");
+                                    _behavioralCodes = PromptForField(BuildPrompt("traits", species, _name), "traits");
                                     _behaviorXtras = PromptForField(BuildPrompt("quirks", species, _name), "quirks");
                                     _activityLevel = PromptForField(BuildPrompt("energy", species, _name), "energy");
                                     _socialScore = PromptForField(BuildPrompt("sociability", species, _name), "sociability");
@@ -510,7 +509,7 @@ namespace HomePetProject
                                     ourPets[petCount, EyeColor] = _eyeColorCode;
                                     ourPets[petCount, Marks] = _distinguishingFeatures;
                                     ourPets[petCount, Temperaments] = _temperamentalCodes;
-                                    ourPets[petCount, Behaviors] = _behavioralCodes;
+                                    ourPets[petCount, CoreTraits] = _behavioralCodes;
                                     ourPets[petCount, Quirks] = _behaviorXtras;
                                     ourPets[petCount, ActivityLevel] = _activityLevel;
                                     ourPets[petCount, SociabilityLevel] = _socialScore;
@@ -619,8 +618,8 @@ namespace HomePetProject
                                         fieldsThatBeganEmpty.Add("marks");
                                     if (ourPets[index, Temperaments] == "tbd")
                                         fieldsThatBeganEmpty.Add("temperaments");
-                                    if (ourPets[index, Behaviors] == "tbd")
-                                        fieldsThatBeganEmpty.Add("behaviors");
+                                    if (ourPets[index, CoreTraits] == "tbd")
+                                        fieldsThatBeganEmpty.Add("traits");
                                     if (ourPets[index, Quirks] == "tbd")
                                         fieldsThatBeganEmpty.Add("quirks");
                                     if (ourPets[index, ActivityLevel] == "tbd")
@@ -694,8 +693,8 @@ namespace HomePetProject
                                             incompleteFields.Add("marks");
                                         if (ourPets[index, Temperaments] == "tbd")
                                             incompleteFields.Add("temperaments");
-                                        if (ourPets[index, Behaviors] == "tbd")
-                                            incompleteFields.Add("behaviors");
+                                        if (ourPets[index, CoreTraits] == "tbd")
+                                            incompleteFields.Add("traits");
                                         if (ourPets[index, Quirks] == "tbd")
                                             incompleteFields.Add("quirks");
                                         if (ourPets[index, ActivityLevel] == "tbd")
@@ -772,8 +771,8 @@ namespace HomePetProject
                                                     newValue = PromptForField(BuildPrompt("marks", this_species, this_name), "marks");
                                                 else if (fieldWasEmptyAtFirst == "temperaments")
                                                     newValue = PromptForField(BuildPrompt("temperaments", this_species, this_name), "temperaments");
-                                                else if (fieldWasEmptyAtFirst == "behaviors")
-                                                    newValue = PromptForField(BuildPrompt("behaviors", this_species, this_name), "behaviors");
+                                                else if (fieldWasEmptyAtFirst == "traits")
+                                                    newValue = PromptForField(BuildPrompt("traits", this_species, this_name), "traits");
                                                 else if (fieldWasEmptyAtFirst == "quirks")
                                                     newValue = PromptForField(BuildPrompt("quirks", this_species, this_name), "quirks");
                                                 else if (fieldWasEmptyAtFirst == "energy")
@@ -831,8 +830,8 @@ namespace HomePetProject
                                                             ourPets[index, Temperaments] = newValue;
                                                             infoWasModified = true;
                                                             break;
-                                                        case "behaviors":
-                                                            ourPets[index, Behaviors] = newValue;
+                                                        case "traits":
+                                                            ourPets[index, CoreTraits] = newValue;
                                                             infoWasModified = true;
                                                             break;
                                                         case "quirks":
@@ -898,8 +897,8 @@ namespace HomePetProject
                                                         case "temperaments":
                                                             ourPets[index, Temperaments] = "tbd";
                                                             break;
-                                                        case "behaviors":
-                                                            ourPets[index, Behaviors] = "tbd";
+                                                        case "traits":
+                                                            ourPets[index, CoreTraits] = "tbd";
                                                             break;
                                                         case "quirks":
                                                             ourPets[index, Quirks] = "tbd";
@@ -1167,7 +1166,7 @@ namespace HomePetProject
                 "coat" => ["sh", "lh", "cy", "dk", "sp", "fy", "hl", "so", "wy", "un"],
                 "eyes" => ["am", "co", "bk", "bl", "br", "db", "lb", "go", "gr", "hc", "hz", "un"],
                 "temperaments" => ["ex", "fo", "mo", "ad", "qu", "st", "im", "re", "se", "in", "na", "ev", "pr", "bo", "as", "pa", "ob"],
-                "behaviors" => ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+                "traits" => ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
                 "energy" => ["1", "2", "3", "4", "5"],
                 "sociability" => ["1", "2", "3", "4", "5"],
                 "curiosity" => ["1", "2", "3", "4", "5"],
@@ -1321,7 +1320,7 @@ namespace HomePetProject
                 "marks" => marksString,
                 "temperaments" => $"Select as many options as applicable for {subject}'s temperament/demeanor:  \n" +
                    "EX = exploratory | FO = focused | MO = motivated | AD = adaptable | QU = quirky | ST = spontaneous | IM = impulsive | RE = reactive | SE = sensitive | IN = interactive | NA = non-aggressive | EV = expressive | PR = protective | BO = bold | AS = assertive | PA = passive | OB = obedient   \n\nEnter your selections separated by a space, or you may leave it blank for now: ",
-                "behaviors" => SelectBehaviors(species),
+                "traits" => SelectCoreTraits(species),
                 "quirks" => quirksString,
                 "energy" => $"Select an option for {subject}'s activity level:  \n" +
                     "    1 = very mellow (lounges most of the day, minimal movement) \n" +
@@ -1350,11 +1349,11 @@ namespace HomePetProject
             };
         }
 
-        static string SelectBehaviors(string species)
+        static string SelectCoreTraits(string species)
         {
             return species.ToLower() switch
             {
-                "cat" => $"Select as many options as applicable for this cat's core traits. If a behavior isn't listed you may enter it in the following field titled 'quirks/oddities':  \n" +
+                "cat" => $"Select as many options as applicable for this cat's core traits. If a behavior isn't listed you may enter it in the next field titled 'quirks':  \n" +
                     "  1 = purrer - often a sign of contentment, but can also indicate stress \n" +
                     "  2 = kneader - pressing paws into soft surfaces, linked to comfort and kittenhood \n" +
                     "  3 = scratches furniture - maintains claws and marks territory \n" +
@@ -1371,7 +1370,7 @@ namespace HomePetProject
                     " 14 = stares at walls or invisible spots - may be curiosity, sensory sensitivity, or boredom \n" +
                     " 15 = sleeps in odd places - reflects comfort, safety, or temperature preference \n\n" +
                   "Enter your selections separated by a space (e.g., 3 8 12 5), or you may leave it blank for now: ",
-                "dog" => $"Select as many options as applicable for this dog's core traits If a behavior isn't listed you may enter it in the next prompt titled 'quirks & oddities':  \n" +
+                "dog" => $"Select as many options as applicable for this dog's core traits If a behavior isn't listed you may enter it in the next field titled 'quirks':  \n" +
                     "  1 = barks escessively - used for communication, but can signal boredom or anxiety \n" +
                     "  2 = chewer - normal for puppies; destructive chewing may indicate stress or lack of stimulation \n" +
                     "  3 = jumps on people - often a greeting behavior, but can be problematic \n" +
