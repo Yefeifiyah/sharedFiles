@@ -329,7 +329,9 @@ namespace HomePetProject
                                                         // then it will say if (j == Quirks) CodifyInto2LetterCode(behaviorNumbersToWord [or new dynamic catalog], thisField);
                                                         // then it will just print out alongside the other codified behaviors the user entered in j == Behaviors...
 
-
+                                                        // these catalogs need to be dictionaries to associate them with petID,
+                                                        // then when a record gets deleted its associated marks or quirks will
+                                                        // also be removed from the dynamic catalogs
                                                     }
                                                     else if (j == Behaviors)
                                                     {
