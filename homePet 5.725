@@ -263,7 +263,7 @@ namespace HomePetProject
                                     {
                                         string thisPetID = ourPets[i, PetID]; // Get ID
                                         string thisPetSpecies = ourPets[i, Species]; // Get species
-                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed Type", "Size", "Weight", "Fur Color", "Fur Type", "Eye Color", "Distinguishing Features", "Temperament/Demeanor", "Behavioral Traits", "Quirks & Oddities", "Activity Level", "Sociability Level", "Curiosity Level", "Attachment Style", "Feeding Style"];
+                                        string[] fieldNames = ["Pet ID No.", "Species", "Name/Nickname", "Age", "Gender", "Breed Type", "Size", "Weight", "Fur Color", "Fur Type", "Eye Color", "Distinguishing Features", "Temperament/Demeanor", "Core Traits", "Quirks & Oddities", "Activity Level", "Sociability Level", "Curiosity Level", "Attachment Style", "Feeding Style"];
 
                                         if (!string.IsNullOrEmpty(thisPetID))
                                         {
@@ -299,7 +299,7 @@ namespace HomePetProject
                                                     }
                                                     else if (j == Name || j == Age)
                                                     {
-                                                        // these are freeform fields so just print as-is
+                                                        // freeform fields so print as-is
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {thisField}");
                                                     }
                                                     else if (j == Weight)
@@ -308,22 +308,17 @@ namespace HomePetProject
                                                     }
                                                     else if (j == Temperaments || j == FurType || j == FeedingStyle)
                                                     {
+                                                        // multiple code fields
                                                         string decodedLabel = KeysToWords(thisField);
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {decodedLabel}");
                                                     }
-                                                    else if (j == Marks)
+                                                    else if (j == Marks || j == Quirks)
                                                     {
-
-
-                                                    }
-                                                    else if (j == Quirks)
-                                                    {
-                
-                
+                                                        // fields that need to be parsed for comma inconsistencies
+                                                        
                                                     }
                                                     else if (j == Behaviors)
                                                     {
-
                                                         string decodedLabel = BehaviorNumbersToWords(thisField, thisPetSpecies);
                                                         Console.WriteLine($"\x1b[96m{fieldNames[j]}\x1b[0m: {decodedLabel}");
                                                     }
@@ -1359,7 +1354,7 @@ namespace HomePetProject
         {
             return species.ToLower() switch
             {
-                "cat" => $"Select as many options as applicable for this cat's behavioral traits:  \n" +
+                "cat" => $"Select as many options as applicable for this cat's core traits. If a behavior isn't listed you may enter it in the following field titled 'quirks/oddities':  \n" +
                     "  1 = purrer - often a sign of contentment, but can also indicate stress \n" +
                     "  2 = kneader - pressing paws into soft surfaces, linked to comfort and kittenhood \n" +
                     "  3 = scratches furniture - maintains claws and marks territory \n" +
@@ -1376,7 +1371,7 @@ namespace HomePetProject
                     " 14 = stares at walls or invisible spots - may be curiosity, sensory sensitivity, or boredom \n" +
                     " 15 = sleeps in odd places - reflects comfort, safety, or temperature preference \n\n" +
                   "Enter your selections separated by a space (e.g., 3 8 12 5), or you may leave it blank for now: ",
-                "dog" => $"Select as many options as applicable for this dog's behavioral traits:  \n" +
+                "dog" => $"Select as many options as applicable for this dog's core traits If a behavior isn't listed you may enter it in the next prompt titled 'quirks & oddities':  \n" +
                     "  1 = barks escessively - used for communication, but can signal boredom or anxiety \n" +
                     "  2 = chewer - normal for puppies; destructive chewing may indicate stress or lack of stimulation \n" +
                     "  3 = jumps on people - often a greeting behavior, but can be problematic \n" +
@@ -1393,7 +1388,7 @@ namespace HomePetProject
                     " 14 = licks people's faces or hands - can be affectionate, submissive, or attention-seeking \n" +
                     " 15 = whines or vocalizes - often signals anxiety, excitement, or a desire for attention \n\n" +
                   "Enter your selections separated by a space (e.g., 3 8 12 5), or you may leave it blank for now: ",
-                _ => $"Select as many options as applicable for this pet's behavioral traits:  \n" +
+                _ => $"Select as many options as applicable for this pet's core traits:  \n" +
                     "  1 = trait one | 2 = trait two | 3 = trait three | 4 = trait four | 5 = trait five | 6 = trait six | 7 = trait seven | 8 = trait eight | 9 = trait nine | 10 = trait ten | 11 = trait eleven | 12 = trait twelve | 13 = trait thirteen | 14 = trait forteen | 15 = trait fifteen \n\n" +
                   "Enter your selections separated by a space (e.g., 3 8 12 5), or you may leave it blank for now: ",
             };
