@@ -271,7 +271,7 @@ namespace HomePetProject
                                             Console.WriteLine($"\n  \x1b[95mRECORD #{i + 1}\x1b[0m");
                                             Console.WriteLine("--------------");
 
-                                            for (int j = 0; j < 19; j++)
+                                            for (int j = 0; j < 20; j++)
                                             {
                                                 string thisField = ourPets[i, j];
 
