@@ -313,8 +313,15 @@ namespace HomePetProject
                                                     }
                                                     else if (j == Marks || j == Quirks)
                                                     {
-                                                        // fields of strings separated by commas that need to be parsed for proper display
+                                                        var entries = thisField.Split(',')
+                                                            .Select(s => s.Trim())
+                                                            .Where(s => !string.IsNullOrEmpty(s));
 
+                                                        Console.WriteLine($"{fieldNames[j]}:");
+                                                        foreach (var entry in entries)
+                                                        {
+                                                            Console.WriteLine($"  • {entry}");
+                                                        }
                                                     }
                                                     else if (j == CoreTraits)
                                                     {
